@@ -79,24 +79,20 @@
             // Start from center
             this.x = canvas.width / 2;
             this.y = canvas.height / 2;
-
-            // Random angle
             this.angle = Math.random() * Math.PI * 2;
-
-            // Random speed
             this.speed = 0.5 + Math.random() * 2;
-
-            // Random size
             this.size = 1 + Math.random() * 3;
-
-            // Random lifetime
             this.life = 0;
             this.maxLife = 100 + Math.random() * 100;
 
-            // White color with varying opacity
-            this.color = '#ffffff';
-
-            // Initial opacity
+            // Inverse colors of the gradient
+            const inverseColors = [
+                '#118ad', // inverse of #ee7752
+                '#18c381', // inverse of #e73c7e
+                '#dc592a', // inverse of #23a6d5
+                '#dc2a54'  // inverse of #23d5ab
+            ];
+            this.color = inverseColors[Math.floor(Math.random() * inverseColors.length)];
             this.opacity = 1;
         }
 
