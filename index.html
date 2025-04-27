@@ -5,6 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Carlos's Portfolio</title>
     <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
         .center-container {
             position: relative;
             width: 100%;
@@ -12,6 +41,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 2;
         }
 
         .nav-container {
@@ -28,13 +58,15 @@
             z-index: 2;
             margin: 0;
             text-align: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .nav-item {
             position: absolute;
             text-decoration: none;
             color: white;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.1);
             padding: 15px 25px;
             border-radius: 25px;
             backdrop-filter: blur(5px);
@@ -43,6 +75,12 @@
             text-align: center;
             white-space: nowrap;
             transform-origin: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1) translate(-45%, -45%);
         }
     </style>
 </head>
@@ -55,11 +93,10 @@
     </div>
 
     <script>
+        // Navigation creation code (unchanged)
         const navItems = [
             { text: "About Me", link: "about.html" },
-            { text: "Projects", link: "projects.html" },
-            { text: "Skills", link: "skills.html" },
-            { text: "Contact", link: "contact.html" }
+            { text: "Projects", link: "projects.html" }
         ];
 
         function createNavigation() {
@@ -68,11 +105,8 @@
             
             navItems.forEach((item, index) => {
                 const angle = (index / totalItems) * 2 * Math.PI;
-                
-                // Calculate position on an oval
-                const a = 250; // horizontal radius
-                const b = 150; // vertical radius
-                
+                const a = 250;
+                const b = 150;
                 const x = a * Math.cos(angle);
                 const y = b * Math.sin(angle);
                 
@@ -81,7 +115,6 @@
                 link.className = 'nav-item';
                 link.textContent = item.text;
                 
-                // Position the link with translate
                 link.style.left = '50%';
                 link.style.top = '50%';
                 link.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
@@ -90,7 +123,70 @@
             });
         }
 
-        window.addEventListener('load', createNavigation);
+        // Particle animation
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Particle class
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width || 
+                    this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        // Create particles
+        const particles = Array(50).fill().map(() => new Particle());
+
+        // Animation loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('load', () => {
+            createNavigation();
+            animate();
+        });
     </script>
 </body>
 </html>
