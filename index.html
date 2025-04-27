@@ -21,22 +21,18 @@
         body {
             margin: 0;
             overflow: hidden;
-            background: linear-gradient(45deg, #000000, #FFC0CB);
-            background-size: 200% 200%;
-            animation: gradientFade 8s ease-in-out infinite;
+            background-color: black;
+            animation: fadeColors 8s ease-in-out infinite alternate;
             font-family: 'Minecraft', monospace;
             image-rendering: pixelated;
         }
 
-        @keyframes gradientFade {
+        @keyframes fadeColors {
             0% {
-                background: linear-gradient(45deg, #000000, #FFC0CB);
-            }
-            50% {
-                background: linear-gradient(45deg, #FFC0CB, #000000);
+                background-color: black;
             }
             100% {
-                background: linear-gradient(45deg, #000000, #FFC0CB);
+                background-color: #FFC0CB; /* Pink */
             }
         }
 
