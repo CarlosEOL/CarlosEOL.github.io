@@ -120,11 +120,23 @@
         draw() {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * 0.5})`;
+            ctx.fillStyle = `rgba(${this.hexToRgb(this.color)} ${this.opacity * 0.5})`;
             ctx.fill();
         }
-    }
+        // Helper method to convert hex to RGB
+        hexToRgb(hex) {
+            // Remove the '#' if present
+            hex = hex.replace('#', '');
 
+            // Parse the hex values
+            const r = parseInt(hex.substring(0, 2), 16);
+            const g = parseInt(hex.substring(2, 4), 16);
+            const b = parseInt(hex.substring(4, 6), 16);
+
+            return `${r}, ${g}, ${b}`;
+        }
+    }
+    
     // Create particle array
     const particles = [];
     const particleCount = 60; // Reduced count for subtlety
