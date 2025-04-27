@@ -270,13 +270,13 @@
                 // Get background position to determine particle color
                 const computedStyle = getComputedStyle(document.body);
                 const backgroundPos = parseFloat(computedStyle.backgroundPosition) || 0;
-                const isOnPinkSide = backgroundPos > 50;
 
+                // Calculate color interpolation (0 = white, 100 = black)
+                const colorValue = Math.max(0, Math.min(255, Math.round(255 - (backgroundPos * 2.55))));
                 const alpha = this.brightness * 0.8;
-                const particleColor = isOnPinkSide ? '0, 0, 0' : '255, 255, 255';
 
-                gradient.addColorStop(0, `rgba(${particleColor}, ${alpha})`);
-                gradient.addColorStop(0.4, `rgba(${particleColor}, ${alpha * 0.6})`);
+                gradient.addColorStop(0, `rgba(${colorValue}, ${colorValue}, ${colorValue}, ${alpha})`);
+                gradient.addColorStop(0.4, `rgba(${colorValue}, ${colorValue}, ${colorValue}, ${alpha * 0.6})`);
                 gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
                 ctx.fillStyle = gradient;
