@@ -21,8 +21,8 @@
         body {
             margin: 0;
             overflow: hidden;
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
+            background: linear-gradient(-45deg, #000000, #FFC0CB);
+            background-size: 200% 200%;
             animation: gradient 15s ease infinite;
             font-family: 'Minecraft', monospace;
             image-rendering: pixelated;
@@ -273,8 +273,9 @@
                 );
 
                 const alpha = this.brightness * 0.8;
-                gradient.addColorStop(0, `rgba(255, 255, 255, ${alpha})`);
-                gradient.addColorStop(0.4, `rgba(200, 220, 255, ${alpha * 0.6})`);
+                const baseColor = particleColor === 'white' ? '255, 255, 255' : '0, 0, 0';
+                gradient.addColorStop(0, `rgba(${baseColor}, ${alpha})`);
+                gradient.addColorStop(0.4, `rgba(${baseColor}, ${alpha * 0.6})`);
                 gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
                 ctx.fillStyle = gradient;
