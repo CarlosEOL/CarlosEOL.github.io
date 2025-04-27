@@ -1,13 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Animated Background</title>
     <style>
-        .center-title {
+        /* Reset default margins */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Background Animation */
+        body {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            color: white;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        h1 {
+            font-size: 3em;
             text-align: center;
+            backdrop-filter: blur(5px);
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(0,0,0,0.2);
         }
     </style>
 </head>
 <body>
-<h1 class="center-title">Carlos's Portfolio</h1>
+<h1>Welcome to My Animated Site!</h1>
 </body>
 </html>
