@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Carlos's Projects</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
@@ -17,219 +16,192 @@
             font-display: swap;
         }
 
-        body {
-            margin: 0;
-            overflow: hidden;
-            background: rgba(128, 128, 128, 0.1);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-            font-family: 'Minecraft', monospace;
-            image-rendering: pixelated;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
         body, html {
             margin: 0;
             padding: 0;
-            overflow: hidden;
             height: 100%;
+            font-family: 'Minecraft', monospace;
+            background: linear-gradient(135deg, #1a1a1a, #333333);
+            image-rendering: pixelated;
+            overflow-x: hidden;
         }
 
-        canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-        
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        h1 {
-            margin-top: 8vh;
-            text-align: center;
-            z-index: 2;
-            background: rgba(0,0,0,0.4);
-            padding: 20px 40px;
-            border: 4px solid rgba(64,64,64,0.6);
-            backdrop-filter: blur(3px);
-            -webkit-backdrop-filter: blur(3px);
-        }
-
-        .button-container {
-            margin-top: 4vh;
+        .header-area {
+            background: rgba(50, 50, 50, 0.9); /* separate color */
+            padding: 20px 0 30px 0;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            z-index: 2;
+            align-items: center;
+            z-index: 3;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            margin-bottom: 20px;
         }
 
         .project-button {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 2px solid rgba(64, 64, 64, 0.6);
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.2);
             padding: 10px 20px;
-            border-radius: 10px;
-            font-size: 1.2em;
+            border-radius: 8px;
             color: white;
             cursor: pointer;
             transition: background 0.3s;
+            font-size: 1em;
         }
 
         .project-button:hover {
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.8);
         }
 
         .project-button img {
             width: 24px;
             height: 24px;
-            image-rendering: pixelated;
         }
 
-        canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
+        h1 {
+            margin: 0;
+            padding: 10px 30px;
+            background: rgba(0,0,0,0.6);
+            border: 3px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            text-align: center;
+            font-size: 2.5em;
+        }
+
+        .content-area {
+            padding: 40px;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            background: #222;
             width: 100%;
-            height: 100%;
+            transform: translateX(100%); /* Start offscreen to the right */
+            opacity: 0;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+            position: absolute;
+            top: 180px; /* Adjust based on your header height */
+            left: 0;
             z-index: 1;
         }
+
+        .content-area.active {
+            transform: translateX(0); /* Slide into place */
+            opacity: 1;
+            position: relative;
+        }
+
+        .content-item {
+            background: #333;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            text-decoration: none;
+            color: white;
+            transition: background 0.3s;
+        }
+
+        .content-item:hover {
+            background: #444;
+        }
+
+        .content-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .content-text {
+            font-size: 1.2em;
+        }
+        
     </style>
 </head>
 <body>
-<h1>Projects</h1>
 
-<div class="button-container">
-    <div class="project-button">
-        <span>Blah Blah 1</span>
-        <img src="https://via.placeholder.com/24" alt="icon1">
-        <img src="https://via.placeholder.com/24" alt="icon2">
+<!-- Top Header Area -->
+<div class="header-area">
+
+    <!-- Button Row -->
+    <div class="button-row">
+        <div class="project-button" onclick="showContent('projects')">
+            Projects
+            <img src="https://via.placeholder.com/24" alt="Projects">
+        </div>
+        <div class="project-button" onclick="showContent('games')">
+            Games
+            <img src="https://via.placeholder.com/24" alt="Games">
+        </div>
+        <div class="project-button" onclick="showContent('art')">
+            Art
+            <img src="https://via.placeholder.com/24" alt="Art">
+        </div>
     </div>
-    <div class="project-button">
-        <span>Blah Blah 2</span>
-        <img src="https://via.placeholder.com/24" alt="icon3">
-        <img src="https://via.placeholder.com/24" alt="icon4">
-    </div>
-    <div class="project-button">
-        <span>Blah Blah 3</span>
-        <img src="https://via.placeholder.com/24" alt="icon5">
-        <img src="https://via.placeholder.com/24" alt="icon6">
-    </div>
+
+    <!-- Title -->
+    <h1>Projects!</h1>
+
 </div>
 
-<canvas id="glcanvas"></canvas>
+<!-- Content Section (hidden at start) -->
+<div id="projects" class="content-area">
+    <a class="content-item" href="https://example.com/project1" target="_blank">
+        <img src="https://via.placeholder.com/60" alt="Project 1">
+        <div class="content-text">Cool Project 1</div>
+    </a>
+    <a class="content-item" href="https://example.com/project2" target="_blank">
+        <img src="https://via.placeholder.com/60" alt="Project 2">
+        <div class="content-text">Cool Project 2</div>
+    </a>
+</div>
 
-<script id="vertex-shader" type="x-shader/x-vertex">
-    attribute vec2 a_position;
-    void main() {
-      gl_Position = vec4(a_position, 0.0, 1.0);
-    }
-</script>
+<div id="games" class="content-area">
+    <a class="content-item" href="https://example.com/game1" target="_blank">
+        <img src="https://via.placeholder.com/60" alt="Game 1">
+        <div class="content-text">Fun Game 1</div>
+    </a>
+    <a class="content-item" href="https://example.com/game2" target="_blank">
+        <img src="https://via.placeholder.com/60" alt="Game 2">
+        <div class="content-text">Fun Game 2</div>
+    </a>
+</div>
 
-<script id="fragment-shader" type="x-shader/x-fragment">
-    precision mediump float;
-    uniform float u_time;
-    void main() {
-      vec2 uv = gl_FragCoord.xy / vec2(800.0, 600.0); // screen size
-      gl_FragColor = vec4(uv.x, uv.y, abs(sin(u_time)), 1.0);
-    }
-</script>
-
-<script>
-    // Setup WebGL
-    const canvas = document.getElementById('glcanvas');
-    const gl = canvas.getContext('webgl');
-
-    // Get shader source
-    const vertexShaderSource = document.getElementById('vertex-shader').text;
-    const fragmentShaderSource = document.getElementById('fragment-shader').text;
-
-    // Compile shader
-    function createShader(gl, type, source) {
-        const shader = gl.createShader(type);
-        gl.shaderSource(shader, source);
-        gl.compileShader(shader);
-        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-            console.error('Shader compile failed:', gl.getShaderInfoLog(shader));
-            gl.deleteShader(shader);
-            return null;
-        }
-        return shader;
-    }
-
-    const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-    const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
-
-    // Link program
-    function createProgram(gl, vertexShader, fragmentShader) {
-        const program = gl.createProgram();
-        gl.attachShader(program, vertexShader);
-        gl.attachShader(program, fragmentShader);
-        gl.linkProgram(program);
-        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-            console.error('Program link failed:', gl.getProgramInfoLog(program));
-            gl.deleteProgram(program);
-            return null;
-        }
-        return program;
-    }
-
-    const program = createProgram(gl, vertexShader, fragmentShader);
-    gl.useProgram(program);
-
-    // Setup buffer
-    const positionBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-        -1, -1,
-        1, -1,
-        -1,  1,
-        -1,  1,
-        1, -1,
-        1,  1,
-    ]), gl.STATIC_DRAW);
-
-    // Bind buffer to attribute
-    const aPosition = gl.getAttribLocation(program, "a_position");
-    gl.enableVertexAttribArray(aPosition);
-    gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0);
-
-    // Time uniform
-    const uTime = gl.getUniformLocation(program, "u_time");
-
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        gl.viewport(0, 0, canvas.width, canvas.height);
-    }
-
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    // Render loop
-    function render(time) {
-        gl.clear(gl.COLOR_BUFFER_BIT);
-
-        gl.uniform1f(uTime, time * 0.001);
-
-        gl.drawArrays(gl.TRIANGLES, 0, 6);
-
-        requestAnimationFrame(render);
-    }
-
-    requestAnimationFrame(render);
-</script>
+<div id="art" class="content-area">
+    <a class="content-item" href="https://example.com/art1" target="_blank">
+        <img src="https://via.placeholder.com/60" alt="Art 1">
+        <div class="content-text">Beautiful Art 1</div>
+    </a>
+    <a class="content-item" href="https://example.com/art2" target="_blank">
+        <img src="https://via.placeholder.com/60" alt="Art 2">
+        <div class="content-text">Beautiful Art 2</div>
+    </a>
+</div>
 
 <script>
-    // (you can later add particle animation here!)
+    // SLIDE-IN Animation
+    function showContent(sectionId) {
+        const sections = document.querySelectorAll('.content-area');
+        sections.forEach(section => {
+            section.classList.remove('active');
+        });
+
+        const selectedSection = document.getElementById(sectionId);
+        if (selectedSection) {
+            selectedSection.classList.add('active');
+            window.scrollTo({ top: selectedSection.offsetTop, behavior: 'smooth' });
+        }
+    }
 </script>
+
 </body>
 </html>
