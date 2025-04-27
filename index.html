@@ -21,19 +21,22 @@
         body {
             margin: 0;
             overflow: hidden;
-            background: linear-gradient(45deg, black 0%, black 40%, #FFC0CB 60%, #FFC0CB 100%);
-            background-size: 300% 300%;
-            animation: moveGradient 8s alternate infinite;
+            background: linear-gradient(45deg, #000000, #FFC0CB);
+            background-size: 200% 200%;
+            animation: gradientFade 8s ease-in-out infinite;
             font-family: 'Minecraft', monospace;
             image-rendering: pixelated;
         }
 
-        @keyframes moveGradient {
+        @keyframes gradientFade {
             0% {
-                background-position: 0% 50%;
+                background: linear-gradient(45deg, #000000, #FFC0CB);
+            }
+            50% {
+                background: linear-gradient(45deg, #FFC0CB, #000000);
             }
             100% {
-                background-position: 100% 50%;
+                background: linear-gradient(45deg, #000000, #FFC0CB);
             }
         }
 
