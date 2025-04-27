@@ -83,7 +83,7 @@
             this.speed = 0.5 + Math.random() * 2;
             this.size = 1 + Math.random() * 3;
             this.life = 0;
-            this.maxLife = 100 + Math.random() * 100;
+            this.maxLife = 180 + Math.random() * 100;
 
             // Inverse colors of the gradient
             const inverseColors = [
@@ -127,7 +127,7 @@
 
     // Create particle array
     const particles = [];
-    const particleCount = 50; // Reduced count for subtlety
+    const particleCount = 60; // Reduced count for subtlety
     for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle());
     }
