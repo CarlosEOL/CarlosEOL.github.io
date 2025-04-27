@@ -5,12 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Carlos's Portfolio</title>
     <style>
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('https://db.onlinewebfonts.com/t/6ab539c6fc2b21ff0b149b3d06d7f97c.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         body {
             margin: 0;
             overflow: hidden;
             background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
             background-size: 400% 400%;
             animation: gradient 15s ease infinite;
+            font-family: 'Minecraft', monospace;
+            image-rendering: pixelated;
         }
 
         @keyframes gradient {
@@ -59,28 +68,39 @@
             margin: 0;
             text-align: center;
             color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            text-shadow: 2px 2px 0px #000000;
+            font-size: 2.5em;
+            letter-spacing: 1px;
         }
 
         .nav-item {
             position: absolute;
             text-decoration: none;
             color: white;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.75);
             padding: 15px 25px;
-            border-radius: 25px;
-            backdrop-filter: blur(5px);
+            border-radius: 0; /* Minecraft style is blocky */
+            border: 3px solid #ffffff;
             transition: all 0.3s ease;
             font-size: 1.2em;
             text-align: center;
             white-space: nowrap;
             transform-origin: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-shadow: 2px 2px 0px #000000;
+            box-shadow: inset -2px -4px #0006, inset 2px 2px #FFF7;
         }
+
 
         .nav-item:hover {
             background: rgba(255, 255, 255, 0.2);
             transform: scale(1.1) translate(-45%, -45%);
+            border-color: #FFFF00;
+            box-shadow: inset -2px -4px #0006, inset 2px 2px #FFF7, 0 0 20px #FFFF00;
+        }
+
+        .nav-item:active {
+            box-shadow: inset 2px 2px #0006, inset -2px -4px #FFF7;
+            transform: scale(1.05) translate(-45%, -45%);
         }
     </style>
 </head>
@@ -148,7 +168,11 @@
                 this.speedX = Math.random() * 2 - 1;
                 this.speedY = Math.random() * 2 - 1;
                 this.opacity = Math.random() * 0.5 + 0.2;
+                // Random color selection for particles
+                const colors = ['#FFFFFF', '#FFFF00', '#00FF00', '#00FFFF'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
             }
+
 
             update() {
                 this.x += this.speedX;
@@ -163,7 +187,7 @@
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.fillStyle = this.color.replace(')', `,${this.opacity})`);
                 ctx.fill();
             }
         }
