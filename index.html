@@ -221,7 +221,6 @@
             }
 
             reset() {
-                // Start from center
                 this.x = canvas.width / 2;
                 this.y = canvas.height / 2;
                 // Random angle
@@ -265,17 +264,22 @@
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-
-                // Create gradient for each star
+                
                 const gradient = ctx.createRadialGradient(
                     this.x, this.y, 0,
                     this.x, this.y, this.size
                 );
+                
+                // Get background position to determine particle color
+                const computedStyle = getComputedStyle(document.body);
+                const backgroundPos = parseFloat(computedStyle.backgroundPosition) || 0;
+                const isOnPinkSide = backgroundPos > 50;
 
                 const alpha = this.brightness * 0.8;
-                const baseColor = particleColor === 'white' ? '255, 255, 255' : '0, 0, 0';
-                gradient.addColorStop(0, `rgba(${baseColor}, ${alpha})`);
-                gradient.addColorStop(0.4, `rgba(${baseColor}, ${alpha * 0.6})`);
+                const particleColor = isOnPinkSide ? '0, 0, 0' : '255, 255, 255';
+
+                gradient.addColorStop(0, `rgba(${particleColor}, ${alpha})`);
+                gradient.addColorStop(0.4, `rgba(${particleColor}, ${alpha * 0.6})`);
                 gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
                 ctx.fillStyle = gradient;
