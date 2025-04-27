@@ -51,113 +51,202 @@
             pointer-events: none;
             opacity: 0.5;
         }
+
+        /* ... keeping previous styles ... */
+
+        .nav-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 400px;
+            z-index: 1;
+        }
+
+        .nav-item {
+            position: absolute;
+            text-decoration: none;
+            color: white;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px 25px;
+            border-radius: 25px;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            font-size: 1.2em;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Center title adjustments */
+        h1 {
+            position: relative;
+            margin: 0;
+            z-index: 2;
+        }
     </style>
 </head>
 <body>
-<canvas id="particles"></canvas>
-<h1>Carlos's Portfolio</h1>
+    <canvas id="particles"></canvas>
+    
+    <div class="nav-container">
+        <!-- Navigation links will be inserted here by JavaScript -->
+    </div>
+    
+    <h1>Carlos's Portfolio</h1>
 
-<script>
-    const canvas = document.getElementById('particles');
-    const ctx = canvas.getContext('2d');
+    <script>
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
 
-    // Set canvas size
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    // Particle class
-    class Particle {
-        constructor() {
-            this.reset();
+        // Set canvas size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
 
-        reset() {
-            // Start from center
-            this.x = canvas.width / 2;
-            this.y = canvas.height / 2;
-            this.angle = Math.random() * Math.PI * 2;
-            this.speed = 0.5 + Math.random() * 2;
-            this.size = 1 + Math.random() * 3;
-            this.life = 0;
-            this.maxLife = 180 + Math.random() * 100;
-
-            // Inverse colors of the gradient
-            const inverseColors = [
-                '#118ad', // inverse of #ee7752
-                '#18c381', // inverse of #e73c7e
-                '#dc592a', // inverse of #23a6d5
-                '#dc2a54'  // inverse of #23d5ab
-            ];
-            this.color = inverseColors[Math.floor(Math.random() * inverseColors.length)];
-            this.opacity = 1;
-        }
-
-        update() {
-            // Move particle
-            this.x += Math.cos(this.angle) * this.speed;
-            this.y += Math.sin(this.angle) * this.speed;
-
-            // Update life
-            this.life++;
-
-            // Fade out
-            this.opacity = 1 - (this.life / this.maxLife);
-
-            // Reset if lifetime is over or particle is out of bounds
-            if (this.life >= this.maxLife ||
-                this.x < 0 ||
-                this.x > canvas.width ||
-                this.y < 0 ||
-                this.y > canvas.height) {
+        // Particle class
+        class Particle {
+            constructor() {
                 this.reset();
             }
+
+            reset() {
+                // Start from center
+                this.x = canvas.width / 2;
+                this.y = canvas.height / 2;
+                this.angle = Math.random() * Math.PI * 2;
+                this.speed = 0.5 + Math.random() * 2;
+                this.size = 1 + Math.random() * 3;
+                this.life = 0;
+                this.maxLife = 180 + Math.random() * 100;
+
+                // Inverse colors of the gradient
+                const inverseColors = [
+                    '#118ad', // inverse of #ee7752
+                    '#18c381', // inverse of #e73c7e
+                    '#dc592a', // inverse of #23a6d5
+                    '#dc2a54'  // inverse of #23d5ab
+                ];
+                this.color = inverseColors[Math.floor(Math.random() * inverseColors.length)];
+                this.opacity = 1;
+            }
+
+            update() {
+                // Move particle
+                this.x += Math.cos(this.angle) * this.speed;
+                this.y += Math.sin(this.angle) * this.speed;
+
+                // Update life
+                this.life++;
+
+                // Fade out
+                this.opacity = 1 - (this.life / this.maxLife);
+
+                // Reset if lifetime is over or particle is out of bounds
+                if (this.life >= this.maxLife ||
+                    this.x < 0 ||
+                    this.x > canvas.width ||
+                    this.y < 0 ||
+                    this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${this.hexToRgb(this.color)} ${this.opacity * 0.5})`;
+                ctx.fill();
+            }
+            // Helper method to convert hex to RGB
+            hexToRgb(hex) {
+                // Remove the '#' if present
+                hex = hex.replace('#', '');
+
+                // Parse the hex values
+                const r = parseInt(hex.substring(0, 2), 16);
+                const g = parseInt(hex.substring(2, 4), 16);
+                const b = parseInt(hex.substring(4, 6), 16);
+
+                return `${r}, ${g}, ${b}`;
+            }
+        }
+        
+        // Create particle array
+        const particles = [];
+        const particleCount = 60; // Reduced count for subtlety
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
         }
 
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(${this.hexToRgb(this.color)} ${this.opacity * 0.5})`;
-            ctx.fill();
+        // Animation loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Update and draw particles
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            requestAnimationFrame(animate);
         }
-        // Helper method to convert hex to RGB
-        hexToRgb(hex) {
-            // Remove the '#' if present
-            hex = hex.replace('#', '');
 
-            // Parse the hex values
-            const r = parseInt(hex.substring(0, 2), 16);
-            const g = parseInt(hex.substring(2, 4), 16);
-            const b = parseInt(hex.substring(4, 6), 16);
+        animate();
+        // Keep previous particle animation code...
 
-            return `${r}, ${g}, ${b}`;
+        // Navigation setup
+        const navItems = [
+            { text: "Projects", link: "projects.html" },
+            { text: "Skills", link: "skills.html" },
+            { text: "Contact", link: "contact.html" },
+            { text: "Gallery", link: "gallery.html" }
+        ];
+
+        function createNavigation() {
+            const container = document.querySelector('.nav-container');
+            const totalItems = navItems.length;
+            
+            navItems.forEach((item, index) => {
+                const angle = (index / totalItems) * 2 * Math.PI; // Distribute items in a circle
+                
+                // Calculate position on an oval
+                const a = 250; // horizontal radius
+                const b = 150; // vertical radius
+                
+                const x = a * Math.cos(angle);
+                const y = b * Math.sin(angle);
+                
+                const link = document.createElement('a');
+                link.href = item.link;
+                link.className = 'nav-item';
+                link.textContent = item.text;
+                
+                // Position the link
+                link.style.transform = `translate(${x}px, ${y}px)`;
+                
+                container.appendChild(link);
+            });
         }
-    }
-    
-    // Create particle array
-    const particles = [];
-    const particleCount = 60; // Reduced count for subtlety
-    for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
-    }
 
-    // Animation loop
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Call the function after the page loads
+        window.addEventListener('load', createNavigation);
 
-        // Update and draw particles
-        particles.forEach(particle => {
-            particle.update();
-            particle.draw();
+        // Update navigation position on window resize
+        window.addEventListener('resize', () => {
+            const container = document.querySelector('.nav-container');
+            container.innerHTML = '';
+            createNavigation();
         });
-
-        requestAnimationFrame(animate);
-    }
-
-    animate();
-</script>
+    </script>
 </body>
 </html>
