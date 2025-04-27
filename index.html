@@ -4,13 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Carlos's Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
+
     <style>
         @font-face {
             font-family: 'Minecraft';
-            src: url('https://cdn.jsdelivr.net/gh/South-Paw/typeface-minecraft@master/fonts/minecraft-font.woff2') format('woff2');
+            src: url('https://fonts.cdnfonts.com/css/minecraft-4') format('woff2'),
+            url('https://cdn.jsdelivr.net/gh/South-Paw/typeface-minecraft@master/fonts/minecraft.woff') format('woff');
             font-weight: normal;
             font-style: normal;
+            font-display: swap;
         }
+
 
         body {
             margin: 0;
@@ -94,7 +100,8 @@
             margin: 0;
             text-align: center;
             color: #FFFFFF;
-            font-family: 'Minecraft', monospace;
+            /* Updated font stack with multiple fallbacks */
+            font-family: 'Minecraft', 'MinecraftFive', 'MinecraftFour', monospace;
             text-shadow:
                     3px 3px #3F3F3F,
                     2px 2px #000000;
@@ -104,8 +111,9 @@
             image-rendering: pixelated;
             -webkit-font-smoothing: none;
             text-transform: uppercase;
-            transform: skew(5deg); /* Counter the container skew */
+            transform: skew(5deg);
         }
+
 
         h1::before {
             content: attr(data-text);
