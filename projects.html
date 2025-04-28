@@ -251,40 +251,44 @@ void main() {
 }`;
 
     const fragmentShaderSource = `
-precision highp float;
+precision mediump float;
+
 uniform vec2 u_resolution;
 uniform float u_time;
-float random (in vec2 st) {
-    return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+
+float hash(vec2 p) {
+    p = fract(p * vec2(123.34, 456.21));
+    p += dot(p, p + 45.32);
+    return fract(p.x * p.y);
 }
-vec2 voronoi(vec2 x) {
-    vec2 p = floor(x);
-    vec2 f = fract(x);
-    float res = 8.0;
-    vec2 m = vec2(0.0);
-    float md = 8.0;
-    for (int j = -1; j <= 1; j++)
-    for (int i = -1; i <= 1; i++) {
-        vec2 g = vec2(float(i), float(j));
-        vec2 o = random(p + g) * vec2(0.5, 0.5) + 0.5;
-        vec2 r = g + o - f;
-        float d = dot(r,r);
-        if (d < md) {
-            md = d;
-            m = g + o;
-        }
-    }
-    return p + m;
-}
+
 void main() {
     vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-    uv *= 3.0;
-    uv += vec2(u_time * 0.03, u_time * 0.02);
-    vec2 cells = voronoi(uv);
-    float edge = length(fract(cells)) * 10.0;
-    float crack = smoothstep(0.05, 0.1, edge);
-    gl_FragColor = vec4(vec3(1.0 - crack), 1.0);
-}`;
+    uv *= 50.608; // zoom into pattern
+
+    vec2 n = floor(uv);
+    vec2 f = fract(uv);
+
+    float minDist = 1.0;
+    for (int j = -1; j <= 1; j++) {
+        for (int i = -1; i <= 1; i++) {
+            vec2 neighbor = vec2(float(i), float(j));
+            vec2 point = vec2(
+                hash(n + neighbor),
+                hash(n + neighbor + 1.0)
+            );
+            point = 0.5 + 0.5 * sin(u_time + 6.2831 * point);
+
+            vec2 diff = neighbor + point - f;
+            float dist = length(diff);
+            minDist = min(minDist, dist);
+        }
+    }
+
+    float color = 1.0 - smoothstep(0.0, 0.076, minDist);
+    gl_FragColor = vec4(vec3(color), 1.0);
+}
+`;
     
     // Shader Setup
     function createShader(gl, type, source) {
