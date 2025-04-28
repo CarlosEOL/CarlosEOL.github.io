@@ -29,7 +29,7 @@
         .header-area {
             position: relative;
             overflow: hidden;
-            background: rgba(50, 50, 50, 0.9); /* fallback color */
+            background: rgba(50, 50, 50, 0.9);
             padding: 20px 0 30px 0;
             display: flex;
             flex-direction: column;
@@ -37,14 +37,21 @@
             z-index: 2;
         }
 
-        #shader-canvas {
+        #shader-canvas, #particle-canvas {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            pointer-events: none;
+        }
+
+        #shader-canvas {
             z-index: 1;
-            pointer-events: none; /* make sure clicks go through */
+        }
+
+        #particle-canvas {
+            z-index: 2;
         }
 
         .button-row {
@@ -52,6 +59,7 @@
             gap: 40px;
             justify-content: center;
             margin-bottom: 20px;
+            z-index: 3;
         }
 
         .project-button {
@@ -85,150 +93,46 @@
             border-radius: 10px;
             text-align: center;
             font-size: 2.5em;
+            z-index: 3;
         }
-
-        .content-area {
-            padding: 40px;
-            flex-direction: column;
-            gap: 20px;
-            align-items: center;
-            background: #222;
-            width: 100%;
-            transform: translateX(100%); /* Start offscreen to the right */
-            opacity: 0;
-            transition: transform 0.6s ease, opacity 0.6s ease;
-            position: absolute;
-            top: 180px; /* Adjust based on your header height */
-            left: 0;
-            z-index: 1;
-        }
-
-        .content-area.active {
-            transform: translateX(0); /* Slide into place */
-            opacity: 1;
-            position: relative;
-        }
-
-        .content-item {
-            background: #333;
-            padding: 20px;
-            border-radius: 10px;
-            width: 80%;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            text-decoration: none;
-            color: white;
-            transition: background 0.3s;
-        }
-
-        .content-item:hover {
-            background: #444;
-        }
-
-        .content-item img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        .content-text {
-            font-size: 1.2em;
-        }
-        
     </style>
 </head>
 <body>
 
-<!-- Top Header Area -->
 <div class="header-area">
     <canvas id="shader-canvas"></canvas>
-    <!-- Button Row -->
+    <canvas id="particle-canvas"></canvas>
+
     <div class="button-row">
-        <div class="project-button" onclick="showContent('projects')">
-            Projects
-            <img src="https://via.placeholder.com/24" alt="Projects">
-        </div>
-        <div class="project-button" onclick="showContent('games')">
-            Games
-            <img src="https://via.placeholder.com/24" alt="Games">
-        </div>
-        <div class="project-button" onclick="showContent('art')">
-            Art
-            <img src="https://via.placeholder.com/24" alt="Art">
-        </div>
+        <div class="project-button" onclick="alert('Projects Clicked!')">Projects <img src="https://via.placeholder.com/24"></div>
+        <div class="project-button" onclick="alert('Games Clicked!')">Games <img src="https://via.placeholder.com/24"></div>
+        <div class="project-button" onclick="alert('Art Clicked!')">Art <img src="https://via.placeholder.com/24"></div>
     </div>
 
-    <!-- Title -->
     <h1>Projects!</h1>
-
-</div>
-
-<!-- Content Section (hidden at start) -->
-<div id="projects" class="content-area">
-    <a class="content-item" href="https://example.com/project1" target="_blank">
-        <img src="https://via.placeholder.com/60" alt="Project 1">
-        <div class="content-text">Cool Project 1</div>
-    </a>
-    <a class="content-item" href="https://example.com/project2" target="_blank">
-        <img src="https://via.placeholder.com/60" alt="Project 2">
-        <div class="content-text">Cool Project 2</div>
-    </a>
-</div>
-
-<div id="games" class="content-area">
-    <a class="content-item" href="https://example.com/game1" target="_blank">
-        <img src="https://via.placeholder.com/60" alt="Game 1">
-        <div class="content-text">Fun Game 1</div>
-    </a>
-    <a class="content-item" href="https://example.com/game2" target="_blank">
-        <img src="https://via.placeholder.com/60" alt="Game 2">
-        <div class="content-text">Fun Game 2</div>
-    </a>
-</div>
-
-<div id="art" class="content-area">
-    <a class="content-item" href="https://example.com/art1" target="_blank">
-        <img src="https://via.placeholder.com/60" alt="Art 1">
-        <div class="content-text">Beautiful Art 1</div>
-    </a>
-    <a class="content-item" href="https://example.com/art2" target="_blank">
-        <img src="https://via.placeholder.com/60" alt="Art 2">
-        <div class="content-text">Beautiful Art 2</div>
-    </a>
 </div>
 
 <script>
-    // SLIDE-IN Animation
-    function showContent(sectionId) {
-        const sections = document.querySelectorAll('.content-area');
-        sections.forEach(section => {
-            section.classList.remove('active');
-        });
+    // === Shader Canvas Setup ===
+    const shaderCanvas = document.getElementById('shader-canvas');
+    const gl = shaderCanvas.getContext('webgl');
 
-        const selectedSection = document.getElementById(sectionId);
-        if (selectedSection) {
-            selectedSection.classList.add('active');
-            window.scrollTo({ top: selectedSection.offsetTop, behavior: 'smooth' });
-        }
-    }
-</script>
+    // === Particle Canvas Setup ===
+    const particleCanvas = document.getElementById('particle-canvas');
+    const ctx = particleCanvas.getContext('2d');
 
-<script>
-    const canvas = document.getElementById('shader-canvas');
-    const gl = canvas.getContext('webgl');
-
+    // === Resize Both Canvases ===
     function resizeCanvas() {
-        canvas.width = canvas.clientWidth;
-        canvas.height = canvas.clientHeight;
-        gl.viewport(0, 0, canvas.width, canvas.height);
+        shaderCanvas.width = shaderCanvas.clientWidth;
+        shaderCanvas.height = shaderCanvas.clientHeight;
+        particleCanvas.width = particleCanvas.clientWidth;
+        particleCanvas.height = particleCanvas.clientHeight;
+        gl.viewport(0, 0, shaderCanvas.width, shaderCanvas.height);
     }
-
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // --- Shader sources ---
+    // === Shader Sources ===
     const vertexShaderSource = `
 attribute vec2 a_position;
 void main() {
@@ -236,19 +140,48 @@ void main() {
 }`;
 
     const fragmentShaderSource = `
-// (paste that Voronoi fragment shader I gave earlier here)
 precision highp float;
 
 uniform vec2 u_resolution;
 uniform float u_time;
 
-// random, voronoi, main() functions here
-// (same shader above, insert here)
-...
+float random (in vec2 st) {
+    return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+}
 
-`;
+vec2 voronoi(vec2 x) {
+    vec2 p = floor(x);
+    vec2 f = fract(x);
+    float res = 8.0;
+    vec2 m = vec2(0.0);
+    float md = 8.0;
 
-    // --- Helper functions ---
+    for (int j = -1; j <= 1; j++)
+    for (int i = -1; i <= 1; i++) {
+        vec2 g = vec2(float(i), float(j));
+        vec2 o = random(p + g) * vec2(0.5, 0.5) + 0.5;
+        vec2 r = g + o - f;
+        float d = dot(r,r);
+        if (d < md) {
+            md = d;
+            m = g + o;
+        }
+    }
+    return p + m;
+}
+
+void main() {
+    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+    uv *= 3.0;
+    uv += vec2(u_time * 0.03, u_time * 0.02);
+    vec2 cells = voronoi(uv);
+    float edge = length(fract(cells)) * 10.0;
+    float crack = smoothstep(0.05, 0.1, edge);
+
+    gl_FragColor = vec4(vec3(1.0 - crack), 1.0);
+}`;
+
+    // === Shader Compilation ===
     function createShader(gl, type, source) {
         const shader = gl.createShader(type);
         gl.shaderSource(shader, source);
@@ -274,18 +207,21 @@ uniform float u_time;
         return program;
     }
 
-    // --- Initialize shader program ---
     const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
     const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
     const program = createProgram(gl, vertexShader, fragmentShader);
     gl.useProgram(program);
 
-    // Fullscreen triangle
+    // === Setup fullscreen triangle
     const positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-        -1, -1, 1, -1, -1, 1,
-        -1, 1, 1, -1, 1, 1,
+        -1, -1,
+        1, -1,
+        -1, 1,
+        -1, 1,
+        1, -1,
+        1, 1
     ]), gl.STATIC_DRAW);
 
     const positionLocation = gl.getAttribLocation(program, "a_position");
@@ -295,19 +231,64 @@ uniform float u_time;
     const uResolution = gl.getUniformLocation(program, "u_resolution");
     const uTime = gl.getUniformLocation(program, "u_time");
 
-    // Render loop
-    function render(time) {
+    // === Render Voronoi Shader ===
+    function renderVoronoi(time) {
         gl.clear(gl.COLOR_BUFFER_BIT);
-
-        gl.uniform2f(uResolution, canvas.width, canvas.height);
+        gl.useProgram(program);
+        gl.uniform2f(uResolution, shaderCanvas.width, shaderCanvas.height);
         gl.uniform1f(uTime, time * 0.001);
-
         gl.drawArrays(gl.TRIANGLES, 0, 6);
-
-        requestAnimationFrame(render);
+        requestAnimationFrame(renderVoronoi);
     }
 
-    requestAnimationFrame(render);
+    // === Particles Setup ===
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.vx = (Math.random() - 0.5) * 2.0;
+            this.vy = (Math.random() - 0.5) * 2.0;
+            this.speed = 0.5 + Math.random() * 0.5;
+        }
+
+        update() {
+            this.x += this.vx * this.speed;
+            this.y += this.vy * this.speed;
+
+            if (this.x < 0) this.x += particleCanvas.width;
+            if (this.x > particleCanvas.width) this.x -= particleCanvas.width;
+            if (this.y < 0) this.y += particleCanvas.height;
+            if (this.y > particleCanvas.height) this.y -= particleCanvas.height;
+        }
+
+        draw(ctx) {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, 2, 0, 2 * Math.PI);
+            ctx.fillStyle = "white";
+            ctx.fill();
+        }
+    }
+
+    const particles = [];
+    const PARTICLE_COUNT = 150;
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+        particles.push(new Particle(Math.random() * particleCanvas.width, Math.random() * particleCanvas.height));
+    }
+
+    // === Render Particles ===
+    function renderParticles() {
+        ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+        particles.forEach(p => {
+            p.update();
+            p.draw(ctx);
+        });
+        requestAnimationFrame(renderParticles);
+    }
+
+    // === Start Both Loops ===
+    requestAnimationFrame(renderVoronoi);
+    requestAnimationFrame(renderParticles);
 </script>
 
 </body>
