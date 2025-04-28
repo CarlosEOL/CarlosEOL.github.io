@@ -109,19 +109,22 @@
             align-items: center;
             background: #222;
             width: 100%;
-            transform: translateX(100%);
             opacity: 0;
-            transition: transform 0.6s ease, opacity 0.6s ease;
+            transition: transform 0.5s ease, opacity 0.5s ease;
             position: absolute;
             top: 180px;
             left: 0;
+            transform: translateX(100%);
             z-index: 3;
         }
 
         .content-area.active {
-            transform: translateX(0); /* Slide into place */
             opacity: 1;
-            position: relative;
+            position: absolute;
+            top: 180px;
+            left: 0;
+            transform: translateX(0);
+            pointer-events: auto;
         }
 
         .content-item {
@@ -162,17 +165,17 @@
     <canvas id="shader-canvas"></canvas>
     <canvas id="particle-canvas"></canvas>
     <div class="button-row">
-        <div class="project-button" onclick="showContent('projects')">
-            Projects
-            <img src="https://via.placeholder.com/24" alt="Projects">
+        <div class="project-button" onclick="showContent('Unity')">
+            UnityEngine
+            <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Ffreebiesupply.com%2Flogos%2Funity-logo%2F&psig=AOvVaw0WYl1t_asojdsTqdfUJkem&ust=1745968550259000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqGAoTCID3u-nt-4wDFQAAAAAdAAAAABCIAQ" alt="UnityEngine">
         </div>
-        <div class="project-button" onclick="showContent('games')">
-            Games
-            <img src="https://via.placeholder.com/24" alt="Games">
+        <div class="project-button" onclick="showContent('Unreal')">
+            UnrealEngine
+            <img src="https://assets.streamlinehq.com/image/private/w_300,h_300,ar_1/f_auto/v1/icons/video-games/unreal-engine-qdh1c46xy8c1nedruo2v5.png/unreal-engine-xwo7bd8vu6fzpnkcifgtu.png?_a=DATAdtAAZAA0" alt="UnrealEngine">
         </div>
-        <div class="project-button" onclick="showContent('art')">
-            Art
-            <img src="https://via.placeholder.com/24" alt="Art">
+        <div class="project-button" onclick="showContent('Others')">
+            Others (C++, etc.)
+            <img src="https://www.freeiconspng.com/uploads/c--logo-icon-0.png" alt="Others">
         </div>
     </div>
 
@@ -181,7 +184,7 @@
 </div>
 
 <!-- Content Section (hidden at start) -->
-<div id="projects" class="content-area">
+<div id="Unity" class="content-area">
     <a class="content-item" href="https://example.com/project1" target="_blank">
         <img src="https://via.placeholder.com/60" alt="Project 1">
         <div class="content-text">Cool Project 1</div>
@@ -192,7 +195,7 @@
     </a>
 </div>
 
-<div id="games" class="content-area">
+<div id="Unreal" class="content-area">
     <a class="content-item" href="https://example.com/game1" target="_blank">
         <img src="https://via.placeholder.com/60" alt="Game 1">
         <div class="content-text">Fun Game 1</div>
@@ -203,7 +206,7 @@
     </a>
 </div>
 
-<div id="art" class="content-area">
+<div id="Others" class="content-area">
     <a class="content-item" href="https://example.com/art1" target="_blank">
         <img src="https://via.placeholder.com/60" alt="Art 1">
         <div class="content-text">Beautiful Art 1</div>
