@@ -378,7 +378,7 @@ void main() {
         // First draw to framebuffer
         gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
         gl.viewport(0, 0, shaderCanvas.width, shaderCanvas.height);
-        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        gl.clearColor(0.0, 0.0, 0.0, 0.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
         gl.useProgram(program);
         gl.uniform2f(uResolution, shaderCanvas.width, shaderCanvas.height);
@@ -388,7 +388,7 @@ void main() {
         // Then draw to screen (shaderCanvas)
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
         gl.viewport(0, 0, shaderCanvas.width, shaderCanvas.height);
-        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        gl.clearColor(0.0, 0.0, 0.0, 0.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
         gl.useProgram(program);
         gl.uniform2f(uResolution, shaderCanvas.width, shaderCanvas.height);
@@ -429,8 +429,5 @@ void main() {
     requestAnimationFrame(renderVoronoi);
     requestAnimationFrame(renderParticles);
 </script>
-
-
-
 </body>
 </html>
