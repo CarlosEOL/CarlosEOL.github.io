@@ -222,21 +222,22 @@
 
 <!-- Content Section (Shown via BUTTONS) -->
 <div id="Unity" class="content-area">
-    
-    <a class="content-item" href="#" onclick="event.preventDefault(); showItemDescription(this, 'unity1');">
+
+    <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity1');">
         <img src="https://via.placeholder.com/60" alt="Project 1">
         <div class="content-text">Cool Project 1</div>
 
         <!-- Descriptions -->
-        <div class="description-panel" id="description-panel">
-            <div class="description-content" id="description-content"></div>
-            <a class="description-link" id="description-link" href="#" target="_blank">CLICK ME!</a>
+        <div class="description-panel">
+            <div class="description-content"></div>
+            <a class="description-link" href="#" target="_blank">CLICK ME!</a>
         </div>
-    </a>
-    <a class="content-item" href="https://example.com/project2" target="_blank">
-        <img src="https://via.placeholder.com/60" alt="Project 2">
-        <div class="content-text">Cool Project 2</div>
-    </a>
+    </div>
+    
+    <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity1');">
+        <img src="https://via.placeholder.com/60" alt="Project 1">
+        <div class="content-text">Cool Project 1</div>
+    </div>
 </div>
 
 
