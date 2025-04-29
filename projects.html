@@ -7,13 +7,6 @@
     <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
 
     <style>
-        @media (max-width: 500px) {
-            .content-item {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-        
         @font-face {
             font-family: 'Minecraft';
             src: url('https://fonts.cdnfonts.com/css/minecraft-4') format('woff2'),
@@ -109,7 +102,7 @@
         }
 
         .content-area {
-            display: none;
+            display: flex;
             flex-direction: column;
             align-items: center;
             margin: 0 auto;
@@ -119,17 +112,17 @@
             width: 100%;
             max-width: 900px;
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transform: translateX(100%);
+            transition: transform 0.6s ease, opacity 0.6s ease;
             position: relative;
             top: 0;
-            left: 0;
-            transform: none;
             z-index: 3;
+            pointer-events: none;
         }
 
         .content-area.active {
             opacity: 1;
-            display: flex;
+            transform: translateX(0);
             pointer-events: auto;
         }
 
@@ -193,6 +186,25 @@
             text-decoration: underline;
             /*font-size: 0.9em;*/
             font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+        }
+
+        @media (max-width: 600px) {
+            .content-area {
+                padding: 20px 10px;
+            }
+
+            .content-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .project-button {
+                flex: 1 1 100%;
+            }
+
+            .description-panel {
+                padding: 0 10px;
+            }
         }
     </style>
 </head>
@@ -304,12 +316,20 @@
 
 <script>
     function showContent(sectionId) {
-        document.querySelectorAll('.content-area').forEach(section => {
-            section.classList.remove('active');
+        const sections = document.querySelectorAll('.content-area');
+
+        sections.forEach(section => {
+            if (section.id !== sectionId) {
+                section.classList.remove('active');
+            }
         });
 
-        const selected = document.getElementById(sectionId);
-        if (selected) selected.classList.add('active');
+        const selectedSection = document.getElementById(sectionId);
+        if (selectedSection && !selectedSection.classList.contains('active')) {
+            requestAnimationFrame(() => {
+                selectedSection.classList.add('active');
+            });
+        }
     }
 
     const descriptions = {
