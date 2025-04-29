@@ -396,7 +396,33 @@ void main() {
     gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
     gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, fbTexture, 0);
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    
+    // The functions to re-create the dots in GLSL
+    function hash(p) {
+        p = fractVec2(mulVec2(p, {x: 123.34, y: 456.21}));
+        p.x += p.x * p.x + 45.32;
+        p.y += p.y * p.y + 45.32;
+        return fract(p.x * p.y);
+    }
 
+    function fractVec2(v) {
+        return {x: v.x - Math.floor(v.x), y: v.y - Math.floor(v.y)};
+    }
+
+    function mulVec2(v1, v2) {
+        return {x: v1.x * v2.x, y: v1.y * v2.y};
+    }
+
+    function fract(x) {
+        return x - Math.floor(x);
+    }
+
+    function proceduralDot(n, u_time) {
+        const h = hash(n);
+        const point = 0.5 + 0.5 * Math.sin(u_time + 6.2831 * h);
+        return point;
+    }
+    
     // Particle Class
     class Particle {
         constructor(x, y) {
@@ -435,7 +461,7 @@ void main() {
     }
 
     const particles = [];
-    for (let i = 0; i < 150; i++) {
+    for (let i = 0; i < 90; i++) {
         particles.push(new Particle(Math.random() * particleCanvas.width, Math.random() * particleCanvas.height));
     }
 
@@ -464,36 +490,80 @@ void main() {
         requestAnimationFrame(renderVoronoi);
     }
 
-    function renderParticles() {
-        //ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; // very low opacity black
+    function renderParticles(time) {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
         ctx.fillRect(0, 0, particleCanvas.width, particleCanvas.height);
-        const pixel = new Uint8Array(4);
 
+        // Build Voronoi points procedurally in JS
+        const points = [];
+        const u_time = time * 0.001;
+
+        const gridSize = 9.608; // Same zoom you used in fragment shader
+        const cols = Math.ceil(shaderCanvas.width / gridSize);
+        const rows = Math.ceil(shaderCanvas.height / gridSize);
+
+        for (let j = -1; j <= rows + 1; j++) {
+            for (let i = -1; i <= cols + 1; i++) {
+                const n = {x: i, y: j};
+                const h1 = hash(n);
+                const h2 = hash({x: n.x, y: n.y + 1.0});
+
+                const point = {
+                    x: (n.x + (0.5 + 0.5 * Math.sin(u_time + 6.2831 * h1))) * (shaderCanvas.width / cols),
+                    y: (n.y + (0.5 + 0.5 * Math.sin(u_time + 6.2831 * h2))) * (shaderCanvas.height / rows)
+                };
+
+                points.push(point);
+            }
+        }
+
+        // Particle update loop
         particles.forEach(p => {
-            const x = Math.floor(p.x);
-            const y = particleCanvas.height - Math.floor(p.y); // Flip Y
+            let closestPoint = null;
+            let minDist = Infinity;
 
-            gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-            gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixel);
-            gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+            for (let point of points) {
+                const dx = point.x - p.x;
+                const dy = point.y - p.y;
+                const distSq = dx * dx + dy * dy;
 
-            const crackStrength = pixel[0] / 255.0;
-            let flowDirection = [(Math.random() - 0.5) * 2.0, (Math.random() - 0.5) * 2.0];
-            if (crackStrength < 0.5) {
-                flowDirection = [0, 0];
+                if (distSq < minDist) {
+                    minDist = distSq;
+                    closestPoint = point;
+                }
             }
 
-            p.update(flowDirection);
+            if (closestPoint) {
+                const angle = Math.atan2(closestPoint.y - p.y, closestPoint.x - p.x);
+                p.vx += Math.cos(angle) * 0.05;
+                p.vy += Math.sin(angle) * 0.05;
+            }
+
+            // Normalize velocity to keep it controlled
+            const len = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+            if (len > 0) {
+                p.vx /= len;
+                p.vy /= len;
+            }
+
+            p.x += p.vx * p.speed;
+            p.y += p.vy * p.speed;
+
+            if (p.x < 0) p.x += particleCanvas.width;
+            if (p.x > particleCanvas.width) p.x -= particleCanvas.width;
+            if (p.y < 0) p.y += particleCanvas.height;
+            if (p.y > particleCanvas.height) p.y -= particleCanvas.height;
+
             p.draw(ctx);
         });
-
-        requestAnimationFrame(renderParticles);
     }
-
+    function loopParticles(time) {
+        renderParticles(time);
+    }
+    
     // Start loops
     requestAnimationFrame(renderVoronoi);
-    requestAnimationFrame(renderParticles);
+    requestAnimationFrame(loopParticles);
 </script>
 </body>
 </html>
