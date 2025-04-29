@@ -283,33 +283,30 @@
         // unity2: { text: "...", link: "..." }
     };
 
-    function showItemDescription(key) 
-    {
+    function showItemDescription(key) {
         const panel = document.getElementById('description-panel');
         const content = document.getElementById('description-content');
         const link = document.getElementById('description-link');
 
-        if (panel.classList.contains('open') && content.textContent === descriptions[key].text) 
-        {
-            panel.classList.remove('open');
-            return;
-        }
-        
-        if (descriptions[key]) 
-        {
+        if (descriptions[key]) {
+            const isAlreadyOpen = panel.classList.contains('open') && content.textContent === descriptions[key].text;
+
+            if (isAlreadyOpen) {
+                panel.classList.remove('open');
+                return;
+            }
+            
             content.textContent = descriptions[key].text;
             link.href = descriptions[key].link;
+            
             panel.classList.add('open');
+            
             setTimeout(() => {
                 panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 250);
-        } 
-        else 
-        {
+        } else {
             panel.classList.remove('open');
         }
-        
-        
     }
     
     const shaderCanvas = document.getElementById('shader-canvas');
