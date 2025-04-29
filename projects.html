@@ -189,6 +189,27 @@
             font-size: clamp(0.7rem, 2.5vw, 0.9rem);
         }
 
+        .site-footer {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            color: #ccc;
+            text-align: center;
+            font-family: 'Comic Sans MS', monospace, sans-serif;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            padding: 10px 0;
+            position: relative;
+            bottom: 0;
+            z-index: 5;
+            border-top: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.6);
+            user-select: none;
+        }
+
+        .site-footer p {
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
         @media (max-width: 600px) {
             .content-area {
                 padding: 20px 10px;
@@ -209,6 +230,12 @@
         }
     </style>
 </head>
+
+<footer class="site-footer">
+    <p>🤍 Made by Carlos Lu, with Pure HTML, JS and CSS. 🤍</p>
+    <p> This one used GL Shader Labs :p, so if it doesn't show up on mobile, all good.</p>
+</footer>
+
 <body>
 
 <!-- Top Header Area -->
@@ -240,7 +267,7 @@
 <div class="content-wrapper">
     
     <div id="Unity" class="content-area">
-    
+        <!-- Project: Something In The Dark -->
         <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity1');">
             <img src="https://via.placeholder.com/60" alt="Project 1">
             <div class="content-text">Cool Project 1</div>
@@ -251,7 +278,8 @@
             <div class="description-content"></div>
             <a class="description-link" href="#" target="_blank">CLICK ME!</a>
         </div>
-    
+        
+        <!-- Project: Untitled Capybara Game -->
         <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity2');">
             <img src="https://via.placeholder.com/60" alt="Project 2">
             <div class="content-text">Cool Project 2</div>
@@ -320,6 +348,10 @@
     
 </div>
 
+<footer class="site-footer">
+    <p>🤍 Made by Carlos, with Pure HTML, JS and CSS. 🤍</p>
+</footer>
+
 <script>
     function showContent(sectionId) {
         const wrapper = document.querySelector('.content-wrapper');
@@ -333,8 +365,14 @@
             text: "I'VE WRITTEN THIS WITHOUT A.I WHATSOEVER.",
             link: "https://your-external-site.com"
         },
-        // You can add more entries like:
-        // unity2: { text: "...", link: "..." }
+        unity2: { 
+            text: "...", 
+            link: "..." 
+        },
+        unreal1: {
+            text: "I'VE WRITTEN THIS WITHOUT A.I WHATSOEVER. \n",
+            link: "https://your-external-site.com"
+        }
     };
 
     function showItemDescription(item, key) {
