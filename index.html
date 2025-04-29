@@ -225,8 +225,8 @@
 
     <script>
         const navItems = [
-            { text: "About Me", link: "about.html" },
-            { text: "Projects", link: "projects.html" }
+            { text: "Projects", link: "projects.html" },
+            { text: "About Me", link: "about.html" }
         ];
 
         function createNavigation() {
@@ -252,7 +252,7 @@
                     link.style.position = 'absolute';
                     link.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
                 } else {
-                    // Force stacking order on mobile using flex direction
+                    link.style.position = 'static';
                     link.style.order = index;
                 }
 
