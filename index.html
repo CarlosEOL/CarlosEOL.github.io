@@ -155,6 +155,28 @@
             box-shadow: inset 2px 2px #0006, inset -2px -4px #FFF7;
             transform: scale(1.05) translate(-45%, -45%);
         }
+
+        @media (max-width: 600px) {
+            .nav-container {
+                width: 100%;
+                height: 300px;
+            }
+
+            .nav-item {
+                padding: 10px 15px;
+                font-size: 1rem;
+                border-width: 2px;
+            }
+
+            .title-container {
+                padding: 10px 20px;
+            }
+
+            h1 {
+                font-size: 32px;
+                letter-spacing: 1px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -176,23 +198,29 @@
         function createNavigation() {
             const container = document.querySelector('.nav-container');
             const totalItems = navItems.length;
-            
+
+            let a = 250;
+            let b = 150;
+
+            if (window.innerWidth <= 600) {
+                a = 120;
+                b = 80;  
+            }
+
             navItems.forEach((item, index) => {
                 const angle = (index / totalItems) * 2 * Math.PI;
-                const a = 250;
-                const b = 150;
                 const x = a * Math.cos(angle);
                 const y = b * Math.sin(angle);
-                
+
                 const link = document.createElement('a');
                 link.href = item.link;
                 link.className = 'nav-item';
                 link.textContent = item.text;
-                
+
                 link.style.left = '50%';
                 link.style.top = '50%';
                 link.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
-                
+
                 container.appendChild(link);
             });
         }
