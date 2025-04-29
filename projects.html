@@ -7,6 +7,13 @@
     <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
 
     <style>
+        @media (max-width: 500px) {
+            .content-item {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
         @font-face {
             font-family: 'Minecraft';
             src: url('https://fonts.cdnfonts.com/css/minecraft-4') format('woff2'),
@@ -60,7 +67,7 @@
 
         .button-row {
             display: flex;
-            gap: 40px;
+            gap: clamp(20px, 5vw, 40px);
             justify-content: center;
             margin-bottom: 20px;
             flex-wrap: wrap;
@@ -73,7 +80,7 @@
             gap: 8px;
             background: rgba(0, 0, 0, 0.75);
             border: 2px solid rgba(255, 255, 255, 0.2);
-            padding: 10px 20px;
+            padding: clamp(8px, 2vw, 20px) clamp(12px, 4vw, 20px);
             border-radius: 8px;
             color: white;
             cursor: pointer;
@@ -88,14 +95,15 @@
         }
 
         .project-button img {
-            width: 24px;
-            height: 24px;
+            width: clamp(16px, 5vw, 24px);
+            height: clamp(16px, 5vw, 24px);
         }
 
         h1 {
             margin: 0;
             text-align: center;
-            font-size: 2.6em;
+            /*font-size: 2.6em;*/
+            font-size: clamp(1.5rem, 5vw, 2.6rem);
             color: white;
             z-index: 3;
         }
@@ -144,50 +152,46 @@
         }
 
         .content-item img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 8px;
+            width: clamp(40px, 6vw, 60px);
+            height: clamp(40px, 6vw, 60px);
         }
 
         .content-text {
-            font-size: 1.2em;
+            /*font-size: 1.2em;*/
+            font-size: clamp(0.8rem, 3vw, 1.2rem);
         }
 
-        .item-description {
-            max-height: 0;
+        .description-panel {
+            display: flex;
+            flex-wrap: wrap;
             overflow: hidden;
-            opacity: 0;
-            transform: translateY(-10px);
-            transition:
-                    max-height 0.4s ease,
-                    opacity 0.4s ease,
-                    transform 0.4s ease;
-            font-size: 1em;
-            padding-top: 10px;
+            background: #111;
             color: #ccc;
+            padding: 0 20px;
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-20px) scaleY(0.9);
+            transition: max-height 0.5s ease, opacity 0.5s ease, transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
 
-        .content-item.open .item-description {
+        .description-panel.open {
             max-height: 200px;
+            padding: 20px;
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scaleY(1);
         }
 
-        .item-footer {
-            margin-top: 10px;
-            text-align: left;
+        .description-content {
+            /*font-size: 1.1em;*/
+            font-size: clamp(0.8rem, 3vw, 1.1rem);
+            margin-bottom: 10px;
         }
 
-        .item-footer a {
-            color: #3290d2;
+        .description-link {
+            color: #8cf;
             text-decoration: underline;
-            font-size: 0.9em;
-            transition: color 0.2s ease;
-        }
-
-        .item-footer a:hover {
-            color: #fff;
+            /*font-size: 0.9em;*/
+            font-size: clamp(0.7rem, 2.5vw, 0.9rem);
         }
     </style>
 </head>
@@ -218,20 +222,20 @@
 
 <!-- Content Section (Shown via BUTTONS) -->
 <div id="Unity" class="content-area">
-    <a class="content-item" onclick="toggleDescription(this)" target="_blank">
+    <a class="content-item" onclick="showItemDescription('unity1')" target="_blank">
         <img src="https://via.placeholder.com/60" alt="Project 1">
         <div class="content-text">Cool Project 1</div>
-        <div class="item-description">
-            I'VE WRITTEN THIS WITHOUT A.I WHATSOEVER.
-            <div class="item-footer">
-                <a href="https://your-external-site.com" target="_blank">CLICK ME!</a>
-            </div>
-        </div>
     </a>
     <a class="content-item" href="https://example.com/project2" target="_blank">
         <img src="https://via.placeholder.com/60" alt="Project 2">
         <div class="content-text">Cool Project 2</div>
     </a>
+</div>
+
+<!-- Unity Descriptions -->
+<div class="description-panel" id="description-panel">
+    <div class="description-content" id="description-content"></div>
+    <a class="description-link" id="description-link" href="#" target="_blank">Learn More</a>
 </div>
 
 <div id="Unreal" class="content-area">
@@ -270,10 +274,44 @@
         }
     }
 
-    function toggleDescription(item) {
-        item.classList.toggle('open');
-    }
+    const descriptions = {
+        unity1: {
+            text: "I'VE WRITTEN THIS WITHOUT A.I WHATSOEVER.",
+            link: "https://your-external-site.com"
+        },
+        // You can add more entries like:
+        // unity2: { text: "...", link: "..." }
+    };
 
+    function showItemDescription(key) 
+    {
+        const panel = document.getElementById('description-panel');
+        const content = document.getElementById('description-content');
+        const link = document.getElementById('description-link');
+
+        if (panel.classList.contains('open') && content.textContent === descriptions[key].text) 
+        {
+            panel.classList.remove('open');
+            return;
+        }
+        
+        if (descriptions[key]) 
+        {
+            content.textContent = descriptions[key].text;
+            link.href = descriptions[key].link;
+            panel.classList.add('open');
+            setTimeout(() => {
+                panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 250);
+        } 
+        else 
+        {
+            panel.classList.remove('open');
+        }
+        
+        
+    }
+    
     const shaderCanvas = document.getElementById('shader-canvas');
     const gl = shaderCanvas.getContext('webgl');
 
