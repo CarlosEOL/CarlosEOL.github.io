@@ -231,7 +231,7 @@
 
         function createNavigation() {
             const container = document.querySelector('.nav-container');
-            container.innerHTML = ''; // Clear if reloaded
+            container.innerHTML = '';
 
             const isMobile = window.innerWidth <= 600;
 
@@ -251,6 +251,9 @@
                     link.style.top = '50%';
                     link.style.position = 'absolute';
                     link.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+                } else {
+                    // Force stacking order on mobile using flex direction
+                    link.style.order = index;
                 }
 
                 container.appendChild(link);
