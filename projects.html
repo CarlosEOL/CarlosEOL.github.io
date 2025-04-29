@@ -153,7 +153,26 @@
         .content-text {
             font-size: 1.2em;
         }
-        
+
+        .item-description {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition:
+                    max-height 0.4s ease,
+                    opacity 0.4s ease,
+                    transform 0.4s ease;
+            font-size: 1em;
+            padding-top: 10px;
+            color: #ccc;
+        }
+
+        .content-item.open .item-description {
+            max-height: 200px;
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
@@ -181,11 +200,14 @@
     <h1>Solo & Group Projects</h1>
 </div>
 
-<!-- Content Section (hidden at start) -->
+<!-- Content Section (Shown via BUTTONS) -->
 <div id="Unity" class="content-area">
-    <a class="content-item" href="https://example.com/project1" target="_blank">
+    <a class="content-item" onclick="toggleDescription(this)" target="_blank">
         <img src="https://via.placeholder.com/60" alt="Project 1">
         <div class="content-text">Cool Project 1</div>
+        <div class="item-description">
+            I'VE WRITTEN THIS WITHOUT A.I WHATSOEVER.
+        </div>
     </a>
     <a class="content-item" href="https://example.com/project2" target="_blank">
         <img src="https://via.placeholder.com/60" alt="Project 2">
@@ -227,6 +249,10 @@
             selectedSection.classList.add('active');
             window.scrollTo({ top: selectedSection.offsetTop, behavior: 'smooth' });
         }
+    }
+
+    function toggleDescription(item) {
+        item.classList.toggle('open');
     }
 
     const shaderCanvas = document.getElementById('shader-canvas');
