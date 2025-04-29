@@ -116,9 +116,9 @@
             content: attr(data-text);
             position: absolute;
             left: 0;
-            top: 2px;
+            top: 4px;
             width: 100%;
-            color: #FCFC54;
+            color: #a565af;
             text-shadow: 2px 2px #3F3F3F;
             opacity: 0.7;
             z-index: -1;
@@ -173,6 +173,33 @@
         .site-footer p {
             margin: 0;
             letter-spacing: 1px;
+        }
+
+        .social-footer {
+            background: rgba(124, 124, 124, 0.4);
+            padding: 10px 0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+            margin-bottom: 0;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .social-links img {
+            width: 32px;
+            height: 32px;
+            filter: brightness(1.1);
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+
+        .social-links img:hover {
+            transform: scale(1.2);
+            filter: brightness(1.5);
         }
 
         @media (max-width: 600px) {
@@ -237,6 +264,20 @@
 
 <footer class="site-footer">
     <p>🤍 Made by Carlos Lu, with Pure HTML, JS and CSS. 🤍</p>
+</footer>
+
+<footer class="site-footer social-footer">
+    <div class="social-links">
+        <a href="https://github.com/CarlosEOL" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png" alt="GitHub">
+        </a>
+        <a href="https://www.linkedin.com/in/carlos-eurus-lu-8a4ab1252/" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn">
+        </a>
+        <a href="https://www.youtube.com/@smoonthy" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
+        </a>
+    </div>
 </footer>
 
 <body>

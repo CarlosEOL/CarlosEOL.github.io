@@ -214,6 +214,33 @@
             letter-spacing: 1px;
         }
 
+        .social-footer {
+            background: rgb(51, 51, 51);
+            padding: 10px 0;
+            border-bottom: 2px solid rgba(188, 188, 188, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+            margin-bottom: 0;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .social-links img {
+            width: 32px;
+            height: 32px;
+            filter: brightness(1.1);
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+
+        .social-links img:hover {
+            transform: scale(1.2);
+            filter: brightness(1.5);
+        }
+
         @media (max-width: 600px) {
             .content-area {
                 padding: 20px 10px;
@@ -230,6 +257,16 @@
 
             .description-panel {
                 padding: 0 10px;
+            }
+
+            .social-links {
+                gap: 20px;
+                padding: 10px 0;
+            }
+
+            .social-links img {
+                width: 24px;
+                height: 24px;
             }
         }
     </style>
@@ -352,6 +389,20 @@
     
 </div>
 
+<footer class="site-footer social-footer">
+    <div class="social-links">
+        <a href="https://github.com/CarlosEOL" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png" alt="GitHub">
+        </a>
+        <a href="https://www.linkedin.com/in/carlos-eurus-lu-8a4ab1252/" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn">
+        </a>
+        <a href="https://www.youtube.com/@smoonthy" target="_blank">
+            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
+        </a>
+    </div>
+</footer>
+
 <footer class="site-footer">
     <p>🤍 Made by Carlos, with Pure HTML, JS and CSS. 🤍</p>
 </footer>
@@ -428,7 +479,8 @@
     // Shaders
     const vertexShaderSource = `
 attribute vec2 a_position;
-void main() {
+void main() 
+{
   gl_Position = vec4(a_position, 0.0, 1.0);
 }`;
 
@@ -595,8 +647,7 @@ void main() {
 
     function proceduralDot(n, u_time) {
         const h = hash(n);
-        const point = 0.5 + 0.5 * Math.sin(u_time + 6.2831 * h);
-        return point;
+        return 0.5 + 0.5 * Math.sin(u_time + 6.2831 * h);
     }
     
     // Particle Class
@@ -637,7 +688,7 @@ void main() {
     }
 
     const particles = [];
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 13; i++) {
         particles.push(new Particle(Math.random() * particleCanvas.width, Math.random() * particleCanvas.height));
     }
 
