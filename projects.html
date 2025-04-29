@@ -279,7 +279,7 @@ float lineDistance(vec2 p, vec2 a, vec2 b) {
 void main() {
     vec2 uv = gl_FragCoord.xy / u_resolution.xy;
     uv.x *= u_resolution.x / u_resolution.y;
-    uv *= 33.608;
+    uv *= 9.608;
 
     vec2 n = floor(uv);
     vec2 f = fract(uv);
