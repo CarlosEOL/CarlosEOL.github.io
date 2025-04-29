@@ -222,20 +222,21 @@
 
 <!-- Content Section (Shown via BUTTONS) -->
 <div id="Unity" class="content-area">
+    
     <a class="content-item" href="#" onclick="event.preventDefault(); showItemDescription('unity1');">
         <img src="https://via.placeholder.com/60" alt="Project 1">
         <div class="content-text">Cool Project 1</div>
+
+        <!-- Descriptions -->
+        <div class="description-panel" id="description-panel">
+            <div class="description-content" id="description-content"></div>
+            <a class="description-link" id="description-link" href="#" target="_blank">CLICK ME!</a>
+        </div>
     </a>
     <a class="content-item" href="https://example.com/project2" target="_blank">
         <img src="https://via.placeholder.com/60" alt="Project 2">
         <div class="content-text">Cool Project 2</div>
     </a>
-
-    <!-- Unity Descriptions -->
-    <div class="description-panel" id="description-panel">
-        <div class="description-content" id="description-content"></div>
-        <a class="description-link" id="description-link" href="#" target="_blank">CLICK ME!</a>
-    </div>
 </div>
 
 
@@ -285,28 +286,28 @@
         // unity2: { text: "...", link: "..." }
     };
 
-    function showItemDescription(key) {
-        const panel = document.getElementById('description-panel');
-        const content = document.getElementById('description-content');
-        const link = document.getElementById('description-link');
+    function showItemDescription(item, key) {
+        const description = item.querySelector('.description-panel');
+        const content = description.querySelector('.description-content');
+        const link = description.querySelector('.description-link');
+        
+        const isOpen = description.classList.contains('open');
 
-        if (descriptions[key]) {
-            const isAlreadyOpen = panel.classList.contains('open') && content.textContent === descriptions[key].text;
-
-            if (isAlreadyOpen) {
-                panel.classList.remove('open');
-                return;
-            }
-            
+        document.querySelectorAll('.description-panel').forEach(panel => {
+            panel.classList.remove('open');
+        });
+        
+        if (!isOpen && descriptions[key]) {
             content.textContent = descriptions[key].text;
             link.href = descriptions[key].link;
-            
-            panel.classList.add('open');
-            
+            description.classList.add('open');
+
             setTimeout(() => {
-                panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                description.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 250);
-        } else {
+        } 
+        else 
+        {
             panel.classList.remove('open');
         }
     }
