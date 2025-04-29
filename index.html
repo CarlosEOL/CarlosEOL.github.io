@@ -159,22 +159,44 @@
         @media (max-width: 600px) {
             .nav-container {
                 width: 100%;
-                height: 300px;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+                transform: none;
+                top: auto;
+                left: auto;
+                position: relative;
+                margin-top: 30px;
             }
 
             .nav-item {
-                padding: 10px 15px;
+                position: static;
+                transform: none;
+                width: 80%;
+                max-width: 300px;
+                padding: 12px 18px;
                 font-size: 1rem;
                 border-width: 2px;
             }
 
             .title-container {
                 padding: 10px 20px;
+                margin-bottom: 20px;
+                width: 90%;
+                max-width: 350px;
             }
 
             h1 {
-                font-size: 32px;
+                font-size: 28px;
                 letter-spacing: 1px;
+            }
+
+            .center-container {
+                flex-direction: column;
+                justify-content: flex-start;
+                padding-top: 60px;
             }
         }
     </style>
@@ -197,29 +219,27 @@
 
         function createNavigation() {
             const container = document.querySelector('.nav-container');
-            const totalItems = navItems.length;
+            container.innerHTML = ''; // Clear if reloaded
 
-            let a = 250;
-            let b = 150;
-
-            if (window.innerWidth <= 600) {
-                a = 120;
-                b = 80;  
-            }
+            const isMobile = window.innerWidth <= 600;
 
             navItems.forEach((item, index) => {
-                const angle = (index / totalItems) * 2 * Math.PI;
-                const x = a * Math.cos(angle);
-                const y = b * Math.sin(angle);
-
                 const link = document.createElement('a');
                 link.href = item.link;
                 link.className = 'nav-item';
                 link.textContent = item.text;
 
-                link.style.left = '50%';
-                link.style.top = '50%';
-                link.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+                if (!isMobile) {
+                    const angle = (index / navItems.length) * 2 * Math.PI;
+                    const a = 250;
+                    const b = 150;
+                    const x = a * Math.cos(angle);
+                    const y = b * Math.sin(angle);
+                    link.style.left = '50%';
+                    link.style.top = '50%';
+                    link.style.position = 'absolute';
+                    link.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+                }
 
                 container.appendChild(link);
             });
@@ -336,8 +356,8 @@
         // Handle window resize
         window.addEventListener('resize', () => {
             resizeCanvas();
-            // Reset particles on resize
-            particles.forEach(particle => particle.reset());
+            particles.forEach(p => p.reset());
+            createNavigation();
         });
 
     </script>
