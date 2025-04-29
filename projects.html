@@ -63,6 +63,7 @@
             gap: 40px;
             justify-content: center;
             margin-bottom: 20px;
+            flex-wrap: wrap;
             z-index: 3;
         }
 
@@ -70,7 +71,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.75);
             border: 2px solid rgba(255, 255, 255, 0.2);
             padding: 10px 20px;
             border-radius: 8px;
@@ -78,6 +79,7 @@
             cursor: pointer;
             transition: background 0.3s;
             font-size: 1em;
+            flex: 1 1 120px;
             z-index: 3;
         }
 
@@ -92,13 +94,9 @@
 
         h1 {
             margin: 0;
-            padding: 10px 30px;
-            background: rgba(0,0,0,0.6);
-            border: 3px solid rgba(255,255,255,0.2);
-            border-radius: 5px;
             text-align: center;
-            font-size: 2.5em;
-            color: honeydew;
+            font-size: 2.6em;
+            color: white;
             z-index: 3;
         }
 
@@ -166,11 +164,11 @@
     <canvas id="particle-canvas"></canvas>
     <div class="button-row">
         <div class="project-button" onclick="showContent('Unity')">
-            UnityEngine
+            Unity Engine
             <img src="https://cdn.freebiesupply.com/logos/large/2x/unity-69-logo-png-transparent.png" alt="UnityEngine">
         </div>
         <div class="project-button" onclick="showContent('Unreal')">
-            UnrealEngine
+            Unreal Engine
             <img src="https://assets.streamlinehq.com/image/private/w_300,h_300,ar_1/f_auto/v1/icons/video-games/unreal-engine-qdh1c46xy8c1nedruo2v5.png/unreal-engine-xwo7bd8vu6fzpnkcifgtu.png?_a=DATAdtAAZAA0" alt="UnrealEngine">
         </div>
         <div class="project-button" onclick="showContent('Others')">
@@ -180,7 +178,7 @@
     </div>
 
     <!-- Title -->
-    <h1>Projects</h1>
+    <h1>Solo & Group Projects</h1>
 </div>
 
 <!-- Content Section (hidden at start) -->
@@ -246,6 +244,10 @@
     }
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
+    
+    // Helper functions
+    
+    
 
     // Shaders
     const vertexShaderSource = `
@@ -266,14 +268,47 @@ float hash(vec2 p) {
     return fract(p.x * p.y);
 }
 
+// Distance from point p to segment ab
+float lineDistance(vec2 p, vec2 a, vec2 b) {
+    vec2 pa = p - a;
+    vec2 ba = b - a;
+    float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
+    return length(pa - ba * h);
+}
+
 void main() {
     vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-    uv *= 50.608; // zoom into pattern
+    uv *= 50.608;
 
     vec2 n = floor(uv);
     vec2 f = fract(uv);
 
     float minDist = 1.0;
+    float lineGlow = 0.0;
+    vec2 closestPoint = vec2(0.0);
+
+    // Find closest point first
+    for (int j = -1; j <= 1; j++) {
+        for (int i = -1; i <= 1; i++) {
+            vec2 neighbor = vec2(float(i), float(j));
+            
+            vec2 point = vec2(
+                hash(n + neighbor),
+                hash(n + neighbor + 1.0)
+            );
+            
+            point = 0.5 + 0.5 * sin(u_time + 6.2831 * point);
+
+            vec2 diff = neighbor + point - f;
+            float dist = length(diff);
+            if (dist < minDist) {
+                minDist = dist;
+                closestPoint = neighbor + point;
+            }
+        }
+    }
+
+    // Now connect closest point to nearby points
     for (int j = -1; j <= 1; j++) {
         for (int i = -1; i <= 1; i++) {
             vec2 neighbor = vec2(float(i), float(j));
@@ -283,15 +318,23 @@ void main() {
             );
             point = 0.5 + 0.5 * sin(u_time + 6.2831 * point);
 
-            vec2 diff = neighbor + point - f;
-            float dist = length(diff);
-            minDist = min(minDist, dist);
+            vec2 current = neighbor + point;
+            float distBetweenPoints = distance(closestPoint, current);
+
+            // if they are close enough, draw a web line
+            if (distBetweenPoints < 0.7) { // adjust 0.7 if needed
+                float d = lineDistance(f, closestPoint, current);
+                lineGlow += smoothstep(0.02, 0.0, d);
+            }
         }
     }
 
-    float color = 1.0 - smoothstep(0.0, 0.076, minDist);
-    gl_FragColor = vec4(vec3(color), 1.0);
+    float dotColor = 1.0 - smoothstep(0.0, 0.076, minDist);
+    float finalColor = clamp(dotColor + lineGlow, 0.0, 1.0);
+    
+    gl_FragColor = vec4(vec3(finalColor), 1.0);
 }
+
 `;
     
     // Shader Setup
