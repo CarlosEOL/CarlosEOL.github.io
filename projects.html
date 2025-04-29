@@ -109,35 +109,39 @@
         }
 
         .content-area {
-            padding: 40px;
+            display: none;
             flex-direction: column;
-            gap: 20px;
             align-items: center;
+            margin: 0 auto;
+            padding: 40px;
+            gap: 20px;
             background: #222;
             width: 100%;
             opacity: 0;
             transition: transform 0.5s ease, opacity 0.5s ease;
-            position: absolute;
+            position: relative;
             top: 180px;
+            transform: none;
             left: 0;
-            transform: translateX(100%);
             z-index: 3;
+            max-width: 900px;
         }
 
         .content-area.active {
             opacity: 1;
+            display: flex;
             position: absolute;
             top: 180px;
             left: 0;
-            transform: translateX(0);
             pointer-events: auto;
         }
 
         .content-item {
             background: #333;
+            box-sizing: border-box;
             padding: 20px;
             border-radius: 10px;
-            width: 80%;
+            width: 100%;
             display: flex;
             align-items: center;
             gap: 20px;
@@ -303,16 +307,12 @@
 
 <script>
     function showContent(sectionId) {
-        const sections = document.querySelectorAll('.content-area');
-        sections.forEach(section => {
+        document.querySelectorAll('.content-area').forEach(section => {
             section.classList.remove('active');
         });
 
-        const selectedSection = document.getElementById(sectionId);
-        if (selectedSection) {
-            selectedSection.classList.add('active');
-            window.scrollTo({ top: selectedSection.offsetTop, behavior: 'smooth' });
-        }
+        const selected = document.getElementById(sectionId);
+        if (selected) selected.classList.add('active');
     }
 
     const descriptions = {
