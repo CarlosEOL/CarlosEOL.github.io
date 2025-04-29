@@ -461,7 +461,7 @@ void main() {
     }
 
     const particles = [];
-    for (let i = 0; i < 90; i++) {
+    for (let i = 0; i < 20; i++) {
         particles.push(new Particle(Math.random() * particleCanvas.width, Math.random() * particleCanvas.height));
     }
 
@@ -496,7 +496,7 @@ void main() {
 
         // Build Voronoi points procedurally in JS
         const points = [];
-        const u_time = time * 0.001;
+        const u_time = time * 0.0001;
 
         const gridSize = 9.608; // Same zoom you used in fragment shader
         const cols = Math.ceil(shaderCanvas.width / gridSize);
