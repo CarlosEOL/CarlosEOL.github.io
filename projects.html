@@ -26,6 +26,14 @@
             background: linear-gradient(135deg, #1a1a1a, #333333);
             image-rendering: pixelated;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .header-area {
@@ -274,153 +282,148 @@
     </style>
 </head>
 
-<footer class="site-footer">
-    <p>🤍 Made by Carlos Lu, with Pure HTML, JS and CSS. 🤍</p>
-    <p> This one used GL Shader Labs :p, so if it doesn't show up on mobile, all good.</p>
-</footer>
-
 <body>
-
-<!-- Top Header Area -->
-<div class="header-area">
-    
-    <canvas id="shader-canvas"></canvas>
-    <canvas id="particle-canvas"></canvas>
-    
-    <div class="button-row">
-        <div class="project-button" onclick="showContent('Unity')">
-            Unity Engine
-            <img src="https://cdn.freebiesupply.com/logos/large/2x/unity-69-logo-png-transparent.png" alt="UnityEngine">
-        </div>
-        <div class="project-button" onclick="showContent('Unreal')">
-            Unreal Engine
-            <img src="https://assets.streamlinehq.com/image/private/w_300,h_300,ar_1/f_auto/v1/icons/video-games/unreal-engine-qdh1c46xy8c1nedruo2v5.png/unreal-engine-xwo7bd8vu6fzpnkcifgtu.png?_a=DATAdtAAZAA0" alt="UnrealEngine">
-        </div>
-        <div class="project-button" onclick="showContent('Others')">
-            Others (C++, etc.)
-            <img src="https://www.freeiconspng.com/uploads/c--logo-icon-0.png" alt="Others">
-        </div>
-    </div>
-
-    <!-- Title -->
-    <h1>Solo & Group Projects</h1>
-</div>
-
-<!-- Content Section (Shown via BUTTONS) -->
-<div class="content-wrapper">
-    
-    <div id="Unity" class="content-area">
-        
-        <!-- Project: BrawlBalls -->
-        <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity1');">
-            <img src="https://via.placeholder.com/60" alt="Project 1">
-            <div class="content-text">Brawl Balls</div>
+    <footer class="site-footer">
+        <p> This one used GL Shader Labs :p, so if it doesn't show up on mobile, all good.</p>
+    </footer>
+    <!-- Top Header Area -->
+    <main class="main-content">
+        <div class="header-area">
+            <canvas id="shader-canvas"></canvas>
+            <canvas id="particle-canvas"></canvas>
+            <div class="button-row">
+                <div class="project-button" onclick="showContent('Unity')">
+                    Unity Engine
+                    <img src="https://cdn.freebiesupply.com/logos/large/2x/unity-69-logo-png-transparent.png" alt="UnityEngine">
+                </div>
+                <div class="project-button" onclick="showContent('Unreal')">
+                    Unreal Engine
+                    <img src="https://assets.streamlinehq.com/image/private/w_300,h_300,ar_1/f_auto/v1/icons/video-games/unreal-engine-qdh1c46xy8c1nedruo2v5.png/unreal-engine-xwo7bd8vu6fzpnkcifgtu.png?_a=DATAdtAAZAA0" alt="UnrealEngine">
+                </div>
+                <div class="project-button" onclick="showContent('Others')">
+                    Others (C++, etc.)
+                    <img src="https://www.freeiconspng.com/uploads/c--logo-icon-0.png" alt="Others">
+                </div>
+            </div>
+            <!-- Title -->
+            <h1>Solo & Group Projects</h1>
         </div>
     
-        <!-- Descriptions -->
-        <div class="description-panel">
-            <div class="description-content"></div>
-            <a class="description-link" href="#" target="_blank">CLICK ME!</a>
-        </div>
-        
-        <!-- Project: Untitled Capybara Game -->
-        <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity2');">
-            <img src="https://via.placeholder.com/60" alt="Project 2">
-            <div class="content-text">Untitled Capybara Game</div>
+        <!-- Content Section (Shown via BUTTONS) -->
+        <div class="content-wrapper">
+    
+            <div id="Unity" class="content-area">
+    
+                <!-- Project: BrawlBalls -->
+                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity1');">
+                    <img src="https://via.placeholder.com/60" alt="Project 1">
+                    <div class="content-text">Brawl Balls</div>
+                </div>
+    
+                <!-- Descriptions -->
+                <div class="description-panel">
+                    <div class="description-content"></div>
+                    <a class="description-link" href="#" target="_blank">CLICK ME!</a>
+                </div>
+    
+                <!-- Project: Untitled Capybara Game -->
+                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity2');">
+                    <img src="https://via.placeholder.com/60" alt="Project 2">
+                    <div class="content-text">Untitled Capybara Game</div>
+                </div>
+    
+                <!-- Descriptions -->
+                <div class="description-panel">
+                    <div class="description-content"></div>
+                    <a class="description-link" href="#" target="_blank">CLICK ME!</a>
+                </div>
+    
+                <!-- Project: Something's in the Dark -->
+                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity3');">
+                    <img src="https://via.placeholder.com/60" alt="Project 2">
+                    <div class="content-text">Something's in the Dark</div>
+                </div>
+    
+                <!-- Descriptions -->
+                <div class="description-panel">
+                    <div class="description-content"></div>
+                    <a class="description-link" href="#" target="_blank">CLICK ME!</a>
+                </div>
+    
+            </div>
+    
+    
+            <div id="Unreal" class="content-area">
+    
+                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unreal1');">
+                    <img src="https://via.placeholder.com/60" alt="Project 1">
+                    <div class="content-text">GLUMPHUS</div>
+                </div>
+    
+                <!-- Descriptions -->
+                <div class="description-panel">
+                    <div class="description-content"></div>
+                    <a class="description-link" href="#" target="_blank">CLICK ME!</a>
+                </div>
+    
+                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity2');">
+                    <img src="https://via.placeholder.com/60" alt="Project 2">
+                    <div class="content-text">Cool Project 2</div>
+                </div>
+    
+                <!-- Descriptions -->
+                <div class="description-panel">
+                    <div class="description-content"></div>
+                    <a class="description-link" href="#" target="_blank">CLICK ME!</a>
+                </div>
+    
+            </div>
+    
+            <div id="Others" class="content-area">
+    
+                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity1');">
+                    <img src="https://via.placeholder.com/60" alt="Project 1">
+                    <div class="content-text">Cool Project 1</div>
+                </div>
+    
+                <!-- Descriptions -->
+                <div class="description-panel">
+                    <div class="description-content"></div>
+                    <a class="description-link" href="#" target="_blank">CLICK ME!</a>
+                </div>
+    
+                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity2');">
+                    <img src="https://via.placeholder.com/60" alt="Project 2">
+                    <div class="content-text">Cool Project 2</div>
+                </div>
+    
+                <!-- Descriptions -->
+                <div class="description-panel">
+                    <div class="description-content"></div>
+                    <a class="description-link" href="#" target="_blank">CLICK ME!</a>
+                </div>
+            </div>
         </div>
     
-        <!-- Descriptions -->
-        <div class="description-panel">
-            <div class="description-content"></div>
-            <a class="description-link" href="#" target="_blank">CLICK ME!</a>
-        </div>
-
-        <!-- Project: Something's in the Dark -->
-        <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity3');">
-            <img src="https://via.placeholder.com/60" alt="Project 2">
-            <div class="content-text">Something's in the Dark</div>
-        </div>
-
-        <!-- Descriptions -->
-        <div class="description-panel">
-            <div class="description-content"></div>
-            <a class="description-link" href="#" target="_blank">CLICK ME!</a>
-        </div>
-        
-    </div>
+        <footer class="site-footer social-footer">
+            <div class="social-links">
+                <a href="https://github.com/CarlosEOL" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png" alt="GitHub">
+                </a>
+                <a href="https://www.linkedin.com/in/carlos-eurus-lu-8a4ab1252/" target="_blank">
+                    <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn">
+                </a>
+                <a href="https://www.youtube.com/@smoonthy" target="_blank">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
+                </a>
+            </div>
+        </footer>
     
-    
-    <div id="Unreal" class="content-area">
-        
-        <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unreal1');">
-            <img src="https://via.placeholder.com/60" alt="Project 1">
-            <div class="content-text">GLUMPHUS</div>
-        </div>
-    
-        <!-- Descriptions -->
-        <div class="description-panel">
-            <div class="description-content"></div>
-            <a class="description-link" href="#" target="_blank">CLICK ME!</a>
-        </div>
-    
-        <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity2');">
-            <img src="https://via.placeholder.com/60" alt="Project 2">
-            <div class="content-text">Cool Project 2</div>
-        </div>
-    
-        <!-- Descriptions -->
-        <div class="description-panel">
-            <div class="description-content"></div>
-            <a class="description-link" href="#" target="_blank">CLICK ME!</a>
-        </div>
-        
-    </div>
-
-    <div id="Others" class="content-area">
-        
-        <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity1');">
-            <img src="https://via.placeholder.com/60" alt="Project 1">
-            <div class="content-text">Cool Project 1</div>
-        </div>
-    
-        <!-- Descriptions -->
-        <div class="description-panel">
-            <div class="description-content"></div>
-            <a class="description-link" href="#" target="_blank">CLICK ME!</a>
-        </div>
-    
-        <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity2');">
-            <img src="https://via.placeholder.com/60" alt="Project 2">
-            <div class="content-text">Cool Project 2</div>
-        </div>
-    
-        <!-- Descriptions -->
-        <div class="description-panel">
-            <div class="description-content"></div>
-            <a class="description-link" href="#" target="_blank">CLICK ME!</a>
-        </div>
-        
-    </div>
-    
-</div>
-
-<footer class="site-footer social-footer">
-    <div class="social-links">
-        <a href="https://github.com/CarlosEOL" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png" alt="GitHub">
-        </a>
-        <a href="https://www.linkedin.com/in/carlos-eurus-lu-8a4ab1252/" target="_blank">
-            <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn">
-        </a>
-        <a href="https://www.youtube.com/@smoonthy" target="_blank">
-            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
-        </a>
-    </div>
-</footer>
-
-<footer class="site-footer">
-    <p>🤍 Made by Carlos, with Pure HTML, JS and CSS. 🤍</p>
-</footer>
+        <footer class="site-footer">
+            <p>🤍 Made by Carlos, with Pure HTML, JS and CSS. 🤍</p>
+        </footer>
+    </main>
+</body>
 
 <script>
     function showContent(sectionId) {
