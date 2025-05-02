@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Carlos's Projects</title>
+    <link rel="icon" type="image/png" href="SmoonthyLogoTransparent.png">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
 
@@ -308,10 +310,11 @@
 <div class="content-wrapper">
     
     <div id="Unity" class="content-area">
-        <!-- Project: Something In The Dark -->
+        
+        <!-- Project: BrawlBalls -->
         <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity1');">
             <img src="https://via.placeholder.com/60" alt="Project 1">
-            <div class="content-text">Cool Project 1</div>
+            <div class="content-text">Brawl Balls</div>
         </div>
     
         <!-- Descriptions -->
@@ -323,9 +326,21 @@
         <!-- Project: Untitled Capybara Game -->
         <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity2');">
             <img src="https://via.placeholder.com/60" alt="Project 2">
-            <div class="content-text">Cool Project 2</div>
+            <div class="content-text">Untitled Capybara Game</div>
         </div>
     
+        <!-- Descriptions -->
+        <div class="description-panel">
+            <div class="description-content"></div>
+            <a class="description-link" href="#" target="_blank">CLICK ME!</a>
+        </div>
+
+        <!-- Project: Something's in the Dark -->
+        <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity3');">
+            <img src="https://via.placeholder.com/60" alt="Project 2">
+            <div class="content-text">Something's in the Dark</div>
+        </div>
+
         <!-- Descriptions -->
         <div class="description-panel">
             <div class="description-content"></div>
@@ -337,9 +352,9 @@
     
     <div id="Unreal" class="content-area">
         
-        <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity1');">
+        <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unreal1');">
             <img src="https://via.placeholder.com/60" alt="Project 1">
-            <div class="content-text">Cool Project 1</div>
+            <div class="content-text">GLUMPHUS</div>
         </div>
     
         <!-- Descriptions -->
@@ -417,16 +432,29 @@
 
     const descriptions = {
         unity1: {
-            text: "I'VE WRITTEN THIS WITHOUT A.I WHATSOEVER.",
-            link: "https://your-external-site.com"
+            text: "Created in 2023, first started as a solo project by Gabe Kotton, then, our group (Drenched) made it into an official project which would be released on multiple-platforms. \n\n"
+                + "My duty on this particularly lays on audio + front-end programming, each of the sounds are managed using FMOD and in-game Events. \n"
+                + "Adaptive BGM, procedural audio modulation (pitch shift and phasing), surround sound (7.1) attenuation, ambiences are all components that made the game a little more alive .\n\n",
+            link: "https://flamingoezpz.itch.io/brawl-balls"
         },
         unity2: { 
-            text: "...", 
-            link: "..." 
+            text: "Created in 2022, Untitled Capybara was the work of 5, where I was the lead programmer, and the only programmer. \n"
+                + "This project is done in 5 days so not much of it is completely finished, but the final product is ''WORKING AS INTENDED''. \n"
+                + "In this project, I used OOP to and Scriptable Objects to manage each individual enemies, and managing A.I behaviors using enum (NOT BEHAVIOR TREE, I WAS INSANE). \n"
+                + "Each animation was managed using Unity’s 2D sprite sheets. While there are minor resolution issues, they do not significantly impact the overall gameplay experience. \n", 
+            link: "https://smoonthy.itch.io/untitled-capybara-game" 
+        },
+        unity3: { 
+            text: "Created in 2022, a solo project. This project introduced me to unity's built-in particle system and animator.",
+            link: "..."
         },
         unreal1: {
-            text: "I'VE WRITTEN THIS WITHOUT A.I WHATSOEVER. \n",
+            text: "This game introduced me to visual scripting, Wwise and C++. Most of it is a flex to \n",
             link: "https://your-external-site.com"
+        },
+        unreal2: { 
+            text: "...", 
+            link: "..." 
         }
     };
 
