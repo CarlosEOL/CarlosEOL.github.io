@@ -191,6 +191,11 @@
             transform: translateY(0) scaleY(1);
         }
 
+        .description-panel:not(.open) .responsive-iframe {
+            pointer-events: none;
+            cursor: default;
+        }
+
         .description-content {
             /*font-size: 1.1em;*/
             font-size: clamp(0.8rem, 3vw, 1.1rem);
@@ -264,19 +269,18 @@
         }
 
         .responsive-iframe {
-            position: relative;
             width: 100%;
-            padding-top: 56.25%;
+            aspect-ratio: 16 / 9;
+            position: relative;
             overflow: hidden;
         }
 
         .responsive-iframe iframe {
-            position: absolute;
-            top: 0; left: 0;
             width: 100%;
             height: 100%;
             border: 0;
             pointer-events: none;
+            display: block;
         }
 
         .iframe-overlay {
@@ -447,9 +451,9 @@
                                     class="desktop-embed"
                                     src="https://itch.io/embed-upload/13671698?color=691e1e"
                                     frameborder="0"
-                                    sandbox="allow-scripts allow-same-origin"
-                                    allowfullscreen
-                                    scrolling="no">
+                                    scrolling="no"
+                                    allow="fullscreen; pointer-lock"
+                                    sandbox="allow-scripts allow-same-origin allow-pointer-lock">
                             </iframe>
 
                             <iframe
@@ -628,18 +632,19 @@
             if (wrapper) {
                 const desktop = wrapper.querySelector('.desktop-embed');
                 const mobile = wrapper.querySelector('.mobile-embed');
-                const iframe = wrapper.querySelector('iframe');
-                
-                if (iframe) iframe.style.pointerEvents = "none";
 
                 // Unload iframe by resetting src
                 if (desktop) {
                     desktop.dataset.src = desktop.src;
                     desktop.src = '';
+                    if (desktop) desktop.remove();
+                    if (mobile) mobile.remove();
                 }
                 if (mobile) {
                     mobile.dataset.src = mobile.src;
                     mobile.src = '';
+                    if (desktop) desktop.remove();
+                    if (mobile) mobile.remove();
                 }
 
                 // If the overlay doesn't exist, re-add it
@@ -672,10 +677,30 @@
             // Re-apply iframe src when opening
             const wrapper = description.querySelector('.iframe-wrapper');
             if (wrapper) {
-                const desktop = wrapper.querySelector('.desktop-embed');
-                const mobile = wrapper.querySelector('.mobile-embed');
-                if (desktop && desktop.dataset.src) desktop.src = desktop.dataset.src;
-                if (mobile && mobile.dataset.src) mobile.src = mobile.dataset.src;
+                const iframeContainer = wrapper.querySelector('.responsive-iframe');
+                if (iframeContainer) {
+                    // Recreate desktop iframe
+                    const newDesktop = document.createElement('iframe');
+                    newDesktop.className = 'desktop-embed';
+                    newDesktop.src = "https://itch.io/embed-upload/13671698?color=691e1e";
+                    newDesktop.frameBorder = "0";
+                    newDesktop.allowFullscreen = true;
+                    newDesktop.scrolling = "no";
+                    newDesktop.sandbox = "allow-scripts allow-same-origin";
+                    iframeContainer.appendChild(newDesktop);
+
+                    // Recreate mobile iframe
+                    const newMobile = document.createElement('iframe');
+                    newMobile.className = 'mobile-embed';
+                    newMobile.src = "https://itch.io/embed/3554571?bg_color=900606&fg_color=413232&link_color=330d0d&border_color=000000";
+                    newMobile.frameBorder = "0";
+                    newMobile.width = "552";
+                    newMobile.height = "167";
+                    newMobile.scrolling = "no";
+                    newMobile.sandbox = "allow-scripts allow-same-origin";
+                    newMobile.style.display = window.innerWidth <= 600 ? "block" : "none";
+                    iframeContainer.appendChild(newMobile);
+                }
             }
 
             setTimeout(() => {
@@ -1021,5 +1046,4 @@ void main() {
     requestAnimationFrame(renderVoronoi);
     requestAnimationFrame(loopParticles);
 </script>
-</body>
 </html>
