@@ -517,6 +517,10 @@
     
                 <!-- Descriptions -->
                 <div class="description-panel">
+                    <div class="iframe-wrapper">
+                        <div class="iframe-overlay" onclick="enableIframe(this)"></div>
+                        <div class="responsive-iframe"></div>
+                    </div>
                     <div class="description-content"></div>
                     <a class="description-link" href="#" target="_blank">CLICK ME!</a>
                 </div>
@@ -528,6 +532,10 @@
     
                 <!-- Descriptions -->
                 <div class="description-panel">
+                    <div class="iframe-wrapper">
+                        <div class="iframe-overlay" onclick="enableIframe(this)"></div>
+                        <div class="responsive-iframe"></div>
+                    </div>
                     <div class="description-content"></div>
                     <a class="description-link" href="#" target="_blank">CLICK ME!</a>
                 </div>
@@ -637,12 +645,18 @@
                 + "This project allowed me to experience working with GLFW's 2D Space and its window's Normalized Device Coordinates. \n"
                 + "The process of making those tiny squares are no less than the process of making a 3D cube in OpenGL's 3D space. \n", 
             link: "..." ,
-            hasIframe: false
+            hasIframe: true,
+            overlayThumbnail: "imgs/SquareTilesThumbnail.png",
+            overlayPreview: ""
         },
         others2:{
-            text: "...", 
+            text: "Personal Render Engine, created in C++ and OpenGL with the help of glm (OpenGL's Mathematics Library). \n"
+                + "Camera Perspective, shader programs (vertex to fragment), read vertex positions from obj. files, material wrap with U.V coord then render them under a light source (Blinn-Phong's formula). \n"
+                + "There are no better way to learn OpenGL than to implement it yourself. \n",  
             link: "...",
-            hasIframe: false
+            hasIframe: true,
+            overlayThumbnail: "imgs/SquareTilesThumbnail.png",
+            overlayPreview: ""
         }
     };
 
