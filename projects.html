@@ -417,10 +417,11 @@
                 <!-- Descriptions -->
                 <div class="description-panel">
                     <div class="iframe-wrapper">
-                        <div class="iframe-overlay">
+                        <div class="iframe-overlay" onclick="enableIframe(this)">
                             <img class="thumbnail" src="cover.png" alt="Click to play preview">
                             <img class="hover-preview" src="preview.gif" alt="Hover preview">
                         </div>
+                        <div class="responsive-iframe"></div>
                     </div>
                     <div class="description-content"></div>
                     <a class="description-link" href="#" target="_blank">CLICK ME!</a>
@@ -440,26 +441,7 @@
                             <img class="hover-preview" src="preview.gif" alt="Hover preview">
                             <span>Click to Play</span>
                         </div>
-                        <div class="responsive-iframe">
-                            <iframe
-                                    class="desktop-embed"
-                                    src="https://itch.io/embed-upload/6736870?color=0d2800"
-                                    frameborder="0"
-                                    scrolling="no"
-                                    allow="fullscreen; pointer-lock"
-                                    sandbox="allow-scripts allow-same-origin allow-pointer-lock">
-                            </iframe>
-
-                            <iframe
-                                    class="mobile-embed"
-                                    src="https://itch.io/embed/1764093"
-                                    frameborder="0"
-                                    width="552" height="167"
-                                    sandbox="allow-scripts allow-same-origin"
-                                    scrolling="no"
-                                    style="display: none;">
-                            </iframe>
-                        </div>
+                        <div class="responsive-iframe"></div>
                     </div>
                     <div class="description-content"></div>
                     <a class="description-link" href="#" target="_blank">CLICK ME!</a>
@@ -475,32 +457,9 @@
                 <div class="description-panel">
                     <div class="iframe-wrapper">
                         <div class="iframe-overlay" onclick="enableIframe(this)">
-                            <img class="thumbnail" src="cover.png" alt="Click to play preview">
-                            <img class="hover-preview" src="preview.gif" alt="Hover preview">
                             <span>Click to Play</span>
                         </div>
-                        <div class="responsive-iframe">
-                            <iframe
-                                    class="desktop-embed"
-                                    src="https://itch.io/embed-upload/13673795?color=691e1e"
-                                    width="1280"
-                                    height="720"
-                                    frameborder="0"
-                                    allow="fullscreen; pointer-lock"
-                                    sandbox="allow-forms allow-scripts allow-same-origin allow-pointer-lock allow-popups allow-downloads allow-modals"
-                                    scrolling="no">
-                            </iframe>
-
-                            <iframe
-                                    class="mobile-embed"
-                                    src="https://itch.io/embed/3554571?bg_color=900606&amp;fg_color=413232&amp;link_color=330d0d&amp;border_color=000000"
-                                    frameborder="0"
-                                    width="552" height="167"
-                                    sandbox="allow-scripts allow-same-origin"
-                                    scrolling="no"
-                                    style="display: none;">
-                            </iframe>
-                        </div>
+                        <div class="responsive-iframe"></div>
                     </div>
                     <div class="description-content"></div>
                     <a class="description-link" href="#" target="_blank">CLICK ME!</a>
@@ -621,8 +580,7 @@
             link: "https://flamingoezpz.itch.io/brawl-balls",
             overlayThumbnail: "imgs/Brawlballs.png",
             overlayPreview: "path/to/preview.gif",
-            desktopSrc: "https://itch.io/embed-upload/12345678?color=000000",
-            mobileSrc: "https://itch.io/embed/87654321",
+            mobileSrc: "https://itch.io/embed/3379495",
             hasIframe: true
         },
         unity2: { 
@@ -733,6 +691,9 @@
             link.href = descriptions[key].link;
             description.classList.add('open');
 
+            const desktopSrc = descriptions[key]?.desktopSrc;
+            const mobileSrc = descriptions[key]?.mobileSrc;
+
             const hasIframe = descriptions[key]?.hasIframe !== false;
             if (hasIframe)
             {
@@ -743,9 +704,6 @@
                     const iframeContainer = wrapper.querySelector('.responsive-iframe');
                     if (iframeContainer) 
                     {
-                        const desktopSrc = descriptions[key]?.desktopSrc;
-                        const mobileSrc = descriptions[key]?.mobileSrc;
-
                         if (desktopSrc) {
                             const newDesktop = document.createElement('iframe');
                             newDesktop.className = 'desktop-embed';
@@ -788,6 +746,8 @@
         if (wrapper) {
             const thumbSrc = descriptions[key]?.overlayThumbnail || 'default-thumb.png';
             const previewSrc = descriptions[key]?.overlayPreview || 'default-preview.gif';
+            const desktopSrc = descriptions[key]?.desktopSrc;
+            const mobileSrc = descriptions[key]?.mobileSrc;
 
             let overlay = wrapper.querySelector('.iframe-overlay');
             if (!overlay) {
@@ -803,6 +763,16 @@
             } else {
                 overlay.style.display = 'flex';
                 overlay.style.opacity = 1;
+
+                if (!desktopSrc || desktopSrc.trim() === "") {
+                    overlay.onclick = null; // disables click
+                    overlay.style.cursor = 'not-allowed';
+                    overlay.querySelector('span').textContent = 'No Preview Available';
+                } else {
+                    overlay.onclick = () => enableIframe(overlay); // re-enable click
+                    overlay.style.cursor = 'pointer';
+                    overlay.querySelector('span').textContent = 'Click to Play';
+                }
             }
         }
     }
