@@ -255,6 +255,39 @@
             filter: brightness(1.5);
         }
 
+        .iframe-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .iframe-wrapper iframe {
+            width: 100%;
+            height: 740px;
+            pointer-events: none; /* disable interaction until click */
+        }
+
+        .iframe-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-family: 'Minecraft', monospace;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            user-select: none;
+            text-shadow: 1px 1px 4px black;
+            transition: opacity 0.3s;
+        }
+
         @media (max-width: 600px) {
             .content-area {
                 padding: 20px 10px;
@@ -350,6 +383,10 @@
     
                 <!-- Descriptions -->
                 <div class="description-panel">
+                    <div class="iframe-wrapper">
+                        <div class="iframe-overlay" onclick="enableIframe(this)">Click to Play</div>
+                        <iframe frameborder="0" src="https://itch.io/embed-upload/13671698?color=691e1e" allowfullscreen width="1280" height="740"></iframe>
+                    </div>
                     <div class="description-content"></div>
                     <a class="description-link" href="#" target="_blank">CLICK ME!</a>
                 </div>
@@ -385,7 +422,7 @@
     
             <div id="Others" class="content-area">
     
-                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity1');">
+                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'others1');">
                     <img src="https://via.placeholder.com/60" alt="Project 1">
                     <div class="content-text">GLFW Memory-Tiles</div>
                 </div>
@@ -396,7 +433,7 @@
                     <a class="description-link" href="#" target="_blank">CLICK ME!</a>
                 </div>
     
-                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity2');">
+                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'others2');">
                     <img src="https://via.placeholder.com/60" alt="Project 2">
                     <div class="content-text">OpenGL (GLFW) 3D Engine</div>
                 </div>
@@ -437,6 +474,13 @@
         wrapper.style.transform = `translateX(-${index * 100}vw)`;
     }
 
+    function enableIframe(overlay) {
+        const iframe = overlay.nextElementSibling;
+        iframe.style.pointerEvents = "auto";
+        overlay.style.opacity = 0;
+        setTimeout(() => overlay.remove(), 300);
+    }
+
     const descriptions = {
         unity1: {
             text: "Created in 2023, first started as a solo project by Gabe Kotton, then, our group (Drenched) made it into an official project which would be released on multiple-platforms. \n\n"
@@ -464,8 +508,9 @@
             link: "..." 
         },
         others1:{
-            text: "Created during Introduction to C++, it's a weird circumstance after I've already went through Introduction to Computer Graphics where C++ is mandatory/required. \n"
-                + "This ", 
+            text: "Created during Introduction to C++, it's a weird course after I've already went through Introduction to Computer Graphics where C++ is required to implement OpenGL. \n"
+                + "This project allowed me to experience working with GLFW's 2D Space and its window's Normalized Device Coordinates. \n"
+                + "The process of making those tiny squares are no less than the process of making a 3D cube in OpenGL's 3D space. \n", 
             link: "..." 
         },
         others2:{
