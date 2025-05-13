@@ -185,7 +185,7 @@
         }
 
         .description-panel.open {
-            max-height: 200px;
+            max-height: none;
             padding: 20px;
             opacity: 1;
             transform: translateY(0) scaleY(1);
@@ -266,7 +266,7 @@
         .responsive-iframe {
             position: relative;
             width: 100%;
-            aspect-ratio: 16/9;
+            padding-top: 56.25%;
             overflow: hidden;
         }
 
@@ -359,9 +359,9 @@
                 width: 24px;
                 height: 24px;
             }
-            
+
             .responsive-iframe {
-                aspect-ratio: unset;
+                padding-top: 0;
                 height: 80vh;
             }
 
@@ -443,7 +443,24 @@
                             <span>Click to Play</span>
                         </div>
                         <div class="responsive-iframe">
-                            <iframe src="https://itch.io/embed-upload/13671698?color=691e1e" frameborder="0" sandbox="allow-scripts allow-same-origin" allowfullscreen scrolling="no"></iframe>
+                            <iframe
+                                    class="desktop-embed"
+                                    src="https://itch.io/embed-upload/13671698?color=691e1e"
+                                    frameborder="0"
+                                    sandbox="allow-scripts allow-same-origin"
+                                    allowfullscreen
+                                    scrolling="no">
+                            </iframe>
+
+                            <iframe
+                                    class="mobile-embed"
+                                    src="https://itch.io/embed/3554571?bg_color=900606&amp;fg_color=413232&amp;link_color=330d0d&amp;border_color=000000"
+                                    frameborder="0"
+                                    width="552" height="167"
+                                    sandbox="allow-scripts allow-same-origin"
+                                    scrolling="no"
+                                    style="display: none;">
+                            </iframe>
                         </div>
                     </div>
                     <div class="description-content"></div>
@@ -526,6 +543,17 @@
 </body>
 
 <script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const isMobile = window.innerWidth <= 600;
+        const desktop = document.querySelector('.desktop-embed');
+        const mobile = document.querySelector('.mobile-embed');
+
+        if (isMobile) {
+            desktop.style.display = 'none';
+            mobile.style.display = 'block';
+        }
+    });
+    
     function showContent(sectionId) {
         const wrapper = document.querySelector('.content-wrapper');
         const sections = Array.from(document.querySelectorAll('.content-area'));
