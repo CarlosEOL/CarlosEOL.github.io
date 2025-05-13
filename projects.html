@@ -562,10 +562,16 @@
     }
 
     function enableIframe(overlay) {
-        const iframe = overlay.nextElementSibling;
-        iframe.style.pointerEvents = "auto";
+        const iframeWrapper = overlay.nextElementSibling;
+        const iframe = iframeWrapper.querySelector('iframe:not([style*="display: none"])');
+
         overlay.style.opacity = 0;
         setTimeout(() => overlay.remove(), 300);
+
+        // Enable interaction
+        if (iframe) {
+            iframe.style.pointerEvents = "auto";
+        }
     }
 
     const descriptions = {
@@ -613,14 +619,64 @@
         
         const isOpen = description.classList.contains('open');
 
+        // Close all other description panels
         document.querySelectorAll('.description-panel').forEach(panel => {
             panel.classList.remove('open');
+
+            // Restore iframe overlay if it exists
+            const wrapper = panel.querySelector('.iframe-wrapper');
+            if (wrapper) {
+                const desktop = wrapper.querySelector('.desktop-embed');
+                const mobile = wrapper.querySelector('.mobile-embed');
+                const iframe = wrapper.querySelector('iframe');
+                
+                if (iframe) iframe.style.pointerEvents = "none";
+
+                // Unload iframe by resetting src
+                if (desktop) {
+                    desktop.dataset.src = desktop.src;
+                    desktop.src = '';
+                }
+                if (mobile) {
+                    mobile.dataset.src = mobile.src;
+                    mobile.src = '';
+                }
+
+                // If the overlay doesn't exist, re-add it
+                let overlay = wrapper.querySelector('.iframe-overlay');
+                if (!overlay) {
+                    overlay = document.createElement('div');
+                    overlay.className = 'iframe-overlay';
+                    overlay.onclick = () => enableIframe(overlay);
+                    overlay.innerHTML = `
+                    <img class="thumbnail" src="cover.png" alt="Click to play preview">
+                    <img class="hover-preview" src="preview.gif" alt="Hover preview">
+                    <span>Click to Play</span>
+                `;
+                    wrapper.insertBefore(overlay, wrapper.firstElementChild);
+                }
+                else 
+                {
+                    overlay.style.opacity = 1;
+                    overlay.style.display = 'flex';
+                }
+            }
         });
-        
-        if (!isOpen && descriptions[key]) {
+            
+        if (!isOpen && descriptions[key]) 
+        {
             content.textContent = descriptions[key].text;
             link.href = descriptions[key].link;
             description.classList.add('open');
+
+            // Re-apply iframe src when opening
+            const wrapper = description.querySelector('.iframe-wrapper');
+            if (wrapper) {
+                const desktop = wrapper.querySelector('.desktop-embed');
+                const mobile = wrapper.querySelector('.mobile-embed');
+                if (desktop && desktop.dataset.src) desktop.src = desktop.dataset.src;
+                if (mobile && mobile.dataset.src) mobile.src = mobile.dataset.src;
+            }
 
             setTimeout(() => {
                 description.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -628,7 +684,7 @@
         } 
         else 
         {
-            panel.classList.remove('open');
+            description.classList.remove('open');
         }
     }
     
