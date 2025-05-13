@@ -477,17 +477,31 @@
     
                 <!-- Descriptions -->
                 <div class="description-panel">
+                    <div class="iframe-wrapper">
+                        <div class="iframe-overlay" onclick="enableIframe(this)">
+                            <img class="thumbnail" src="cover.png" alt="Click to play preview">
+                            <img class="hover-preview" src="preview.gif" alt="Hover preview">
+                        </div>
+                        <div class="responsive-iframe"></div>
+                    </div>
                     <div class="description-content"></div>
                     <a class="description-link" href="#" target="_blank">CLICK ME!</a>
                 </div>
     
-                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity2');">
+                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unreal2');">
                     <img src="https://via.placeholder.com/60" alt="Project 2">
                     <div class="content-text">Bacteriophage: Reinfected</div>
                 </div>
     
                 <!-- Descriptions -->
                 <div class="description-panel">
+                    <div class="iframe-wrapper">
+                        <div class="iframe-overlay" onclick="enableIframe(this)">
+                            <img class="thumbnail" src="cover.png" alt="Click to play preview">
+                            <img class="hover-preview" src="preview.gif" alt="Hover preview">
+                        </div>
+                        <div class="responsive-iframe"></div>
+                    </div>
                     <div class="description-content"></div>
                     <a class="description-link" href="#" target="_blank">CLICK ME!</a>
                 </div>
@@ -605,16 +619,22 @@
             hasIframe: true
         },
         unreal1: {
-            text: "My first time in UE5, it introduced me to visual scripting, Wwise and C++. \n" 
-                + "The available documentation for Wwise was more limited than I expected, so most of the sound was implemented using Unreal's MetaSounds system. \n"
-                + "If I have the tenacity to explore its documentation within the editor, I might actually gain valuable insight into this third-party software. \n",
+            text: "My first time in UE5, it introduced me to visual scripting, C++, procedural terrain and nanite (we can make 3D assets without care in poly-count). \n" 
+                + "We (Drenched) have a lot of ambition going into this game, with a gigantic map and objects that are supposedly intuitive to use, but they are not. \n"
+                + "We over-scoped and made a game that isn't meant for game-con; If we prioritized UXR and Objectives we might actually win GOTY \n. \n",
             link: "https://flamingoezpz.itch.io/glumphus",
-            hasIframe: false
+            hasIframe: true,
+            overlayThumbnail: "https://img.itch.zone/aW1nLzE1NjAyMTg4LnBuZw==/original/uZjIkj.png",
+            overlayPreview: "img/preview.gif"
         },
         unreal2: { 
-            text: "...", 
-            link: "...",
-            hasIframe: false
+            text: "Second group project in UE5, still the sound guy, this game introduced me to WWise and its resources are unexpectedly limited. "
+                + "Because of its limitations I had to resort back to Meta Sound, a built in sound engine in UE5.\n"
+                + "If I have the tenacity to read through its documentation within the editor, I might actually gain valuable insight into this third-party software. \n", 
+            link: "https://bananahoshi.itch.io/bacteriophage-reinfected",
+            hasIframe: true,
+            overlayThumbnail: "https://img.itch.zone/aW1nLzE5MjQzMzYzLnBuZw==/original/hzDYbl.png",
+            overlayPreview: "img/preview.gif"
         },
         others1:{
             text: "Created during Introduction to C++, it's a weird course after I've already went through Introduction to Computer Graphics where C++ is required to implement OpenGL. \n"
@@ -747,7 +767,6 @@
             const thumbSrc = descriptions[key]?.overlayThumbnail || 'default-thumb.png';
             const previewSrc = descriptions[key]?.overlayPreview || 'default-preview.gif';
             const desktopSrc = descriptions[key]?.desktopSrc;
-            const mobileSrc = descriptions[key]?.mobileSrc;
 
             let overlay = wrapper.querySelector('.iframe-overlay');
             if (!overlay) {
