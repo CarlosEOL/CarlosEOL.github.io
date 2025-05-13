@@ -416,6 +416,12 @@
     
                 <!-- Descriptions -->
                 <div class="description-panel">
+                    <div class="iframe-wrapper">
+                        <div class="iframe-overlay">
+                            <img class="thumbnail" src="cover.png" alt="Click to play preview">
+                            <img class="hover-preview" src="preview.gif" alt="Hover preview">
+                        </div>
+                    </div>
                     <div class="description-content"></div>
                     <a class="description-link" href="#" target="_blank">CLICK ME!</a>
                 </div>
@@ -614,7 +620,10 @@
                 + "Adaptive BGM, procedural audio modulation (pitch shift and phasing), surround sound (7.1) attenuation, ambiences are all components that made the game a little more alive.\n\n",
             link: "https://flamingoezpz.itch.io/brawl-balls",
             overlayThumbnail: "imgs/Brawlballs.png",
-            overlayPreview: "path/to/preview.gif"
+            overlayPreview: "path/to/preview.gif",
+            desktopSrc: "https://itch.io/embed-upload/12345678?color=000000",
+            mobileSrc: "https://itch.io/embed/87654321",
+            hasIframe: true
         },
         unity2: { 
             text: "Created in 2022, Untitled Capybara was the work of 5, where I was the only programmer. \n"
@@ -623,33 +632,43 @@
                 + "Each animation was managed using Unity’s 2D sprite sheets. While there are minor resolution issues, they do not significantly impact the overall gameplay experience. \n", 
             link: "https://smoonthy.itch.io/untitled-capybara-game",
             overlayThumbnail: "imgs/Capybara.png",
-            overlayPreview: "path/to/preview.gif"
+            overlayPreview: "path/to/preview.gif",
+            desktopSrc: "https://itch.io/embed-upload/12345678?color=000000",
+            mobileSrc: "https://itch.io/embed/87654321",
+            hasIframe: true
         },
         unity3: { 
             text: "Created in 2022, a solo project. This project introduced me to unity's built-in particle system and animator (most of it are janky but at least functional).",
             link: "https://smoonthy.itch.io/somethings-in-the-dark",
             overlayThumbnail: "path/to/thumbnail.png",
-            overlayPreview: "path/to/preview.gif"
+            overlayPreview: "path/to/preview.gif",
+            desktopSrc: "https://itch.io/embed-upload/12345678?color=000000",
+            mobileSrc: "https://itch.io/embed/87654321",
+            hasIframe: true
         },
         unreal1: {
             text: "My first time in UE5, it introduced me to visual scripting, Wwise and C++. \n" 
                 + "The available documentation for Wwise was more limited than I expected, so most of the sound was implemented using Unreal's MetaSounds system. \n"
                 + "If I have the tenacity to explore its documentation within the editor, I might actually gain valuable insight into this third-party software. \n",
-            link: "https://flamingoezpz.itch.io/glumphus"
+            link: "https://flamingoezpz.itch.io/glumphus",
+            hasIframe: false
         },
         unreal2: { 
             text: "...", 
-            link: "..." 
+            link: "...",
+            hasIframe: false
         },
         others1:{
             text: "Created during Introduction to C++, it's a weird course after I've already went through Introduction to Computer Graphics where C++ is required to implement OpenGL. \n"
                 + "This project allowed me to experience working with GLFW's 2D Space and its window's Normalized Device Coordinates. \n"
                 + "The process of making those tiny squares are no less than the process of making a 3D cube in OpenGL's 3D space. \n", 
-            link: "..." 
+            link: "..." ,
+            hasIframe: false
         },
         others2:{
             text: "...", 
             link: "...",
+            hasIframe: false
         }
     };
 
@@ -707,43 +726,53 @@
             content.textContent = descriptions[key].text;
             link.href = descriptions[key].link;
         }
-            
+        
         if (!isOpen && descriptions[key]) 
         {
             content.textContent = descriptions[key].text;
             link.href = descriptions[key].link;
             description.classList.add('open');
 
-            // Re-apply iframe src when opening
-            const wrapper = description.querySelector('.iframe-wrapper');
-            if (wrapper) {
-                const iframeContainer = wrapper.querySelector('.responsive-iframe');
-                if (iframeContainer) {
-                    // Recreate desktop iframe
-                    const newDesktop = document.createElement('iframe');
-                    newDesktop.className = 'desktop-embed';
-                    newDesktop.src = "https://itch.io/embed-upload/13671698?color=691e1e";
-                    newDesktop.frameBorder = "0";
-                    newDesktop.allowFullscreen = true;
-                    newDesktop.scrolling = "no";
-                    newDesktop.sandbox = "allow-forms allow-scripts allow-same-origin allow-pointer-lock allow-popups allow-downloads allow-modals";
+            const hasIframe = descriptions[key]?.hasIframe !== false;
+            if (hasIframe)
+            {
+                // Re-apply iframe src when opening
+                const wrapper = description.querySelector('.iframe-wrapper');
+                if (wrapper) 
+                {
+                    const iframeContainer = wrapper.querySelector('.responsive-iframe');
+                    if (iframeContainer) 
+                    {
+                        const desktopSrc = descriptions[key]?.desktopSrc;
+                        const mobileSrc = descriptions[key]?.mobileSrc;
 
-                    iframeContainer.appendChild(newDesktop);
+                        if (desktopSrc) {
+                            const newDesktop = document.createElement('iframe');
+                            newDesktop.className = 'desktop-embed';
+                            newDesktop.src = desktopSrc;
+                            newDesktop.frameBorder = "0";
+                            newDesktop.allowFullscreen = true;
+                            newDesktop.scrolling = "no";
+                            newDesktop.sandbox = "allow-forms allow-scripts allow-same-origin allow-pointer-lock allow-popups allow-downloads allow-modals";
+                            iframeContainer.appendChild(newDesktop);
+                        }
 
-                    // Recreate mobile iframe
-                    const newMobile = document.createElement('iframe');
-                    newMobile.className = 'mobile-embed';
-                    newMobile.src = "https://itch.io/embed/3554571?bg_color=900606&fg_color=413232&link_color=330d0d&border_color=000000";
-                    newMobile.frameBorder = "0";
-                    newMobile.width = "552";
-                    newMobile.height = "167";
-                    newMobile.scrolling = "no";
-                    newMobile.sandbox = "allow-scripts allow-same-origin";
-                    newMobile.style.display = window.innerWidth <= 600 ? "block" : "none";
-                    iframeContainer.appendChild(newMobile);
+                        if (mobileSrc) {
+                            const newMobile = document.createElement('iframe');
+                            newMobile.className = 'mobile-embed';
+                            newMobile.src = mobileSrc;
+                            newMobile.frameBorder = "0";
+                            newMobile.width = "552";
+                            newMobile.height = "167";
+                            newMobile.scrolling = "no";
+                            newMobile.sandbox = "allow-scripts allow-same-origin";
+                            newMobile.style.display = window.innerWidth <= 600 ? "block" : "none";
+                            iframeContainer.appendChild(newMobile);
+                        }
+                    }
                 }
             }
-
+            
             setTimeout(() => {
                 description.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 250);
