@@ -428,6 +428,33 @@
     
                 <!-- Descriptions -->
                 <div class="description-panel">
+                    <div class="iframe-wrapper">
+                        <div class="iframe-overlay" onclick="enableIframe(this)">
+                            <img class="thumbnail" src="cover.png" alt="Click to play preview">
+                            <img class="hover-preview" src="preview.gif" alt="Hover preview">
+                            <span>Click to Play</span>
+                        </div>
+                        <div class="responsive-iframe">
+                            <iframe
+                                    class="desktop-embed"
+                                    src="https://itch.io/embed-upload/6736870?color=0d2800"
+                                    frameborder="0"
+                                    scrolling="no"
+                                    allow="fullscreen; pointer-lock"
+                                    sandbox="allow-scripts allow-same-origin allow-pointer-lock">
+                            </iframe>
+
+                            <iframe
+                                    class="mobile-embed"
+                                    src="https://itch.io/embed/1764093"
+                                    frameborder="0"
+                                    width="552" height="167"
+                                    sandbox="allow-scripts allow-same-origin"
+                                    scrolling="no"
+                                    style="display: none;">
+                            </iframe>
+                        </div>
+                    </div>
                     <div class="description-content"></div>
                     <a class="description-link" href="#" target="_blank">CLICK ME!</a>
                 </div>
@@ -449,9 +476,10 @@
                         <div class="responsive-iframe">
                             <iframe
                                     class="desktop-embed"
-                                    src="https://itch.io/embed-upload/13671698?color=691e1e"
+                                    src="https://itch.io/embed-upload/13673795?color=691e1e"
+                                    width="1280"
+                                    height="720"
                                     frameborder="0"
-                                    scrolling="no"
                                     allow="fullscreen; pointer-lock"
                                     sandbox="allow-scripts allow-same-origin allow-pointer-lock">
                             </iframe>
@@ -586,19 +614,21 @@
             link: "https://flamingoezpz.itch.io/brawl-balls"
         },
         unity2: { 
-            text: "Created in 2022, Untitled Capybara was the work of 5, where I was the lead programmer, and the only programmer. \n"
+            text: "Created in 2022, Untitled Capybara was the work of 5, where I was the only programmer. \n"
                 + "This project is done in 5 days so not much of it is completely finished, but the final product is ''WORKING AS INTENDED''. \n"
-                + "In this project, I used OOP to and Scriptable Objects to manage each individual enemies, and managing A.I behaviors using enum (NOT BEHAVIOR TREE, I DIDN'T KNOW THAT EXIST). \n"
+                + "I implemented OOP to and Scriptable Objects to manage each individual enemies, and managing A.I behaviors using enum (I DIDN'T KNOW BEHAVIOR TREE EXIST BACK THEN). \n"
                 + "Each animation was managed using Unity’s 2D sprite sheets. While there are minor resolution issues, they do not significantly impact the overall gameplay experience. \n", 
             link: "https://smoonthy.itch.io/untitled-capybara-game" 
         },
         unity3: { 
-            text: "Created in 2022, a solo project. This project introduced me to unity's built-in particle system and animator.",
-            link: "..."
+            text: "Created in 2022, a solo project. This project introduced me to unity's built-in particle system and animator (most of it are janky but at least functional).",
+            link: "https://smoonthy.itch.io/somethings-in-the-dark"
         },
         unreal1: {
-            text: "This game introduced me to visual scripting, Wwise and C++. Most of it is a flex to \n",
-            link: "https://your-external-site.com"
+            text: "My first time in UE5, it introduced me to visual scripting, Wwise and C++. \n" 
+                + "The available documentation for Wwise was more limited than I expected, so most of the sound was implemented using Unreal's MetaSounds system. \n"
+                + "If I have the tenacity to explore its documentation within the editor, I might actually gain valuable insight into this third-party software. \n",
+            link: "https://flamingoezpz.itch.io/glumphus"
         },
         unreal2: { 
             text: "...", 
