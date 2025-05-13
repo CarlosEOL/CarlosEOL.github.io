@@ -481,7 +481,8 @@
                                     height="720"
                                     frameborder="0"
                                     allow="fullscreen; pointer-lock"
-                                    sandbox="allow-scripts allow-same-origin allow-pointer-lock">
+                                    sandbox="allow-forms allow-scripts allow-same-origin allow-pointer-lock allow-popups allow-downloads allow-modals"
+                                    scrolling="no">
                             </iframe>
 
                             <iframe
@@ -598,7 +599,7 @@
         const iframe = iframeWrapper.querySelector('iframe:not([style*="display: none"])');
 
         overlay.style.opacity = 0;
-        setTimeout(() => overlay.remove(), 300);
+        setTimeout(() => overlay.style.display = "none", 300);
 
         // Enable interaction
         if (iframe) {
@@ -618,11 +619,15 @@
                 + "This project is done in 5 days so not much of it is completely finished, but the final product is ''WORKING AS INTENDED''. \n"
                 + "I implemented OOP to and Scriptable Objects to manage each individual enemies, and managing A.I behaviors using enum (I DIDN'T KNOW BEHAVIOR TREE EXIST BACK THEN). \n"
                 + "Each animation was managed using Unity’s 2D sprite sheets. While there are minor resolution issues, they do not significantly impact the overall gameplay experience. \n", 
-            link: "https://smoonthy.itch.io/untitled-capybara-game" 
+            link: "https://smoonthy.itch.io/untitled-capybara-game",
+            overlayThumbnail: "path/to/thumbnail.png",
+            overlayPreview: "path/to/preview.gif"
         },
         unity3: { 
             text: "Created in 2022, a solo project. This project introduced me to unity's built-in particle system and animator (most of it are janky but at least functional).",
-            link: "https://smoonthy.itch.io/somethings-in-the-dark"
+            link: "https://smoonthy.itch.io/somethings-in-the-dark",
+            overlayThumbnail: "path/to/thumbnail.png",
+            overlayPreview: "path/to/preview.gif"
         },
         unreal1: {
             text: "My first time in UE5, it introduced me to visual scripting, Wwise and C++. \n" 
@@ -650,53 +655,56 @@
         const description = item.nextElementSibling;
         const content = description.querySelector('.description-content');
         const link = description.querySelector('.description-link');
-        
         const isOpen = description.classList.contains('open');
 
         // Close all other description panels
         document.querySelectorAll('.description-panel').forEach(panel => {
             panel.classList.remove('open');
 
-            // Restore iframe overlay if it exists
+            // Re-enable overlay if hidden
+            const overlay = panel.querySelector('.iframe-overlay');
+            if (overlay) 
+            {
+                overlay.style.display = 'flex';
+                overlay.style.opacity = 1;
+            }
+
+            // Reset iframe interactions
+            const desktopIframe = panel.querySelector('.desktop-embed');
+            const mobileIframe = panel.querySelector('.mobile-embed');
+            if (desktopIframe) desktopIframe.style.pointerEvents = 'none';
+            if (mobileIframe) mobileIframe.style.pointerEvents = 'none';
+
+            // Unload iframes
             const wrapper = panel.querySelector('.iframe-wrapper');
-            if (wrapper) {
-                const desktop = wrapper.querySelector('.desktop-embed');
-                const mobile = wrapper.querySelector('.mobile-embed');
+            if (!wrapper) return;
 
-                // Unload iframe by resetting src
-                if (desktop) {
-                    desktop.dataset.src = desktop.src;
-                    desktop.src = '';
-                    if (desktop) desktop.remove();
-                    if (mobile) mobile.remove();
-                }
-                if (mobile) {
-                    mobile.dataset.src = mobile.src;
-                    mobile.src = '';
-                    if (desktop) desktop.remove();
-                    if (mobile) mobile.remove();
-                }
+            const iframeContainer = wrapper.querySelector('.responsive-iframe');
+            if (!iframeContainer) return;
 
-                // If the overlay doesn't exist, re-add it
-                let overlay = wrapper.querySelector('.iframe-overlay');
-                if (!overlay) {
-                    overlay = document.createElement('div');
-                    overlay.className = 'iframe-overlay';
-                    overlay.onclick = () => enableIframe(overlay);
-                    overlay.innerHTML = `
-                    <img class="thumbnail" src="cover.png" alt="Click to play preview">
-                    <img class="hover-preview" src="preview.gif" alt="Hover preview">
-                    <span>Click to Play</span>
-                `;
-                    wrapper.insertBefore(overlay, wrapper.firstElementChild);
-                }
-                else 
-                {
-                    overlay.style.opacity = 1;
-                    overlay.style.display = 'flex';
-                }
+            if (desktopIframe) {
+                desktopIframe.dataset.src = desktopIframe.src;
+                desktopIframe.src = '';
+                desktopIframe.remove();
+            }
+            if (mobileIframe) {
+                mobileIframe.dataset.src = mobileIframe.src;
+                mobileIframe.src = '';
+                mobileIframe.remove();
             }
         });
+
+        // If already open, just close
+        if (isOpen) {
+            description.classList.remove('open');
+            return;
+        }
+
+        // Populate content
+        if (descriptions[key]) {
+            content.textContent = descriptions[key].text;
+            link.href = descriptions[key].link;
+        }
             
         if (!isOpen && descriptions[key]) 
         {
@@ -716,7 +724,8 @@
                     newDesktop.frameBorder = "0";
                     newDesktop.allowFullscreen = true;
                     newDesktop.scrolling = "no";
-                    newDesktop.sandbox = "allow-scripts allow-same-origin";
+                    newDesktop.sandbox = "allow-forms allow-scripts allow-same-origin allow-pointer-lock allow-popups allow-downloads allow-modals";
+
                     iframeContainer.appendChild(newDesktop);
 
                     // Recreate mobile iframe
@@ -740,6 +749,30 @@
         else 
         {
             description.classList.remove('open');
+        }
+        
+        // Rebuild overlay just for the clicked item
+        const wrapper = description.querySelector('.iframe-wrapper');
+        if (!wrapper) return;
+        if (wrapper) {
+            const thumbSrc = descriptions[key]?.overlayThumbnail || 'default-thumb.png';
+            const previewSrc = descriptions[key]?.overlayPreview || 'default-preview.gif';
+
+            let overlay = wrapper.querySelector('.iframe-overlay');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.className = 'iframe-overlay';
+                overlay.onclick = () => enableIframe(overlay);
+                overlay.innerHTML = `
+                    <img class="thumbnail" src="${thumbSrc}" alt="Click to play preview">
+                    <img class="hover-preview" src="${previewSrc}" alt="Hover preview">
+                    <span>Click to Play</span>
+                `;
+                wrapper.insertBefore(overlay, wrapper.firstElementChild);
+            } else {
+                overlay.style.display = 'flex';
+                overlay.style.opacity = 1;
+            }
         }
     }
     
