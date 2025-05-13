@@ -479,7 +479,7 @@
                 <div class="description-panel">
                     <div class="iframe-wrapper">
                         <div class="iframe-overlay" onclick="enableIframe(this)">
-                            <img class="thumbnail" src="cover.png" alt="Click to play preview">
+                            <img class="thumbnail" src="https://img.itch.zone/aW1nLzE1NjAyMTg4LnBuZw==/original/uZjIkj.png" alt="Click to play preview">
                             <img class="hover-preview" src="preview.gif" alt="Hover preview">
                         </div>
                         <div class="responsive-iframe"></div>
@@ -497,7 +497,7 @@
                 <div class="description-panel">
                     <div class="iframe-wrapper">
                         <div class="iframe-overlay" onclick="enableIframe(this)">
-                            <img class="thumbnail" src="cover.png" alt="Click to play preview">
+                            <img class="thumbnail" src="https://img.itch.zone/aW1nLzE5MjQzMzYzLnBuZw==/original/hzDYbl.png" alt="Click to play preview">
                             <img class="hover-preview" src="preview.gif" alt="Hover preview">
                         </div>
                         <div class="responsive-iframe"></div>
@@ -624,8 +624,6 @@
                 + "We over-scoped and made a game that isn't meant for game-con; If we prioritized UXR and Objectives we might actually win GOTY \n. \n",
             link: "https://flamingoezpz.itch.io/glumphus",
             hasIframe: true,
-            overlayThumbnail: "https://img.itch.zone/aW1nLzE1NjAyMTg4LnBuZw==/original/uZjIkj.png",
-            overlayPreview: "img/preview.gif"
         },
         unreal2: { 
             text: "Second group project in UE5, still the sound guy, this game introduced me to WWise and its resources are unexpectedly limited. "
@@ -633,8 +631,6 @@
                 + "If I have the tenacity to read through its documentation within the editor, I might actually gain valuable insight into this third-party software. \n", 
             link: "https://bananahoshi.itch.io/bacteriophage-reinfected",
             hasIframe: true,
-            overlayThumbnail: "https://img.itch.zone/aW1nLzE5MjQzMzYzLnBuZw==/original/hzDYbl.png",
-            overlayPreview: "img/preview.gif"
         },
         others1:{
             text: "Created during Introduction to C++, it's a weird course after I've already went through Introduction to Computer Graphics where C++ is required to implement OpenGL. \n"
@@ -769,7 +765,9 @@
             const desktopSrc = descriptions[key]?.desktopSrc;
 
             let overlay = wrapper.querySelector('.iframe-overlay');
-            if (!overlay) {
+            const needsRebuild = !overlay;
+
+            if (needsRebuild) {
                 overlay = document.createElement('div');
                 overlay.className = 'iframe-overlay';
                 overlay.onclick = () => enableIframe(overlay);
@@ -779,20 +777,21 @@
                     <span>Click to Play</span>
                 `;
                 wrapper.insertBefore(overlay, wrapper.firstElementChild);
-            } else {
-                overlay.style.display = 'flex';
-                overlay.style.opacity = 1;
-
-                if (!desktopSrc || desktopSrc.trim() === "") {
-                    overlay.onclick = null; // disables click
-                    overlay.style.cursor = 'not-allowed';
-                    overlay.querySelector('span').textContent = 'No Preview Available';
-                } else {
-                    overlay.onclick = () => enableIframe(overlay); // re-enable click
-                    overlay.style.cursor = 'pointer';
-                    overlay.querySelector('span').textContent = 'Click to Play';
-                }
             }
+
+            // Apply interactivity depending on whether we have desktopSrc
+            if (!desktopSrc || desktopSrc.trim() === "") {
+                overlay.onclick = null;
+                overlay.style.cursor = 'not-allowed';
+                overlay.querySelector('span').textContent = 'No Preview Available';
+            } else {
+                overlay.onclick = () => enableIframe(overlay);
+                overlay.style.cursor = 'pointer';
+                overlay.querySelector('span').textContent = 'Click to Play';
+            }
+
+            overlay.style.display = 'flex';
+            overlay.style.opacity = 1;
         }
     }
     
