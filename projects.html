@@ -646,7 +646,7 @@
             text: "Created during Introduction to C++, it's a weird course after I've already went through Introduction to Computer Graphics where C++ is required to implement OpenGL. \n"
                 + "This project allowed me to experience working with GLFW's 2D Space and its window's Normalized Device Coordinates. \n"
                 + "The process of making those tiny squares are no less than the process of making a 3D cube in OpenGL's 3D space. \n", 
-            link: "..." ,
+            link: "https://github.com/CarlosEOL/MemoryTiles" ,
             hasIframe: true,
             overlayThumbnail: "imgs/SquareTilesThumbnail.png",
             overlayPreview: ""
@@ -655,10 +655,10 @@
             text: "Personal Render Engine, created in C++ and OpenGL with the help of glm (OpenGL's Mathematics Library). \n"
                 + "Camera Perspective, shader programs (vertex to fragment), read vertex positions from obj. files, material wrap with U.V coord then render them under a light source (Blinn-Phong's formula). \n"
                 + "There are no better way to learn OpenGL than to implement it yourself. \n",  
-            link: "...",
+            link: "https://github.com/CarlosEOL/Render-Engine",
             hasIframe: true,
-            overlayThumbnail: "imgs/SquareTilesThumbnail.png",
-            overlayPreview: ""
+            overlayThumbnail: "",
+            overlayPreview: "imgs/Jug.gif"
         }
     };
 
@@ -712,11 +712,6 @@
         }
 
         // Populate content
-        if (descriptions[key]) {
-            content.textContent = descriptions[key].text;
-            link.href = descriptions[key].link;
-        }
-        
         if (!isOpen && descriptions[key]) 
         {
             content.textContent = descriptions[key].text;
