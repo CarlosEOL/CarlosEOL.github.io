@@ -449,9 +449,11 @@
                 <a class="latest-project-card" href="https://github.com/CarlosEOL/Render-Engine" target="_blank" rel="noopener noreferrer">
                     <img class="latest-hero" src="imgs/interstellar/gargantua-hdr-disc.png" alt="Gargantua and its luminous accretion disk rendered in the Interstellar project" fetchpriority="high">
                     <div class="latest-project-copy">
-                        <span class="latest-project-tag">LATEST PROJECT · C++ / GLFW</span>
+                        <span class="latest-project-tag">LATEST PROJECT · C++ / GLFW / DIRECTX 12</span>
                         <h2>Interstellar — Relativity and Quantum Mechanics</h2>
-                        <p>Explore black holes, wormholes, and distant worlds in my C++ render engine.</p>
+                        <p>Interstellar grew out of my original Render-Engine project, a C++ renderer built with OpenGL, GLFW, and glm. That project established the foundations: camera controls, model loading, texture mapping, and lighting. I expanded those systems into an interactive exploration of relativity and quantum mechanics, with black-hole lensing, wormholes, planetary environments, and quantum simulations.</p>
+                        <p>As the project grew, I migrated the rendering backend to native DirectX 12 to support NVIDIA DLSS integration and address hardware compatibility on Windows. The migration preserves the shared scene controls and simulation code, while translating the existing GLSL shaders for the DX12 pipeline. GLFW continues to handle the window and input, and a separate OpenGL build remains available.</p>
+                        <p>The DX12 version includes experimental DLSS Super Resolution with Quality, Balanced, and Performance modes, plus DLAA on supported NVIDIA hardware. Capability checks keep native rendering available when DLSS is unsupported. Stable views accumulate temporal detail; camera or scene changes currently reset that history while the integration is refined.</p>
                         <div class="latest-screenshots">
                             <figure><img src="imgs/interstellar/gargantua-tesseract.png" alt="The tesseract's repeating bookshelves" loading="lazy"><figcaption>Tesseract</figcaption></figure>
                             <figure><img src="imgs/interstellar/paired-wormhole.png" alt="Gravitational lensing through a paired wormhole" loading="lazy"><figcaption>Paired wormhole</figcaption></figure>
