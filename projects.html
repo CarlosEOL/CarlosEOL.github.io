@@ -118,11 +118,13 @@
 
         .content-wrapper {
             display: flex;
-            width: 300vw; /* 3 pages */
+            width: 400vw; /* 4 slides */
             transition: transform 0.6s ease;
         }
 
         .content-area {
+            box-sizing: border-box;
+            flex: 0 0 100vw;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -373,6 +375,42 @@
                 height: 100%;
             }
         }
+
+        .project-button { font-family: inherit; justify-content: center; }
+        .project-button.active { background: #171b23; border-color: #ddc395; color: #fff0d3; }
+        .project-button:focus-visible, .latest-project-card:focus-visible { outline: 3px solid #ddc395; outline-offset: 5px; }
+        .latest-project-card {
+            display: block;
+            width: 100%;
+            max-width: 1100px;
+            overflow: hidden;
+            border: 1px solid #635640;
+            border-radius: 12px;
+            background: #101318;
+            color: #f5f0e6;
+            text-decoration: none;
+            box-shadow: 0 16px 48px #0005;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+        .latest-project-card:hover { border-color: #e8ce9c; box-shadow: 0 16px 48px #0008; }
+        .latest-hero { display: block; width: 100%; aspect-ratio: 2.3; object-fit: cover; image-rendering: auto; }
+        .latest-project-copy { padding: clamp(18px, 3vw, 32px); }
+        .latest-project-tag { font-size: 0.75rem; letter-spacing: 0.16em; color: #ddc395; }
+        .latest-project-copy h2 { font-size: clamp(1.35rem, 3vw, 2rem); font-weight: 400; margin: 12px 0; }
+        .latest-project-copy p { color: #bbc2cd; line-height: 1.6; }
+        .latest-screenshots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 24px 0; }
+        .latest-screenshots figure { margin: 0; min-width: 0; }
+        .latest-screenshots img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 4px; image-rendering: auto; }
+        .latest-screenshots figcaption { margin-top: 8px; font-size: 0.8rem; color: #bbc2cd; }
+        .latest-project-link { color: #e8ce9c; display: inline-block; padding-top: 4px; }
+        @media (max-width: 600px) {
+            .latest-hero { aspect-ratio: 16 / 10; }
+            .latest-screenshots { gap: 8px; }
+            .latest-screenshots figcaption { font-size: 0.7rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .content-wrapper, .latest-project-card { transition: none; }
+        }
     </style>
 </head>
 
@@ -386,18 +424,19 @@
             <canvas id="shader-canvas"></canvas>
             <canvas id="particle-canvas"></canvas>
             <div class="button-row">
-                <div class="project-button" onclick="showContent('Unity')">
+                <button type="button" class="project-button active" onclick="showContent('Latest')" aria-controls="Latest" aria-pressed="true">Latest Projects</button>
+                <button type="button" class="project-button" onclick="showContent('Unity')" aria-controls="Unity" aria-pressed="false">
                     Unity Engine
                     <img src="https://cdn.freebiesupply.com/logos/large/2x/unity-69-logo-png-transparent.png" alt="UnityEngine">
-                </div>
-                <div class="project-button" onclick="showContent('Unreal')">
+                </button>
+                <button type="button" class="project-button" onclick="showContent('Unreal')" aria-controls="Unreal" aria-pressed="false">
                     Unreal Engine
                     <img src="https://assets.streamlinehq.com/image/private/w_300,h_300,ar_1/f_auto/v1/icons/video-games/unreal-engine-qdh1c46xy8c1nedruo2v5.png/unreal-engine-xwo7bd8vu6fzpnkcifgtu.png?_a=DATAdtAAZAA0" alt="UnrealEngine">
-                </div>
-                <div class="project-button" onclick="showContent('Others')">
+                </button>
+                <button type="button" class="project-button" onclick="showContent('Others')" aria-controls="Others" aria-pressed="false">
                     Others (C++, etc.)
                     <img src="https://www.freeiconspng.com/uploads/c--logo-icon-0.png" alt="Others">
-                </div>
+                </button>
             </div>
             <!-- Title -->
             <h1>Solo & Group Projects</h1>
@@ -406,6 +445,23 @@
         <!-- Content Section (Shown via BUTTONS) -->
         <div class="content-wrapper">
     
+            <section id="Latest" class="content-area active" aria-label="Latest Projects">
+                <a class="latest-project-card" href="https://github.com/CarlosEOL/Render-Engine" target="_blank" rel="noopener noreferrer">
+                    <img class="latest-hero" src="imgs/interstellar/gargantua-hdr-disc.png" alt="Gargantua and its luminous accretion disk rendered in the Interstellar project" fetchpriority="high">
+                    <div class="latest-project-copy">
+                        <span class="latest-project-tag">LATEST PROJECT · C++ / GLFW</span>
+                        <h2>Interstellar — Relativity and Quantum Mechanics</h2>
+                        <p>Explore black holes, wormholes, and distant worlds in my C++ render engine.</p>
+                        <div class="latest-screenshots">
+                            <figure><img src="imgs/interstellar/gargantua-tesseract.png" alt="The tesseract's repeating bookshelves" loading="lazy"><figcaption>Tesseract</figcaption></figure>
+                            <figure><img src="imgs/interstellar/paired-wormhole.png" alt="Gravitational lensing through a paired wormhole" loading="lazy"><figcaption>Paired wormhole</figcaption></figure>
+                            <figure><img src="imgs/interstellar/living-planet-vegetation.png" alt="A living planet with grass and trees beneath a starry sky" loading="lazy"><figcaption>Living planet</figcaption></figure>
+                        </div>
+                        <span class="latest-project-link">View Render-Engine on GitHub ↗</span>
+                    </div>
+                </a>
+            </section>
+
             <div id="Unity" class="content-area">
     
                 <!-- Project: BrawlBalls -->
@@ -548,7 +604,7 @@
     <footer class="site-footer social-footer">
         <div class="social-links">
             <a href="https://github.com/CarlosEOL" target="_blank">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Github-desktop-logo-symbol.svg/2048px-Github-desktop-logo-symbol.svg.png" alt="GitHub">
+                <img src="https://cdn.freebiesupply.com/logos/large/2x/github-icon-1-logo-black-and-white.png" alt="GitHub">
             </a>
             <a href="https://www.linkedin.com/in/carlos-eurus-lu-8a4ab1252/" target="_blank">
                 <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn">
@@ -570,7 +626,7 @@
         const desktop = document.querySelector('.desktop-embed');
         const mobile = document.querySelector('.mobile-embed');
 
-        if (isMobile) {
+        if (isMobile && desktop && mobile) {
             desktop.style.display = 'none';
             mobile.style.display = 'block';
         }
@@ -580,8 +636,22 @@
         const wrapper = document.querySelector('.content-wrapper');
         const sections = Array.from(document.querySelectorAll('.content-area'));
         const index = sections.findIndex(section => section.id === sectionId);
+        if (index < 0) return;
         wrapper.style.transform = `translateX(-${index * 100}vw)`;
+        sections.forEach(section => {
+            const active = section.id === sectionId;
+            section.classList.toggle('active', active);
+            section.inert = !active;
+            section.setAttribute('aria-hidden', String(!active));
+        });
+        document.querySelectorAll('.project-button[aria-controls]').forEach(button => {
+            const active = button.getAttribute('aria-controls') === sectionId;
+            button.classList.toggle('active', active);
+            button.setAttribute('aria-pressed', String(active));
+        });
     }
+
+    showContent('Latest');
 
     function enableIframe(overlay) {
         const iframeWrapper = overlay.nextElementSibling;

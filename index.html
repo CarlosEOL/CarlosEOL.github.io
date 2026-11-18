@@ -25,29 +25,41 @@
             margin: 0;
             overflow: hidden;
             background-color: black;
-            animation: fadeColors 8s ease-in-out infinite alternate;
+            isolation: isolate;
             font-family: 'Minecraft', monospace;
             image-rendering: pixelated;
         }
 
-        @keyframes fadeColors {
-            0% {
-                background-color: black;
-            }
-            100% {
-                background-color: #FFC0CB; /* Pink */
-            }
-        }
-
-        canvas {
+        /* Gargantua capture from the C++ / GLFW Render-Engine project. */
+        .black-hole-background {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
+            inset: -4%;
+            z-index: 0;
+            pointer-events: none;
+            background: #050608 url('imgs/gargantua-background.png') center / cover no-repeat;
+            image-rendering: auto;
+            animation: blackHoleDrift 32s ease-in-out infinite alternate;
+            will-change: transform;
         }
 
+        .black-hole-background::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.35));
+        }
+
+        @keyframes blackHoleDrift {
+            from { transform: scale(1) translate(-0.5%, -0.5%); }
+            to { transform: scale(1.06) translate(0.5%, 0.5%); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .black-hole-background {
+                animation: none;
+                will-change: auto;
+            }
+        }
         .center-container {
             position: relative;
             width: 100%;
@@ -69,65 +81,68 @@
         .title-container {
             position: relative;
             z-index: 2;
-            padding: 20px 40px;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(3px);
-            -webkit-backdrop-filter: blur(3px);
-            border: 4px solid rgba(64, 64, 64, 0.6);
-            box-shadow:
-                    inset -2px -4px rgba(0, 0, 0, 0.4),
-                    inset 2px 2px rgba(255, 255, 255, 0.3),
-                    0 0 15px rgba(0, 0, 0, 0.3);
-            transform: skew(-12deg);
+            width: min(900px, 94vw);
+            padding: 64px 0;
             margin-bottom: 40px;
+            isolation: isolate;
+            text-align: center;
         }
 
         .title-container::before {
             content: '';
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg,
-                rgba(85, 85, 85, 0.3),
-                rgba(51, 51, 51, 0.3));
+            inset: 10% -2%;
             z-index: -1;
-            transform: skew(2deg);
+            border-radius: 50%;
+            background: radial-gradient(ellipse, rgba(0, 0, 0, 0.8), transparent 70%);
+            pointer-events: none;
         }
 
-        h1 {
+        .title-container h1 {
             position: relative;
-            z-index: 2;
             margin: 0;
-            text-align: center;
-            color: #FFFFFF;
-            font-family: 'Minecraft', 'MinecraftFive', 'MinecraftFour', monospace;
-            text-shadow:
-                    3px 3px #3F3F3F,
-                    2px 2px #000000;
-            font-size: 48px;
-            letter-spacing: 2px;
-            padding: 10px;
-            image-rendering: pixelated;
-            -webkit-font-smoothing: none;
+            padding: 12px;
+            font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
+            font-weight: 300;
+            font-size: clamp(1.6rem, 4.5vw, 3.5rem);
+            line-height: 1.25;
+            letter-spacing: 0.18em;
             text-transform: uppercase;
-            transform: skew(5deg);
+            color: #fff3da;
+            text-shadow: 0 0 14px rgba(255, 220, 160, 0.4), 0 2px 12px #000;
+            filter: url(#title-lensing);
+            -webkit-font-smoothing: antialiased;
         }
 
-
-        h1::before {
-            content: attr(data-text);
+        .lensing-echo {
             position: absolute;
-            left: 0;
-            top: 4px;
+            inset: 0;
             width: 100%;
-            color: #a565af;
-            text-shadow: 2px 2px #3F3F3F;
-            opacity: 0.7;
-            z-index: -1;
+            height: 100%;
+            overflow: visible;
+            pointer-events: none;
+            fill: #e8ce9c;
+            font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
+            font-weight: 300;
+            font-size: 36px;
+            letter-spacing: 10px;
+            opacity: 0.3;
+            filter: blur(0.6px);
+            animation: lensingGlow 12s ease-in-out infinite alternate;
         }
 
+        .lensing-echo .lower-echo { fill: #b6d5f5; opacity: 0.55; }
+        .lensing-definitions { position: absolute; width: 0; height: 0; pointer-events: none; }
+
+        @keyframes lensingGlow {
+            from { opacity: 0.15; transform: scaleX(0.98); }
+            to { opacity: 0.35; transform: scaleX(1.02); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .title-container h1 { filter: none; }
+            .lensing-echo { animation: none; }
+        }
         .nav-item {
             position: absolute;
             text-decoration: none;
@@ -231,32 +246,12 @@
                 border-width: 2px;
             }
 
-            .title-container {
-                padding: 8px 16px;
-                margin-bottom: 20px;
-                width: 90%;
-                max-width: 300px;
-                transform: none;
-                backdrop-filter: blur(2px);
-                -webkit-backdrop-filter: blur(2px);
-                box-shadow: inset -2px -2px rgba(0, 0, 0, 0.5), inset 2px 2px rgba(255, 255, 255, 0.3);
-            }
-            
-            .title-container::before {
-                transform: none;
-            }
-            
-            h1 {
-                font-size: 24px;
-                letter-spacing: 1px;
-                transform: none;
+            .title-container { padding: 48px 0; margin-bottom: 20px; width: 94%; }
+            .title-container h1 {
+                font-size: clamp(1.25rem, 5vw, 1.8rem);
+                letter-spacing: 0.12em;
                 padding: 10px 0;
             }
-            
-            h1::before {
-                top: 0px;
-            }
-
             .center-container {
                 flex-direction: column;
                 justify-content: flex-start;
@@ -267,7 +262,7 @@
 </head>
 
 <footer class="site-footer">
-    <p>🤍 Made by Carlos Lu, with Pure HTML, JS and CSS. 🤍</p>
+    <p>Made with pure HTML, JS and CSS</p>
 </footer>
 
 <footer class="site-footer social-footer">
@@ -285,11 +280,28 @@
 </footer>
 
 <body>
-    <canvas id="particles"></canvas>
+    <div class="black-hole-background" aria-hidden="true"></div>
     
     <div class="center-container">
         <div class="title-container">
-            <h1 data-text="Carlos's Portfolio">Carlos's Portfolio</h1>
+            <!-- Stylized lensing: text distortion and curved light echoes. -->
+            <svg class="lensing-definitions" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <filter id="title-lensing" x="-15%" y="-40%" width="130%" height="180%" color-interpolation-filters="sRGB">
+                        <feTurbulence type="fractalNoise" baseFrequency="0.006 0.018" numOctaves="1" seed="8" result="warp" />
+                        <feDisplacementMap in="SourceGraphic" in2="warp" scale="7" xChannelSelector="R" yChannelSelector="G">
+                            <animate attributeName="scale" values="7;15;7" dur="16s" repeatCount="indefinite" />
+                        </feDisplacementMap>
+                    </filter>
+                    <path id="upper-lens-arc" d="M 50,120 Q 450,-40 850,120" />
+                    <path id="lower-lens-arc" d="M 50,120 Q 450,280 850,120" />
+                </defs>
+            </svg>
+            <svg class="lensing-echo" viewBox="0 0 900 240" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+                <text text-anchor="middle"><textPath href="#upper-lens-arc" startOffset="50%">CARLOS'S PORTFOLIO</textPath></text>
+                <text class="lower-echo" text-anchor="middle"><textPath href="#lower-lens-arc" startOffset="50%">CARLOS'S PORTFOLIO</textPath></text>
+            </svg>
+            <h1>Carlos's Portfolio</h1>
         </div>
         <div class="nav-container"></div>
     </div>
@@ -333,120 +345,8 @@
             });
         }
 
-        // Particle animation
-        const canvas = document.getElementById('particles');
-        const ctx = canvas.getContext('2d');
-
-        // Set canvas size
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-
-        // Particle class
-        class Particle {
-            constructor() {
-                this.reset();
-            }
-
-            reset() {
-                this.x = canvas.width / 2;
-                this.y = canvas.height / 2;
-                // Random angle
-                this.angle = Math.random() * Math.PI * 2;
-                // Random speed
-                this.baseSpeed = Math.random() * 2 + 1;
-                this.speed = this.baseSpeed;
-                // Distance from center
-                this.dist = 0;
-                // Size starts small and grows
-                this.size = 0.1;
-                this.maxSize = Math.random() * 2 + 1;
-                // Twinkle effect
-                this.brightness = Math.random();
-                this.brightnessDelta = 0.015;
-            }
-            update() {
-                // Update distance from center
-                this.dist += this.speed;
-                this.speed = this.baseSpeed + (this.dist * 0.0025);
-
-                // Calculate new position
-                this.x = canvas.width / 2 + Math.cos(this.angle) * this.dist;
-                this.y = canvas.height / 2 + Math.sin(this.angle) * this.dist;
-
-                // Grow size up to max
-                this.size = Math.min(this.maxSize, this.size + 0.015);
-
-                // Twinkle effect
-                this.brightness += this.brightnessDelta;
-                if (this.brightness > 1 || this.brightness < 0.3) {
-                    this.brightnessDelta *= -1;
-                }
-
-                // Reset if off screen
-                if (this.x < 0 || this.x > canvas.width ||
-                    this.y < 0 || this.y > canvas.height) {
-                    this.reset();
-                }
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                
-                const gradient = ctx.createRadialGradient(
-                    this.x, this.y, 0,
-                    this.x, this.y, this.size
-                );
-                
-                // Get background position to determine particle color
-                const computedStyle = getComputedStyle(document.body);
-                const backgroundPos = parseFloat(computedStyle.backgroundPosition) || 0;
-
-                // Calculate color interpolation (0 = white, 100 = black)
-                const colorValue = Math.max(0, Math.min(255, Math.round(255 - (backgroundPos * 2.55))));
-                const alpha = this.brightness * 0.8;
-
-                gradient.addColorStop(0, `rgba(${colorValue}, ${colorValue}, ${colorValue}, ${alpha})`);
-                gradient.addColorStop(0.4, `rgba(${colorValue}, ${colorValue}, ${colorValue}, ${alpha * 0.6})`);
-                gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-
-                ctx.fillStyle = gradient;
-                ctx.fill();
-            }
-        }
-
-        // Create more particles for better effect
-        const particles = Array(100).fill().map(() => new Particle());
-
-        // Modified animation loop
-        function animate() {
-            // Create fade effect
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            particles.forEach(particle => {
-                particle.update();
-                particle.draw();
-            });
-
-            requestAnimationFrame(animate);
-        }
-
-        // Initialize everything when window loads
-        window.addEventListener('load', () => {
-            createNavigation();
-            resizeCanvas();
-            animate();
-        });
-
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            resizeCanvas();
-            particles.forEach(p => p.reset());
-            createNavigation();
-        });
+        createNavigation();
+        window.addEventListener('resize', createNavigation);
 
     </script>
 </body>
