@@ -3,351 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <title>Carlos's Portfolio</title>
+
+    <title>Weitao Lu | Portfolio</title>
+    <meta name="description" content="Portfolio of Weitao Lu, a game developer working on graphics, gameplay and audio programming.">
+    <meta name="theme-color" content="#06070a">
+    <meta property="og:title" content="Weitao Lu | Portfolio">
+    <meta property="og:description" content="Game developer working on graphics, gameplay and audio programming.">
+    <meta property="og:image" content="https://carloseol.github.io/imgs/gargantua-background.png">
+
     <link rel="icon" type="image/png" href="imgs/SmoonthyLogoTransparent.png">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
-
-    <style>
-        @font-face {
-            font-family: 'Minecraft';
-            src: url('https://fonts.cdnfonts.com/css/minecraft-4') format('woff2'),
-            url('https://cdn.jsdelivr.net/gh/South-Paw/typeface-minecraft@master/fonts/minecraft.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
-
-
-        body {
-            margin: 0;
-            overflow: hidden;
-            background-color: black;
-            isolation: isolate;
-            font-family: 'Minecraft', monospace;
-            image-rendering: pixelated;
-        }
-
-        /* Gargantua capture from the C++ / GLFW Render-Engine project. */
-        .black-hole-background {
-            position: fixed;
-            inset: -4%;
-            z-index: 0;
-            pointer-events: none;
-            background: #050608 url('imgs/gargantua-background.png') center / cover no-repeat;
-            image-rendering: auto;
-            animation: blackHoleDrift 32s ease-in-out infinite alternate;
-            will-change: transform;
-        }
-
-        .black-hole-background::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.35));
-        }
-
-        @keyframes blackHoleDrift {
-            from { transform: scale(1) translate(-0.5%, -0.5%); }
-            to { transform: scale(1.06) translate(0.5%, 0.5%); }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .black-hole-background {
-                animation: none;
-                will-change: auto;
-            }
-        }
-        .center-container {
-            position: relative;
-            width: 100%;
-            height: calc(100vh - 100px);
-            margin-bottom: 100px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2;
-        }
-
-        .nav-container {
-            position: absolute;
-            transform: translateY(25%);
-            width: 600px;
-            height: 400px;
-        }
-
-        .title-container {
-            position: relative;
-            z-index: 2;
-            width: min(900px, 94vw);
-            padding: 64px 0;
-            margin-bottom: 40px;
-            isolation: isolate;
-            text-align: center;
-        }
-
-        .title-container::before {
-            content: '';
-            position: absolute;
-            inset: 10% -2%;
-            z-index: -1;
-            border-radius: 50%;
-            background: radial-gradient(ellipse, rgba(0, 0, 0, 0.8), transparent 70%);
-            pointer-events: none;
-        }
-
-        .title-container h1 {
-            position: relative;
-            margin: 0;
-            padding: 12px;
-            font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
-            font-weight: 300;
-            font-size: clamp(1.6rem, 4.5vw, 3.5rem);
-            line-height: 1.25;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: #fff3da;
-            text-shadow: 0 0 14px rgba(255, 220, 160, 0.4), 0 2px 12px #000;
-            filter: url(#title-lensing);
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .lensing-echo {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            overflow: visible;
-            pointer-events: none;
-            fill: #e8ce9c;
-            font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
-            font-weight: 300;
-            font-size: 36px;
-            letter-spacing: 10px;
-            opacity: 0.3;
-            filter: blur(0.6px);
-            animation: lensingGlow 12s ease-in-out infinite alternate;
-        }
-
-        .lensing-echo .lower-echo { fill: #b6d5f5; opacity: 0.55; }
-        .lensing-definitions { position: absolute; width: 0; height: 0; pointer-events: none; }
-
-        @keyframes lensingGlow {
-            from { opacity: 0.15; transform: scaleX(0.98); }
-            to { opacity: 0.35; transform: scaleX(1.02); }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .title-container h1 { filter: none; }
-            .lensing-echo { animation: none; }
-        }
-        .nav-item {
-            position: absolute;
-            text-decoration: none;
-            color: white;
-            background: rgba(0, 0, 0, 0.75);
-            padding: 15px 25px;
-            border-radius: 0; /* Minecraft style is blocky */
-            border: 3px solid #ffffff;
-            transition: all 0.3s ease;
-            font-size: 1.2em;
-            text-align: center;
-            white-space: nowrap;
-            transform-origin: center;
-            text-shadow: 2px 2px 0px #000000;
-            box-shadow: inset -2px -4px #0006, inset 2px 2px #FFF7;
-        }
-
-
-        .nav-item:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1) translate(-45%, -45%);
-            border-color: #FFFF00;
-            box-shadow: inset -2px -4px #0006, inset 2px 2px #FFF7, 0 0 20px #FFFF00;
-        }
-
-        .nav-item:active {
-            box-shadow: inset 2px 2px #0006, inset -2px -4px #FFF7;
-            transform: scale(1.05) translate(-45%, -45%);
-        }
-
-        .site-footer {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            color: #ccc;
-            text-align: center;
-            font-family: 'Courier New', monospace;
-            font-size: clamp(0.8rem, 2vw, 1rem);
-            padding: 10px 0;
-            position: relative;
-            bottom: 0;
-            z-index: 5;
-            border-top: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.6);
-            user-select: none;
-        }
-
-        .site-footer p {
-            margin: 0;
-            letter-spacing: 1px;
-        }
-
-        .social-footer {
-            background: rgba(124, 124, 124, 0.4);
-            padding: 10px 0;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-            margin-bottom: 0;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 40px;
-        }
-
-        .social-links img {
-            width: 32px;
-            height: 32px;
-            filter: brightness(1.1);
-            transition: transform 0.2s ease, filter 0.2s ease;
-        }
-
-        .social-links img:hover {
-            transform: scale(1.2);
-            filter: brightness(1.5);
-        }
-
-        @media (max-width: 600px) {
-            .nav-container {
-                width: 100%;
-                height: auto;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 20px;
-                transform: none;
-                top: auto;
-                left: auto;
-                position: relative;
-                margin-top: 20px;
-            }
-
-            .nav-item {
-                position: static;
-                transform: none;
-                width: 80%;
-                max-width: 300px;
-                padding: 12px 18px;
-                font-size: 1rem;
-                border-width: 2px;
-            }
-
-            .title-container { padding: 48px 0; margin-bottom: 20px; width: 94%; }
-            .title-container h1 {
-                font-size: clamp(1.25rem, 5vw, 1.8rem);
-                letter-spacing: 0.12em;
-                padding: 10px 0;
-            }
-            .center-container {
-                flex-direction: column;
-                justify-content: flex-start;
-                padding-top: 60px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/site.css">
+    <script src="js/site.js" defer></script>
+    <script src="js/vendor/three.min.js" defer></script>
+    <script src="js/blackhole.js" defer></script>
 </head>
 
-<footer class="site-footer">
-    <p>Made with pure HTML, JS and CSS</p>
-</footer>
-
-<footer class="site-footer social-footer">
-    <div class="social-links">
-        <a href="https://github.com/CarlosEOL" target="_blank">
-            <img src="https://cdn.freebiesupply.com/logos/large/2x/github-icon-1-logo-black-and-white.png" alt="GitHub">
-        </a>
-        <a href="https://www.linkedin.com/in/carlos-lu-8a4ab1252/" target="_blank">
-            <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn">
-        </a>
-        <a href="https://www.youtube.com/@smoonthy" target="_blank">
-            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
-        </a>
-    </div>
-</footer>
-
 <body>
-    <div class="black-hole-background" aria-hidden="true"></div>
-    
-    <div class="center-container">
-        <div class="title-container">
-            <!-- Stylized lensing: text distortion and curved light echoes. -->
-            <svg class="lensing-definitions" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <filter id="title-lensing" x="-15%" y="-40%" width="130%" height="180%" color-interpolation-filters="sRGB">
-                        <feTurbulence type="fractalNoise" baseFrequency="0.006 0.018" numOctaves="1" seed="8" result="warp" />
-                        <feDisplacementMap in="SourceGraphic" in2="warp" scale="7" xChannelSelector="R" yChannelSelector="G">
-                            <animate attributeName="scale" values="7;15;7" dur="16s" repeatCount="indefinite" />
-                        </feDisplacementMap>
-                    </filter>
-                    <path id="upper-lens-arc" d="M 50,120 Q 450,-40 850,120" />
-                    <path id="lower-lens-arc" d="M 50,120 Q 450,280 850,120" />
-                </defs>
-            </svg>
-            <svg class="lensing-echo" viewBox="0 0 900 240" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
-                <text text-anchor="middle"><textPath href="#upper-lens-arc" startOffset="50%">CARLOS'S PORTFOLIO</textPath></text>
-                <text class="lower-echo" text-anchor="middle"><textPath href="#lower-lens-arc" startOffset="50%">CARLOS'S PORTFOLIO</textPath></text>
-            </svg>
-            <h1>Carlos's Portfolio</h1>
+    <div class="hero">
+        <!-- Gargantua, traced live by js/blackhole.js (three.js). If that cannot
+             run, js/site.js puts the still capture from the C++ / GLFW
+             Render-Engine project here instead. -->
+        <div class="hero__sky" aria-hidden="true">
+            <canvas class="hero__canvas"></canvas>
+            <noscript>
+                <div class="hero__parallax">
+                    <img class="hero__hole" src="imgs/gargantua-background.png" alt="" width="1980" height="1020">
+                </div>
+            </noscript>
         </div>
-        <div class="nav-container"></div>
+
+        <header class="nav">
+            <a class="brand" href="index.html" aria-current="page">
+                <span class="brand__mark" aria-hidden="true"></span>
+                Weitao Lu
+            </a>
+            <nav aria-label="Primary">
+                <ul class="nav__links">
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="hero__content">
+            <h1 class="hero__title">Weitao Lu</h1>
+            <p class="hero__tagline">Game developer working on graphics, gameplay and audio programming.</p>
+            <div class="hero__actions">
+                <a class="btn btn--primary" href="projects.html">
+                    View projects
+                    <span class="icon icon--arrow-e" aria-hidden="true"></span>
+                </a>
+                <a class="btn" href="about.html">About me</a>
+            </div>
+        </main>
+
+        <footer class="hero__foot">
+            <ul class="social">
+                <li><a href="https://github.com/CarlosEOL" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><span class="icon icon--github" aria-hidden="true"></span></a></li>
+                <li><a href="https://www.linkedin.com/in/carlos-lu-8a4ab1252/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><span class="icon icon--linkedin" aria-hidden="true"></span></a></li>
+                <li><a href="https://www.youtube.com/@smoonthy" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><span class="icon icon--youtube" aria-hidden="true"></span></a></li>
+                <li><a href="https://open.spotify.com/artist/6OdnVMSnAFQ1AN4dt7hIyo" target="_blank" rel="noopener noreferrer" aria-label="Spotify"><span class="icon icon--spotify" aria-hidden="true"></span></a></li>
+            </ul>
+            <a class="hero__credit label" href="projects.html#latest">Gargantua, rendered in my own C++ engine</a>
+            <p class="footer__note label">Made with HTML, JS, CSS and three.js</p>
+        </footer>
     </div>
-
-    <script>
-        const navItems = [
-            { text: "Projects", link: "projects.html" },
-            { text: "About Me", link: "about.html" }
-        ];
-
-        function createNavigation() {
-            const container = document.querySelector('.nav-container');
-            container.innerHTML = '';
-
-            const isMobile = window.innerWidth <= 600;
-
-            const items = isMobile ? navItems : [...navItems].reverse();
-
-            items.forEach((item, index) => {
-                const link = document.createElement('a');
-                link.href = item.link;
-                link.className = 'nav-item';
-                link.textContent = item.text;
-
-                if (!isMobile) {
-                    const angle = (index / navItems.length) * 2 * Math.PI;
-                    const a = 250;
-                    const b = 150;
-                    const x = a * Math.cos(angle);
-                    const y = b * Math.sin(angle);
-                    link.style.left = '50%';
-                    link.style.top = '50%';
-                    link.style.position = 'absolute';
-                    link.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
-                } else {
-                    link.style.position = 'static';
-                    link.style.order = index;
-                }
-
-                container.appendChild(link);
-            });
-        }
-
-        createNavigation();
-        window.addEventListener('resize', createNavigation);
-
-    </script>
 </body>
 </html>

@@ -2,1213 +2,375 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Carlos's Projects</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Projects | Weitao Lu</title>
+    <meta name="description" content="Solo and group projects by Weitao Lu: graphics work written in C++, and games made in Unity and Unreal Engine.">
+    <meta name="theme-color" content="#06070a">
+    <meta property="og:title" content="Projects | Weitao Lu">
+    <meta property="og:description" content="Graphics work written in C++, and games made in Unity and Unreal Engine.">
+    <meta property="og:image" content="https://carloseol.github.io/imgs/interstellar/gargantua-hdr-disc.png">
+
     <link rel="icon" type="image/png" href="imgs/SmoonthyLogoTransparent.png">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
-
-    <style>
-        @font-face {
-            font-family: 'Minecraft';
-            src: url('https://fonts.cdnfonts.com/css/minecraft-4') format('woff2'),
-            url('https://cdn.jsdelivr.net/gh/South-Paw/typeface-minecraft@master/fonts/minecraft.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
-
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: 'Trebuchet MS', sans-serif;
-            background: linear-gradient(135deg, #1a1a1a, #333333);
-            image-rendering: pixelated;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        main{
-            flex: 1;
-        }
-
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header-area {
-            font-family: 'Minecraft', monospace;
-            position: relative;
-            overflow: hidden;
-            background: rgba(50, 50, 50, 0.9);
-            padding: 20px 0 30px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 3;
-        }
-
-        #shader-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-            mix-blend-mode: screen;
-        }
-        
-        #particle-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            mix-blend-mode: screen;
-            z-index: 2;
-        }
-
-        .button-row {
-            display: flex;
-            gap: clamp(20px, 5vw, 40px);
-            justify-content: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            z-index: 3;
-        }
-
-        .project-button {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(80, 80, 80, 0.75);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            padding: clamp(8px, 2vw, 20px) clamp(12px, 4vw, 20px);
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
-            transition: background 0.3s;
-            font-size: 1em;
-            flex: 1 1 120px;
-            z-index: 3;
-        }
-
-        .project-button:hover {
-            background: rgba(0, 0, 0, 0.8);
-        }
-
-        .project-button img {
-            width: clamp(16px, 5vw, 24px);
-            height: clamp(16px, 5vw, 24px);
-        }
-
-        h1 {
-            margin: 0;
-            text-align: center;
-            /*font-size: 2.6em;*/
-            font-size: clamp(1.5rem, 5vw, 2.6rem);
-            color: white;
-            z-index: 3;
-        }
-
-        .content-wrapper {
-            display: flex;
-            width: 400vw; /* 4 slides */
-            transition: transform 0.6s ease;
-        }
-
-        .content-area {
-            box-sizing: border-box;
-            flex: 0 0 100vw;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 0 auto;
-            padding: 40px;
-            gap: 20px;
-            background: #222;
-            width: 100vw;
-            position: relative;
-            top: 0;
-            overflow-y: auto;
-            max-width: none;
-            z-index: 3;
-        }
-
-        .content-area.active {
-            pointer-events: auto;
-        }
-
-        .content-item {
-            background: #333;
-            box-sizing: border-box;
-            padding: 20px;
-            border-radius: 10px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            text-decoration: none;
-            color: white;
-            transition: background 0.3s;
-            z-index: 3;
-        }
-
-        .content-item:hover {
-            background: #444;
-        }
-
-        .content-item img {
-            width: clamp(40px, 6vw, 60px);
-            height: clamp(40px, 6vw, 60px);
-        }
-
-        .content-text {
-            /*font-size: 1.2em;*/
-            font-size: clamp(0.8rem, 3vw, 1.2rem);
-        }
-
-        .description-panel {
-            display: block;
-            flex-wrap: wrap;
-            overflow: hidden;
-            background: #111;
-            color: #ccc;
-            padding: 0 20px;
-            max-height: 0;
-            opacity: 0;
-            transform: translateY(-20px) scaleY(0.9);
-            transition: max-height 0.5s ease, opacity 0.5s ease, transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
-
-        .description-panel.open {
-            max-height: none;
-            padding: 20px;
-            opacity: 1;
-            transform: translateY(0) scaleY(1);
-        }
-
-        .description-panel:not(.open) .responsive-iframe {
-            pointer-events: none;
-            cursor: default;
-        }
-
-        .description-content {
-            /*font-size: 1.1em;*/
-            font-size: clamp(0.8rem, 3vw, 1.1rem);
-            margin-bottom: 10px;
-        }
-
-        .description-link {
-            color: #8cf;
-            text-decoration: underline;
-            /*font-size: 0.9em;*/
-            font-size: clamp(0.7rem, 2.5vw, 0.9rem);
-        }
-        
-        .description-link:hover {
-            color: #0381cc;
-        }
-
-        .site-footer {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            color: #ccc;
-            text-align: center;
-            font-family: 'Comic Sans MS', monospace, sans-serif;
-            font-size: clamp(0.8rem, 2vw, 1rem);
-            padding: 10px 0;
-            position: relative;
-            bottom: 0;
-            z-index: 5;
-            border-top: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.6);
-            user-select: none;
-        }
-
-        .site-footer p {
-            margin: 0;
-            letter-spacing: 1px;
-        }
-
-        .social-footer {
-            background: rgb(51, 51, 51);
-            padding: 10px 0;
-            border-bottom: 2px solid rgba(188, 188, 188, 0.1);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-            margin-bottom: 0;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 40px;
-        }
-
-        .social-links img {
-            width: 32px;
-            height: 32px;
-            filter: brightness(1.1);
-            transition: transform 0.2s ease, filter 0.2s ease;
-        }
-
-        .social-links img:hover {
-            transform: scale(1.2);
-            filter: brightness(1.5);
-        }
-
-        .iframe-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 1280px;
-            margin: 0 auto;
-        }
-
-        .responsive-iframe {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .responsive-iframe iframe {
-            width: 100%;
-            height: 100%;
-            border: 0;
-            pointer-events: none;
-            display: block;
-        }
-
-        .iframe-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: black;
-            cursor: pointer;
-            z-index: 10;
-            overflow: hidden;
-            flex-direction: column;
-            transition: opacity 0.3s;
-        }
-
-        .iframe-overlay img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0; left: 0;
-            z-index: 1;
-        }
-
-        .thumbnail {
-            opacity: 1;
-            transition: opacity 0.3s ease;
-        }
-
-        .hover-preview {
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .iframe-overlay:hover .thumbnail {
-            opacity: 0;
-        }
-
-        .iframe-overlay:hover .hover-preview {
-            opacity: 1;
-        }
-
-        .iframe-overlay span {
-            z-index: 2;
-            color: white;
-            font-family: 'Minecraft', monospace;
-            font-size: 1.5rem;
-            text-shadow: 1px 1px 4px black;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 0.5em 1em;
-            border-radius: 5px;
-            user-select: none;
-        }
-
-        @media (max-width: 600px) {
-            .content-area {
-                padding: 20px 10px;
-            }
-
-            .content-item {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .project-button {
-                flex: 1 1 100%;
-            }
-
-            .description-panel {
-                padding: 0 10px;
-            }
-
-            .social-links {
-                gap: 20px;
-                padding: 10px 0;
-            }
-
-            .social-links img {
-                width: 24px;
-                height: 24px;
-            }
-
-            .responsive-iframe {
-                padding-top: 0;
-                height: 80vh;
-            }
-
-            .responsive-iframe iframe {
-                height: 100%;
-            }
-        }
-
-        .project-button { font-family: inherit; justify-content: center; }
-        .project-button.active { background: #171b23; border-color: #ddc395; color: #fff0d3; }
-        .project-button:focus-visible, .latest-project-card:focus-visible { outline: 3px solid #ddc395; outline-offset: 5px; }
-        .latest-project-card {
-            display: block;
-            width: 100%;
-            max-width: 1100px;
-            overflow: hidden;
-            border: 1px solid #635640;
-            border-radius: 12px;
-            background: #101318;
-            color: #f5f0e6;
-            text-decoration: none;
-            box-shadow: 0 16px 48px #0005;
-            transition: border-color 0.25s, box-shadow 0.25s;
-        }
-        .latest-project-card:hover { border-color: #e8ce9c; box-shadow: 0 16px 48px #0008; }
-        .latest-hero { display: block; width: 100%; aspect-ratio: 2.3; object-fit: cover; image-rendering: auto; }
-        .latest-project-copy { padding: clamp(18px, 3vw, 32px); }
-        .latest-project-tag { font-size: 0.75rem; letter-spacing: 0.16em; color: #ddc395; }
-        .latest-project-copy h2 { font-size: clamp(1.35rem, 3vw, 2rem); font-weight: 400; margin: 12px 0; }
-        .latest-project-copy p { color: #bbc2cd; line-height: 1.6; }
-        .latest-screenshots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 24px 0; }
-        .latest-screenshots figure { margin: 0; min-width: 0; }
-        .latest-screenshots img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 4px; image-rendering: auto; }
-        .latest-screenshots figcaption { margin-top: 8px; font-size: 0.8rem; color: #bbc2cd; }
-        .latest-project-link { color: #e8ce9c; display: inline-block; padding-top: 4px; }
-        @media (max-width: 600px) {
-            .latest-hero { aspect-ratio: 16 / 10; }
-            .latest-screenshots { gap: 8px; }
-            .latest-screenshots figcaption { font-size: 0.7rem; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            .content-wrapper, .latest-project-card { transition: none; }
-        }
-    </style>
+    <link rel="stylesheet" href="css/site.css">
+    <script src="js/site.js" defer></script>
 </head>
 
 <body>
-    <footer class="site-footer">
-        <p> This one used GL Shader Labs :p, so if it doesn't show up on mobile, all good.</p>
-    </footer>
-    <!-- Top Header Area -->
-    <main class="main-content">
-        <div class="header-area">
-            <canvas id="shader-canvas"></canvas>
-            <canvas id="particle-canvas"></canvas>
-            <div class="button-row">
-                <button type="button" class="project-button active" onclick="showContent('Latest')" aria-controls="Latest" aria-pressed="true">Latest Projects</button>
-                <button type="button" class="project-button" onclick="showContent('Unity')" aria-controls="Unity" aria-pressed="false">
-                    Unity Engine
-                    <img src="https://cdn.freebiesupply.com/logos/large/2x/unity-69-logo-png-transparent.png" alt="UnityEngine">
-                </button>
-                <button type="button" class="project-button" onclick="showContent('Unreal')" aria-controls="Unreal" aria-pressed="false">
-                    Unreal Engine
-                    <img src="https://assets.streamlinehq.com/image/private/w_300,h_300,ar_1/f_auto/v1/icons/video-games/unreal-engine-qdh1c46xy8c1nedruo2v5.png/unreal-engine-xwo7bd8vu6fzpnkcifgtu.png?_a=DATAdtAAZAA0" alt="UnrealEngine">
-                </button>
-                <button type="button" class="project-button" onclick="showContent('Others')" aria-controls="Others" aria-pressed="false">
-                    Others (C++, etc.)
-                    <img src="https://www.freeiconspng.com/uploads/c--logo-icon-0.png" alt="Others">
-                </button>
-            </div>
-            <!-- Title -->
-            <h1>Solo & Group Projects</h1>
-        </div>
-    
-        <!-- Content Section (Shown via BUTTONS) -->
-        <div class="content-wrapper">
-    
-            <section id="Latest" class="content-area active" aria-label="Latest Projects">
-                <a class="latest-project-card" href="https://github.com/CarlosEOL/Render-Engine" target="_blank" rel="noopener noreferrer">
-                    <img class="latest-hero" src="imgs/interstellar/gargantua-hdr-disc.png" alt="Gargantua and its luminous accretion disk rendered in the Interstellar project" fetchpriority="high">
-                    <div class="latest-project-copy">
-                        <span class="latest-project-tag">LATEST PROJECT · C++ / GLFW / DIRECTX 12</span>
-                        <h2>Interstellar — Relativity and Quantum Mechanics</h2>
-                        <p>Interstellar grew out of my original Render-Engine project, a C++ renderer built with OpenGL, GLFW, and glm. That project established the foundations: camera controls, model loading, texture mapping, and lighting. I expanded those systems into an interactive exploration of relativity and quantum mechanics, with black-hole lensing, wormholes, planetary environments, and quantum simulations.</p>
-                        <p>As the project grew, I migrated the rendering backend to native DirectX 12 to support NVIDIA DLSS integration and address hardware compatibility on Windows. The migration preserves the shared scene controls and simulation code, while translating the existing GLSL shaders for the DX12 pipeline. GLFW continues to handle the window and input, and a separate OpenGL build remains available.</p>
-                        <p>The DX12 version includes experimental DLSS Super Resolution with Quality, Balanced, and Performance modes, plus DLAA on supported NVIDIA hardware. Capability checks keep native rendering available when DLSS is unsupported. Stable views accumulate temporal detail; camera or scene changes currently reset that history while the integration is refined.</p>
-                        <div class="latest-screenshots">
-                            <figure><img src="imgs/interstellar/gargantua-tesseract.png" alt="The tesseract's repeating bookshelves" loading="lazy"><figcaption>Tesseract</figcaption></figure>
-                            <figure><img src="imgs/interstellar/paired-wormhole.png" alt="Gravitational lensing through a paired wormhole" loading="lazy"><figcaption>Paired wormhole</figcaption></figure>
-                            <figure><img src="imgs/interstellar/living-planet-vegetation.png" alt="A living planet with grass and trees beneath a starry sky" loading="lazy"><figcaption>Living planet</figcaption></figure>
-                        </div>
-                        <span class="latest-project-link">View Render-Engine on GitHub ↗</span>
-                    </div>
-                </a>
-            </section>
+    <header class="masthead">
+        <!-- Live WebGL shader: a Voronoi field of drifting points. See js/site.js. -->
+        <canvas class="masthead__shader" aria-hidden="true"></canvas>
 
-            <div id="Unity" class="content-area">
-    
-                <!-- Project: BrawlBalls -->
-                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity1');">
-                    <img src="imgs/Brawlballs.png" alt="Project 1">
-                    <div class="content-text">Brawl Balls</div>
-                </div>
-    
-                <!-- Descriptions -->
-                <div class="description-panel">
-                    <div class="iframe-wrapper">
-                        <div class="iframe-overlay" onclick="enableIframe(this)">
-                            <img class="thumbnail" src="imgs/Brawlballs.png" alt="Click to play preview">
-                            <img class="hover-preview" src="https://img.itch.zone/aW1nLzIwNTU5MTE4LmpwZw==/original/ivga1A.jpg" alt="Hover preview">
-                        </div>
-                        <div class="responsive-iframe"></div>
-                    </div>
-                    <div class="description-content"></div>
-                    <a class="description-link" href="#" target="_blank">CLICK ME!</a>
-                </div>
-    
-                <!-- Project: Untitled Capybara Game -->
-                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity2');">
-                    <img src="imgs/Capybara.png" alt="Project 2">
-                    <div class="content-text">Untitled Capybara Game</div>
-                </div>
-    
-                <!-- Descriptions -->
-                <div class="description-panel">
-                    <div class="iframe-wrapper">
-                        <div class="iframe-overlay" onclick="enableIframe(this)">
-                            <img class="thumbnail" src="imgs/Capybara.png" alt="Click to play preview">
-                            <img class="hover-preview" src="imgs/CapybaraDeath.gif" alt="Hover preview">
-                            <span>Click to Play</span>
-                        </div>
-                        <div class="responsive-iframe"></div>
-                    </div>
-                    <div class="description-content"></div>
-                    <a class="description-link" href="#" target="_blank">CLICK ME!</a>
-                </div>
-    
-                <!-- Project: Something's in the Dark -->
-                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unity3');">
-                    <img src="imgs/Flashlight.png" alt="Project 2">
-                    <div class="content-text">Something's in the Dark</div>
-                </div>
-    
-                <!-- Descriptions -->
-                <div class="description-panel">
-                    <div class="iframe-wrapper">
-                        <div class="responsive-iframe"></div>
-                    </div>
-                    <div class="description-content"></div>
-                    <a class="description-link" href="#" target="_blank">CLICK ME!</a>
-                </div>
-            </div>
-    
-    
-            <div id="Unreal" class="content-area">
-    
-                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unreal1');">
-                    <img src="imgs/GlumphusLogo.png" alt="Project 1">
-                    <div class="content-text">GLUMPHUS</div>
-                </div>
-    
-                <!-- Descriptions -->
-                <div class="description-panel">
-                    <div class="iframe-wrapper">
-                        <div class="iframe-overlay" onclick="enableIframe(this)">
-                            <img class="thumbnail" src="https://img.itch.zone/aW1nLzE1NjAyMTg4LnBuZw==/original/uZjIkj.png" alt="Click to play preview">
-                            <img class="hover-preview" src="https://img.itch.zone/aW1nLzE1NjAyMTg4LnBuZw==/original/uZjIkj.png" alt="Hover preview">
-                        </div>
-                        <div class="responsive-iframe"></div>
-                    </div>
-                    <div class="description-content"></div>
-                    <a class="description-link" href="#" target="_blank">CLICK ME!</a>
-                </div>
-    
-                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'unreal2');">
-                    <img src="imgs/SlugAbility.png" alt="Project 2">
-                    <div class="content-text">Bacteriophage: Reinfected</div>
-                </div>
-    
-                <!-- Descriptions -->
-                <div class="description-panel">
-                    <div class="iframe-wrapper">
-                        <div class="iframe-overlay" onclick="enableIframe(this)">
-                            <img class="thumbnail" src="https://img.itch.zone/aW1nLzE5MjQzMzYzLnBuZw==/original/hzDYbl.png" alt="Click to play preview">
-                            <img class="hover-preview" src="https://img.itch.zone/aW1nLzE5MjQzMzYzLnBuZw==/original/hzDYbl.png" alt="Hover preview">
-                        </div>
-                        <div class="responsive-iframe"></div>
-                    </div>
-                    <div class="description-content"></div>
-                    <a class="description-link" href="#" target="_blank">CLICK ME!</a>
-                </div>
-    
-            </div>
-    
-            <div id="Others" class="content-area">
-    
-                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'others1');">
-                    <img src="imgs/MemThumbnail.png" alt="Project 1">
-                    <div class="content-text">GLFW Memory-Tiles</div>
-                </div>
-    
-                <!-- Descriptions -->
-                <div class="description-panel">
-                    <div class="iframe-wrapper">
-                        <div class="iframe-overlay" onclick="enableIframe(this)">
-                            <img class="thumbnail" src="imgs/SquareTilesThumbnail.png" alt="Click to play preview">
-                            <img class="hover-preview" src="imgs/SquaretilesPreview.gif" alt="Hover preview">
-                        </div>
-                        <div class="responsive-iframe"></div>
-                    </div>
-                    <div class="description-content"></div>
-                    <a class="description-link" href="#" target="_blank">CLICK ME!</a>
-                </div>
-    
-                <div class="content-item" onclick="event.preventDefault(); showItemDescription(this, 'others2');">
-                    <img src="imgs/CubeThumbnail.png" alt="Project 2">
-                    <div class="content-text">OpenGL (GLFW) 3D Engine</div>
-                </div>
-    
-                <!-- Descriptions -->
-                <div class="description-panel">
-                    <div class="iframe-wrapper">
-                        <div class="iframe-overlay" onclick="enableIframe(this)">
-                            <img class="thumbnail" src="imgs/CubeBigThumbnail.png" alt="Click to play preview">
-                            <img class="hover-preview" src="imgs/Jug.gif" alt="Hover preview">
-                        </div>
-                        <div class="responsive-iframe"></div>
-                    </div>
-                    <div class="description-content"></div>
-                    <a class="description-link" href="#" target="_blank">CLICK ME!</a>
-                </div>
+        <div class="nav">
+            <a class="brand" href="index.html">
+                <span class="brand__mark" aria-hidden="true"></span>
+                Weitao Lu
+            </a>
+            <nav aria-label="Primary">
+                <ul class="nav__links">
+                    <li><a href="projects.html" aria-current="page">Projects</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="masthead__inner wrap">
+            <div>
+                <p class="eyebrow">Solo &amp; group projects</p>
+                <h1 class="page-title display">Projects</h1>
+                <p class="lede">Graphics work written in C++, and games made in Unity and Unreal Engine.</p>
             </div>
         </div>
+        <p class="masthead__note label">Live GLSL · Voronoi web</p>
+    </header>
+
+    <nav class="tabs" aria-label="Project categories">
+        <ul class="tabs__list wrap">
+            <li><a href="#latest" aria-current="true">Latest</a></li>
+            <li><a href="#others">C++ &amp; others <small>02</small></a></li>
+            <li><a href="#unity">Unity <small>03</small></a></li>
+            <li><a href="#unreal">Unreal <small>02</small></a></li>
+        </ul>
+    </nav>
+
+    <main class="wrap">
+
+        <!-- Latest ------------------------------------------------------- -->
+        <section id="latest" class="feature" aria-labelledby="latest-title">
+            <figure class="feature__hero">
+                <img src="imgs/interstellar/gargantua-hdr-disc.png" alt="Gargantua and its luminous accretion disk rendered in the Interstellar project" width="1980" height="1020" fetchpriority="high">
+                <figcaption class="feature__caption">
+                    <p class="eyebrow">Latest project · C++ / GLFW / DirectX 12</p>
+                    <h2 id="latest-title" class="feature__title display">
+                        Interstellar
+                        <span class="feature__subtitle">Relativity and Quantum Mechanics</span>
+                    </h2>
+                </figcaption>
+            </figure>
+
+            <div class="feature__grid">
+                <div class="prose reveal">
+                    <p>Interstellar grew out of my original Render-Engine project, a C++ renderer built with OpenGL, GLFW, and glm. That project established the foundations: camera controls, model loading, texture mapping, and lighting. I expanded those systems into an interactive exploration of relativity and quantum mechanics, with black-hole lensing, wormholes, planetary environments, and quantum simulations.</p>
+                    <p>As the project grew, I migrated the rendering backend to native DirectX 12 to support NVIDIA DLSS integration and address hardware compatibility on Windows. The migration preserves the shared scene controls and simulation code, while translating the existing GLSL shaders for the DX12 pipeline. GLFW continues to handle the window and input, and a separate OpenGL build remains available.</p>
+                    <p>The DX12 version includes experimental DLSS Super Resolution with Quality, Balanced, and Performance modes, plus DLAA on supported NVIDIA hardware. Capability checks keep native rendering available when DLSS is unsupported. Stable views accumulate temporal detail; camera or scene changes currently reset that history while the integration is refined.</p>
+                </div>
+
+                <aside class="reveal" aria-label="Project details">
+                    <dl class="specs">
+                        <div><dt class="label">Language</dt><dd>C++</dd></div>
+                        <div><dt class="label">Rendering</dt><dd>Native DirectX 12, with a separate OpenGL build</dd></div>
+                        <div><dt class="label">Window + input</dt><dd>GLFW</dd></div>
+                        <div><dt class="label">Upscaling</dt><dd>DLSS Super Resolution and DLAA (experimental)</dd></div>
+                        <div><dt class="label">Scenes</dt><dd>Black-hole lensing, wormholes, planetary environments, quantum simulations</dd></div>
+                    </dl>
+                    <a class="btn btn--primary" href="https://github.com/CarlosEOL/Render-Engine" target="_blank" rel="noopener noreferrer">
+                        View Render-Engine on GitHub
+                        <span class="icon icon--arrow-ne" aria-hidden="true"></span>
+                    </a>
+                </aside>
+            </div>
+
+            <ul class="shots reveal">
+                <li>
+                    <figure class="shot">
+                        <a href="imgs/interstellar/gargantua-tesseract.png" data-zoom="Tesseract">
+                            <img src="imgs/interstellar/gargantua-tesseract.png" alt="The tesseract's repeating bookshelves" width="1524" height="1020" loading="lazy">
+                        </a>
+                        <figcaption class="label">Tesseract</figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure class="shot">
+                        <a href="imgs/interstellar/paired-wormhole.png" data-zoom="Paired wormhole">
+                            <img src="imgs/interstellar/paired-wormhole.png" alt="Gravitational lensing through a paired wormhole" width="1980" height="1020" loading="lazy">
+                        </a>
+                        <figcaption class="label">Paired wormhole</figcaption>
+                    </figure>
+                </li>
+                <li>
+                    <figure class="shot">
+                        <a href="imgs/interstellar/living-planet-vegetation.png" data-zoom="Living planet">
+                            <img src="imgs/interstellar/living-planet-vegetation.png" alt="A living planet with grass and trees beneath a starry sky" width="1980" height="1020" loading="lazy">
+                        </a>
+                        <figcaption class="label">Living planet</figcaption>
+                    </figure>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Others ------------------------------------------------------- -->
+        <section id="others" class="group" aria-labelledby="others-title">
+            <header class="group__head">
+                <span class="icon icon--cpp" aria-hidden="true"></span>
+                <h2 id="others-title" class="group__title">C++ &amp; others</h2>
+                <span class="group__count label">02 projects</span>
+            </header>
+
+            <article id="memory-tiles" class="project reveal">
+                <div class="project__body">
+                    <p class="project__index label">01</p>
+                    <h3 class="project__title">GLFW Memory-Tiles</h3>
+                    <ul class="tags">
+                        <li>C++</li>
+                        <li>GLFW</li>
+                        <li>Course project</li>
+                    </ul>
+                    <div class="project__text">
+                        <p>Created during Introduction to C++, it's a weird course after I've already went through Introduction to Computer Graphics where C++ is required to implement OpenGL.</p>
+                        <p>This project allowed me to experience working with GLFW's 2D Space and its window's Normalized Device Coordinates. The process of making those tiny squares are no less than the process of making a 3D cube in OpenGL's 3D space.</p>
+                    </div>
+                    <div class="project__actions">
+                        <a class="btn" href="https://github.com/CarlosEOL/MemoryTiles" target="_blank" rel="noopener noreferrer">
+                            View on GitHub
+                            <span class="icon icon--arrow-ne" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </div>
+                <figure class="media media--contain" data-preview="imgs/SquaretilesPreview.gif">
+                    <img class="media__cover" src="imgs/SquareTilesThumbnail.png" alt="The Memory-Tiles window: a three by three grid of face-down, matched and missed tiles" width="1011" height="1047" loading="lazy">
+                    <button class="media__toggle" type="button" aria-pressed="false" hidden>
+                        <span class="icon icon--play" aria-hidden="true"></span>
+                        Gameplay
+                    </button>
+                </figure>
+            </article>
+
+            <article id="render-engine" class="project reveal">
+                <div class="project__body">
+                    <p class="project__index label">02</p>
+                    <h3 class="project__title">OpenGL (GLFW) 3D Engine</h3>
+                    <ul class="tags">
+                        <li>C++</li>
+                        <li>OpenGL</li>
+                        <li>glm</li>
+                        <li>Personal project</li>
+                    </ul>
+                    <div class="project__text">
+                        <p>Personal Render Engine, created in C++ and OpenGL with the help of glm (OpenGL's Mathematics Library).</p>
+                        <p>Camera Perspective, shader programs (vertex to fragment), read vertex positions from obj. files, material wrap with U.V coord then render them under a light source (Blinn-Phong's formula). There are no better way to learn OpenGL than to implement it yourself.</p>
+                    </div>
+                    <div class="project__actions">
+                        <a class="btn" href="https://github.com/CarlosEOL/Render-Engine" target="_blank" rel="noopener noreferrer">
+                            View on GitHub
+                            <span class="icon icon--arrow-ne" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </div>
+                <figure class="media media--contain media--black" data-preview="imgs/Jug.gif">
+                    <img class="media__cover" src="imgs/CubeThumbnail.png" alt="A wireframe cube drawn by the render engine" width="959" height="845" loading="lazy">
+                    <button class="media__toggle" type="button" aria-pressed="false" hidden>
+                        <span class="icon icon--play" aria-hidden="true"></span>
+                        In motion
+                    </button>
+                </figure>
+            </article>
+        </section>
+
+        <!-- Unity -------------------------------------------------------- -->
+        <section id="unity" class="group" aria-labelledby="unity-title">
+            <header class="group__head">
+                <span class="icon icon--unity" aria-hidden="true"></span>
+                <h2 id="unity-title" class="group__title">Unity Engine</h2>
+                <span class="group__count label">03 projects</span>
+            </header>
+
+            <article id="brawl-balls" class="project reveal">
+                <div class="project__body">
+                    <p class="project__index label">03</p>
+                    <h3 class="project__title">Brawl Balls</h3>
+                    <ul class="tags">
+                        <li>2023</li>
+                        <li>Team · Drenched</li>
+                        <li>Audio + front-end programming</li>
+                        <li>FMOD</li>
+                    </ul>
+                    <div class="project__text">
+                        <p>Created in 2023, first started as a solo project by Gabe Kotton, then, our group (Drenched) made it into an official project which would be released on multiple-platforms.</p>
+                        <p>My duty on this particularly lays on audio + front-end programming, each of the sounds are managed using FMOD and in-game Events. Adaptive BGM, procedural audio modulation (pitch shift and phasing), surround sound (7.1) attenuation, ambiences are all components that made the game a little more alive.</p>
+                    </div>
+                    <div class="project__actions">
+                        <a class="btn" href="https://flamingoezpz.itch.io/brawl-balls" target="_blank" rel="noopener noreferrer">
+                            View on itch.io
+                            <span class="icon icon--arrow-ne" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </div>
+                <figure class="media">
+                    <img class="media__cover" src="https://img.itch.zone/aW1nLzIwNTU5MTE4LmpwZw==/original/ivga1A.jpg" data-fallback="imgs/Brawlballs.png" alt="Brawl Balls: a ball with headphones rolling through a neon arena at night" loading="lazy">
+                </figure>
+            </article>
+
+            <article id="capybara" class="project reveal">
+                <div class="project__body">
+                    <p class="project__index label">04</p>
+                    <h3 class="project__title">Untitled Capybara Game</h3>
+                    <ul class="tags">
+                        <li>2022</li>
+                        <li>Team of 5</li>
+                        <li>Only programmer</li>
+                        <li>Made in 5 days</li>
+                    </ul>
+                    <div class="project__text">
+                        <p>Created in 2022, Untitled Capybara was the work of 5, where I was the only programmer. This project is done in 5 days so not much of it is completely finished, but the final product is “WORKING AS INTENDED”.</p>
+                        <p>I implemented OOP to and Scriptable Objects to manage each individual enemies, and managing A.I behaviors using enum (I DIDN'T KNOW BEHAVIOR TREE EXIST BACK THEN). Each animation was managed using Unity’s 2D sprite sheets. While there are minor resolution issues, they do not significantly impact the overall gameplay experience.</p>
+                    </div>
+                    <div class="project__actions">
+                        <a class="btn btn--primary" href="https://itch.io/embed-upload/6736870?color=0d2800" target="_blank" rel="noopener noreferrer" data-embed="1600x962" data-title="Untitled Capybara Game" data-page="https://smoonthy.itch.io/untitled-capybara-game">
+                            <span class="icon icon--play" aria-hidden="true"></span>
+                            Play in browser
+                        </a>
+                        <a class="btn" href="https://smoonthy.itch.io/untitled-capybara-game" target="_blank" rel="noopener noreferrer">
+                            View on itch.io
+                            <span class="icon icon--arrow-ne" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </div>
+                <figure class="media" data-preview="imgs/CapybaraDeath.gif">
+                    <img class="media__cover" src="imgs/Capybara.png" alt="Untitled Capybara Game cover art: a hand-drawn capybara face" width="480" height="389" loading="lazy" style="--zoom: 1.12; object-position: 50% 36%">
+                    <span class="media__badge">Playable</span>
+                    <button class="media__toggle" type="button" aria-pressed="false" hidden>
+                        <span class="icon icon--play" aria-hidden="true"></span>
+                        Gameplay
+                    </button>
+                </figure>
+            </article>
+
+            <article id="in-the-dark" class="project reveal">
+                <div class="project__body">
+                    <p class="project__index label">05</p>
+                    <h3 class="project__title">Something's in the Dark</h3>
+                    <ul class="tags">
+                        <li>2022</li>
+                        <li>Solo project</li>
+                        <li>Particles + Animator</li>
+                    </ul>
+                    <div class="project__text">
+                        <p>Created in 2022, a solo project. This project introduced me to unity's built-in particle system and animator (most of it are janky but at least functional).</p>
+                    </div>
+                    <div class="project__actions">
+                        <a class="btn btn--primary" href="https://itch.io/embed-upload/13673795?color=691e1e" target="_blank" rel="noopener noreferrer" data-embed="960x662" data-title="Something's in the Dark" data-page="https://smoonthy.itch.io/somethings-in-the-dark">
+                            <span class="icon icon--play" aria-hidden="true"></span>
+                            Play in browser
+                        </a>
+                        <a class="btn" href="https://smoonthy.itch.io/somethings-in-the-dark" target="_blank" rel="noopener noreferrer">
+                            View on itch.io
+                            <span class="icon icon--arrow-ne" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </div>
+                <figure class="media media--icon">
+                    <img class="media__cover" src="imgs/Flashlight.png" alt="A flashlight, the icon for Something's in the Dark" width="500" height="500" loading="lazy">
+                    <span class="media__badge">Playable</span>
+                </figure>
+            </article>
+        </section>
+
+        <!-- Unreal ------------------------------------------------------- -->
+        <section id="unreal" class="group" aria-labelledby="unreal-title">
+            <header class="group__head">
+                <span class="icon icon--unreal" aria-hidden="true"></span>
+                <h2 id="unreal-title" class="group__title">Unreal Engine</h2>
+                <span class="group__count label">02 projects</span>
+            </header>
+
+            <article id="glumphus" class="project reveal">
+                <div class="project__body">
+                    <p class="project__index label">06</p>
+                    <h3 class="project__title">GLUMPHUS</h3>
+                    <ul class="tags">
+                        <li>UE5</li>
+                        <li>Team · Drenched</li>
+                        <li>Visual scripting + C++</li>
+                    </ul>
+                    <div class="project__text">
+                        <p>My first time in UE5, it introduced me to visual scripting, C++, procedural terrain and nanite (we can make 3D assets without care in poly-count).</p>
+                        <p>We (Drenched) have a lot of ambition going into this game, with a gigantic map and objects that are supposedly intuitive to use, but they are not. We over-scoped and made a game that isn't meant for game-con; If we prioritized UXR and Objectives we might actually win GOTY.</p>
+                    </div>
+                    <div class="project__actions">
+                        <a class="btn" href="https://flamingoezpz.itch.io/glumphus" target="_blank" rel="noopener noreferrer">
+                            View on itch.io
+                            <span class="icon icon--arrow-ne" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </div>
+                <figure class="media">
+                    <img class="media__cover" src="https://img.itch.zone/aW1nLzE1NjAyMTg4LnBuZw==/original/uZjIkj.png" data-fallback="imgs/GlumphusLogo.png" alt="GLUMPHUS key art: a hooded figure raising a spear over a fallen frog" loading="lazy">
+                </figure>
+            </article>
+
+            <article id="bacteriophage" class="project reveal">
+                <div class="project__body">
+                    <p class="project__index label">07</p>
+                    <h3 class="project__title">Bacteriophage: Reinfected</h3>
+                    <ul class="tags">
+                        <li>UE5</li>
+                        <li>Group project</li>
+                        <li>Sound</li>
+                        <li>Wwise + MetaSounds</li>
+                    </ul>
+                    <div class="project__text">
+                        <p>Second group project in UE5, still the sound guy, this game introduced me to WWise and its resources are unexpectedly limited. Because of its limitations I had to resort back to Meta Sound, a built in sound engine in UE5.</p>
+                        <p>If I have the tenacity to read through its documentation within the editor, I might actually gain valuable insight into this third-party software.</p>
+                    </div>
+                    <div class="project__actions">
+                        <a class="btn" href="https://bananahoshi.itch.io/bacteriophage-reinfected" target="_blank" rel="noopener noreferrer">
+                            View on itch.io
+                            <span class="icon icon--arrow-ne" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </div>
+                <figure class="media">
+                    <img class="media__cover" src="https://img.itch.zone/aW1nLzE5MjQzMzYzLnBuZw==/original/hzDYbl.png" data-fallback="imgs/SlugAbility.png" alt="Bacteriophage: Reinfected title screen with the main character holding a syringe-shaped weapon" loading="lazy">
+                </figure>
+            </article>
+        </section>
     </main>
 
-    <footer class="site-footer social-footer">
-        <div class="social-links">
-            <a href="https://github.com/CarlosEOL" target="_blank">
-                <img src="https://cdn.freebiesupply.com/logos/large/2x/github-icon-1-logo-black-and-white.png" alt="GitHub">
-            </a>
-            <a href="https://www.linkedin.com/in/carlos-eurus-lu-8a4ab1252/" target="_blank">
-                <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn">
-            </a>
-            <a href="https://www.youtube.com/@smoonthy" target="_blank">
-                <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
-            </a>
+    <footer class="footer">
+        <div class="footer__inner wrap">
+            <p class="footer__note label">Made by Weitao, with HTML, JS, CSS and three.js</p>
+            <ul class="social">
+                <li><a href="https://github.com/CarlosEOL" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><span class="icon icon--github" aria-hidden="true"></span></a></li>
+                <li><a href="https://www.linkedin.com/in/carlos-lu-8a4ab1252/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><span class="icon icon--linkedin" aria-hidden="true"></span></a></li>
+                <li><a href="https://www.youtube.com/@smoonthy" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><span class="icon icon--youtube" aria-hidden="true"></span></a></li>
+                <li><a href="https://open.spotify.com/artist/6OdnVMSnAFQ1AN4dt7hIyo" target="_blank" rel="noopener noreferrer" aria-label="Spotify"><span class="icon icon--spotify" aria-hidden="true"></span></a></li>
+            </ul>
         </div>
     </footer>
 
-    <footer class="site-footer">
-        <p>🤍 Made by Carlos, with Pure HTML, JS and CSS. 🤍</p>
-    </footer>
+    <!-- Shared by "Play in browser" and the Interstellar screenshots. -->
+    <dialog class="theater" aria-labelledby="theater-title">
+        <div class="theater__bar">
+            <h2 id="theater-title" class="theater__title"></h2>
+            <a class="theater__ext label" href="#" target="_blank" rel="noopener noreferrer" hidden>
+                <span>Open on itch.io</span>
+                <span class="icon icon--arrow-ne" aria-hidden="true"></span>
+            </a>
+            <button class="theater__close" type="button" aria-label="Close">
+                <span class="icon icon--close" aria-hidden="true"></span>
+            </button>
+        </div>
+        <div class="theater__stage"></div>
+    </dialog>
 </body>
-
-<script>
-    window.addEventListener('DOMContentLoaded', () => {
-        const isMobile = window.innerWidth <= 600;
-        const desktop = document.querySelector('.desktop-embed');
-        const mobile = document.querySelector('.mobile-embed');
-
-        if (isMobile && desktop && mobile) {
-            desktop.style.display = 'none';
-            mobile.style.display = 'block';
-        }
-    });
-    
-    function showContent(sectionId) {
-        const wrapper = document.querySelector('.content-wrapper');
-        const sections = Array.from(document.querySelectorAll('.content-area'));
-        const index = sections.findIndex(section => section.id === sectionId);
-        if (index < 0) return;
-        wrapper.style.transform = `translateX(-${index * 100}vw)`;
-        sections.forEach(section => {
-            const active = section.id === sectionId;
-            section.classList.toggle('active', active);
-            section.inert = !active;
-            section.setAttribute('aria-hidden', String(!active));
-        });
-        document.querySelectorAll('.project-button[aria-controls]').forEach(button => {
-            const active = button.getAttribute('aria-controls') === sectionId;
-            button.classList.toggle('active', active);
-            button.setAttribute('aria-pressed', String(active));
-        });
-    }
-
-    showContent('Latest');
-
-    function enableIframe(overlay) {
-        const iframeWrapper = overlay.nextElementSibling;
-        const iframe = iframeWrapper.querySelector('iframe:not([style*="display: none"])');
-
-        overlay.style.opacity = 0;
-        setTimeout(() => overlay.style.display = "none", 300);
-
-        // Enable interaction
-        if (iframe) {
-            iframe.style.pointerEvents = "auto";
-        }
-    }
-
-    const descriptions = {
-        unity1: {
-            text: "Created in 2023, first started as a solo project by Gabe Kotton, then, our group (Drenched) made it into an official project which would be released on multiple-platforms. \n\n"
-                + "My duty on this particularly lays on audio + front-end programming, each of the sounds are managed using FMOD and in-game Events. \n"
-                + "Adaptive BGM, procedural audio modulation (pitch shift and phasing), surround sound (7.1) attenuation, ambiences are all components that made the game a little more alive.\n\n",
-            link: "https://flamingoezpz.itch.io/brawl-balls",
-            overlayThumbnail: "imgs/Brawlballs.png",
-            overlayPreview: "https://img.itch.zone/aW1nLzIwNTU5MTE4LmpwZw==/original/ivga1A.jpg",
-            mobileSrc: "https://itch.io/embed/3379495",
-            hasIframe: true
-        },
-        unity2: { 
-            text: "Created in 2022, Untitled Capybara was the work of 5, where I was the only programmer. \n"
-                + "This project is done in 5 days so not much of it is completely finished, but the final product is ''WORKING AS INTENDED''. \n"
-                + "I implemented OOP to and Scriptable Objects to manage each individual enemies, and managing A.I behaviors using enum (I DIDN'T KNOW BEHAVIOR TREE EXIST BACK THEN). \n"
-                + "Each animation was managed using Unity’s 2D sprite sheets. While there are minor resolution issues, they do not significantly impact the overall gameplay experience. \n", 
-            link: "https://smoonthy.itch.io/untitled-capybara-game",
-            overlayThumbnail: "imgs/Capybara.png",
-            overlayPreview: "path/to/preview.gif",
-            desktopSrc: "https://itch.io/embed-upload/6736870?color=0d2800",
-            mobileSrc: "https://itch.io/embed/1764093",
-            hasIframe: true
-        },
-        unity3: { 
-            text: "Created in 2022, a solo project. This project introduced me to unity's built-in particle system and animator (most of it are janky but at least functional).",
-            link: "https://smoonthy.itch.io/somethings-in-the-dark",
-            overlayThumbnail: "path/to/thumbnail.png",
-            overlayPreview: "path/to/preview.gif",
-            desktopSrc: "https://itch.io/embed-upload/13673795?color=691e1e",
-            mobileSrc: "https://itch.io/embed/3554571?bg_color=900606&amp;fg_color=413232&amp;link_color=330d0d&amp;border_color=000000",
-            hasIframe: true
-        },
-        unreal1: {
-            text: "My first time in UE5, it introduced me to visual scripting, C++, procedural terrain and nanite (we can make 3D assets without care in poly-count). \n" 
-                + "We (Drenched) have a lot of ambition going into this game, with a gigantic map and objects that are supposedly intuitive to use, but they are not. \n"
-                + "We over-scoped and made a game that isn't meant for game-con; If we prioritized UXR and Objectives we might actually win GOTY \n. \n",
-            link: "https://flamingoezpz.itch.io/glumphus",
-            hasIframe: true,
-        },
-        unreal2: { 
-            text: "Second group project in UE5, still the sound guy, this game introduced me to WWise and its resources are unexpectedly limited. "
-                + "Because of its limitations I had to resort back to Meta Sound, a built in sound engine in UE5.\n"
-                + "If I have the tenacity to read through its documentation within the editor, I might actually gain valuable insight into this third-party software. \n", 
-            link: "https://bananahoshi.itch.io/bacteriophage-reinfected",
-            hasIframe: true,
-        },
-        others1:{
-            text: "Created during Introduction to C++, it's a weird course after I've already went through Introduction to Computer Graphics where C++ is required to implement OpenGL. \n"
-                + "This project allowed me to experience working with GLFW's 2D Space and its window's Normalized Device Coordinates. \n"
-                + "The process of making those tiny squares are no less than the process of making a 3D cube in OpenGL's 3D space. \n", 
-            link: "https://github.com/CarlosEOL/MemoryTiles" ,
-            hasIframe: true,
-            overlayThumbnail: "imgs/SquareTilesThumbnail.png",
-            overlayPreview: ""
-        },
-        others2:{
-            text: "Personal Render Engine, created in C++ and OpenGL with the help of glm (OpenGL's Mathematics Library). \n"
-                + "Camera Perspective, shader programs (vertex to fragment), read vertex positions from obj. files, material wrap with U.V coord then render them under a light source (Blinn-Phong's formula). \n"
-                + "There are no better way to learn OpenGL than to implement it yourself. \n",  
-            link: "https://github.com/CarlosEOL/Render-Engine",
-            hasIframe: true,
-            overlayThumbnail: "",
-            overlayPreview: "imgs/Jug.gif"
-        }
-    };
-
-    function showItemDescription(item, key) {
-        const description = item.nextElementSibling;
-        const content = description.querySelector('.description-content');
-        const link = description.querySelector('.description-link');
-        const isOpen = description.classList.contains('open');
-
-        // Close all other description panels
-        document.querySelectorAll('.description-panel').forEach(panel => {
-            panel.classList.remove('open');
-
-            // Re-enable overlay if hidden
-            const overlay = panel.querySelector('.iframe-overlay');
-            if (overlay) 
-            {
-                overlay.style.display = 'flex';
-                overlay.style.opacity = 1;
-            }
-
-            // Reset iframe interactions
-            const desktopIframe = panel.querySelector('.desktop-embed');
-            const mobileIframe = panel.querySelector('.mobile-embed');
-            if (desktopIframe) desktopIframe.style.pointerEvents = 'none';
-            if (mobileIframe) mobileIframe.style.pointerEvents = 'none';
-
-            // Unload iframes
-            const wrapper = panel.querySelector('.iframe-wrapper');
-            if (!wrapper) return;
-
-            const iframeContainer = wrapper.querySelector('.responsive-iframe');
-            if (!iframeContainer) return;
-
-            if (desktopIframe) {
-                desktopIframe.dataset.src = desktopIframe.src;
-                desktopIframe.src = '';
-                desktopIframe.remove();
-            }
-            if (mobileIframe) {
-                mobileIframe.dataset.src = mobileIframe.src;
-                mobileIframe.src = '';
-                mobileIframe.remove();
-            }
-        });
-
-        // If already open, just close
-        if (isOpen) {
-            description.classList.remove('open');
-            return;
-        }
-
-        // Populate content
-        if (!isOpen && descriptions[key]) 
-        {
-            content.textContent = descriptions[key].text;
-            link.href = descriptions[key].link;
-            description.classList.add('open');
-
-            const desktopSrc = descriptions[key]?.desktopSrc;
-            const mobileSrc = descriptions[key]?.mobileSrc;
-
-            const hasIframe = descriptions[key]?.hasIframe !== false;
-            if (hasIframe)
-            {
-                // Re-apply iframe src when opening
-                const wrapper = description.querySelector('.iframe-wrapper');
-                if (wrapper) 
-                {
-                    const iframeContainer = wrapper.querySelector('.responsive-iframe');
-                    if (iframeContainer) 
-                    {
-                        if (desktopSrc) {
-                            const newDesktop = document.createElement('iframe');
-                            newDesktop.className = 'desktop-embed';
-                            newDesktop.src = desktopSrc;
-                            newDesktop.frameBorder = "0";
-                            newDesktop.allowFullscreen = true;
-                            newDesktop.scrolling = "no";
-                            newDesktop.sandbox = "allow-forms allow-scripts allow-same-origin allow-pointer-lock allow-popups allow-downloads allow-modals";
-                            iframeContainer.appendChild(newDesktop);
-                        }
-
-                        if (mobileSrc) {
-                            const newMobile = document.createElement('iframe');
-                            newMobile.className = 'mobile-embed';
-                            newMobile.src = mobileSrc;
-                            newMobile.frameBorder = "0";
-                            newMobile.width = "552";
-                            newMobile.height = "167";
-                            newMobile.scrolling = "no";
-                            newMobile.sandbox = "allow-scripts allow-same-origin";
-                            newMobile.style.display = window.innerWidth <= 600 ? "block" : "none";
-                            iframeContainer.appendChild(newMobile);
-                        }
-                    }
-                }
-            }
-            
-            setTimeout(() => {
-                description.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 250);
-        } 
-        else 
-        {
-            description.classList.remove('open');
-        }
-        
-        // Rebuild overlay just for the clicked item
-        const wrapper = description.querySelector('.iframe-wrapper');
-        if (!wrapper) return;
-        if (wrapper) {
-            const thumbSrc = descriptions[key]?.overlayThumbnail || 'default-thumb.png';
-            const previewSrc = descriptions[key]?.overlayPreview || 'default-preview.gif';
-            const desktopSrc = descriptions[key]?.desktopSrc;
-
-            let overlay = wrapper.querySelector('.iframe-overlay');
-            const needsRebuild = !overlay;
-
-            if (needsRebuild) {
-                overlay = document.createElement('div');
-                overlay.className = 'iframe-overlay';
-                overlay.onclick = () => enableIframe(overlay);
-                overlay.innerHTML = `
-                    <img class="thumbnail" src="${thumbSrc}" alt="Click to play preview">
-                    <img class="hover-preview" src="${previewSrc}" alt="Hover preview">
-                    <span>Click to Play</span>
-                `;
-                wrapper.insertBefore(overlay, wrapper.firstElementChild);
-            }
-
-            // Apply interactivity depending on whether we have desktopSrc
-            if (!desktopSrc || desktopSrc.trim() === "") {
-                overlay.onclick = null;
-                overlay.style.cursor = 'not-allowed';
-                overlay.querySelector('span').textContent = 'No Preview Available';
-            } else {
-                overlay.onclick = () => enableIframe(overlay);
-                overlay.style.cursor = 'pointer';
-                overlay.querySelector('span').textContent = 'Click to Play';
-            }
-
-            overlay.style.display = 'flex';
-            overlay.style.opacity = 1;
-        }
-    }
-    
-    const shaderCanvas = document.getElementById('shader-canvas');
-    const gl = shaderCanvas.getContext('webgl');
-
-    const particleCanvas = document.getElementById('particle-canvas');
-    const ctx = particleCanvas.getContext('2d');
-
-    function resizeCanvas() {
-        shaderCanvas.width = shaderCanvas.clientWidth;
-        shaderCanvas.height = shaderCanvas.clientHeight;
-        particleCanvas.width = particleCanvas.clientWidth;
-        particleCanvas.height = particleCanvas.clientHeight;
-        gl.viewport(0, 0, shaderCanvas.width, shaderCanvas.height);
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    // Shaders
-    const vertexShaderSource = `
-attribute vec2 a_position;
-void main() 
-{
-  gl_Position = vec4(a_position, 0.0, 1.0);
-}`;
-
-    const fragmentShaderSource = `
-precision mediump float;
-
-uniform vec2 u_resolution;
-uniform float u_time;
-
-float hash(vec2 p) {
-    p = fract(p * vec2(123.34, 456.21));
-    p += dot(p, p + 45.32);
-    return fract(p.x * p.y);
-}
-
-// Distance from point p to segment ab
-float lineDistance(vec2 p, vec2 a, vec2 b) {
-    vec2 pa = p - a;
-    vec2 ba = b - a;
-    float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
-    return length(pa - ba * h);
-}
-
-void main() {
-    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-    uv.x *= u_resolution.x / u_resolution.y;
-    uv *= 9.608;
-
-    vec2 n = floor(uv);
-    vec2 f = fract(uv);
-
-    float minDist = 1.0;
-    float lineGlow = 0.0;
-    vec2 closestPoint = vec2(0.0);
-
-    // Find closest point first
-    for (int j = -1; j <= 1; j++) {
-        for (int i = -1; i <= 1; i++) {
-            vec2 neighbor = vec2(float(i), float(j));
-            
-            vec2 point = vec2(
-                hash(n + neighbor),
-                hash(n + neighbor + 1.0)
-            );
-            
-            point = 0.5 + 0.5 * sin(u_time + 6.2831 * point);
-
-            vec2 diff = neighbor + point - f;
-            float dist = length(diff);
-            if (dist < minDist) {
-                minDist = dist;
-                closestPoint = neighbor + point;
-            }
-        }
-    }
-
-    // Now connect closest point to nearby points
-    for (int j = -1; j <= 1; j++) {
-        for (int i = -1; i <= 1; i++) {
-            vec2 neighbor = vec2(float(i), float(j));
-            vec2 point = vec2(
-                hash(n + neighbor),
-                hash(n + neighbor + 1.0)
-            );
-            point = 0.5 + 0.5 * sin(u_time + 6.2831 * point);
-
-            vec2 current = neighbor + point;
-            float distBetweenPoints = distance(closestPoint, current);
-
-            // if they are close enough, draw a web line
-            if (distBetweenPoints < 0.7) { // adjust 0.7 if needed
-                float d = lineDistance(f, closestPoint, current);
-                lineGlow += smoothstep(0.02, 0.0, d);
-            }
-        }
-    }
-
-    float dotColor = 1.0 - smoothstep(0.0, 0.076, minDist);
-    float finalColor = clamp(dotColor + lineGlow, 0.0, 1.0);
-    
-    gl_FragColor = vec4(vec3(finalColor), 1.0);
-}
-
-`;
-    
-    // Shader Setup
-    function createShader(gl, type, source) {
-        const shader = gl.createShader(type);
-        gl.shaderSource(shader, source);
-        gl.compileShader(shader);
-        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-            console.error('Shader compile failed:', gl.getShaderInfoLog(shader));
-            gl.deleteShader(shader);
-            return null;
-        }
-        return shader;
-    }
-
-    function createProgram(gl, vertexShader, fragmentShader) {
-        const program = gl.createProgram();
-        gl.attachShader(program, vertexShader);
-        gl.attachShader(program, fragmentShader);
-        gl.linkProgram(program);
-        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-            console.error('Program link failed:', gl.getProgramInfoLog(program));
-            gl.deleteProgram(program);
-            return null;
-        }
-        return program;
-    }
-
-    const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-    const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
-    const program = createProgram(gl, vertexShader, fragmentShader);
-    gl.useProgram(program);
-
-    const positionBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-        -1, -1,
-        1, -1,
-        -1, 1,
-        -1, 1,
-        1, -1,
-        1, 1
-    ]), gl.STATIC_DRAW);
-
-    const positionLocation = gl.getAttribLocation(program, "a_position");
-    gl.enableVertexAttribArray(positionLocation);
-    gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
-
-    const uResolution = gl.getUniformLocation(program, "u_resolution");
-    const uTime = gl.getUniformLocation(program, "u_time");
-
-    // --- Framebuffer Setup ---
-    const framebuffer = gl.createFramebuffer();
-    const fbTexture = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, fbTexture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, shaderCanvas.width, shaderCanvas.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, fbTexture, 0);
-    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-    
-    // The functions to re-create the dots in GLSL
-    function hash(p) {
-        p = fractVec2(mulVec2(p, {x: 123.34, y: 456.21}));
-        p.x += p.x * p.x + 45.32;
-        p.y += p.y * p.y + 45.32;
-        return fract(p.x * p.y);
-    }
-
-    function fractVec2(v) {
-        return {x: v.x - Math.floor(v.x), y: v.y - Math.floor(v.y)};
-    }
-
-    function mulVec2(v1, v2) {
-        return {x: v1.x * v2.x, y: v1.y * v2.y};
-    }
-
-    function fract(x) {
-        return x - Math.floor(x);
-    }
-
-    function proceduralDot(n, u_time) {
-        const h = hash(n);
-        return 0.5 + 0.5 * Math.sin(u_time + 6.2831 * h);
-    }
-    
-    // Particle Class
-    class Particle {
-        constructor(x, y) {
-            this.x = x;
-            this.y = y;
-            this.vx = (Math.random() - 0.5) * 2.0;
-            this.vy = (Math.random() - 0.5) * 2.0;
-            this.speed = 1.0;
-        }
-
-        update(flowDir) {
-            this.vx += (flowDir[0] - 0.5) * 0.2;
-            this.vy += (flowDir[1] - 0.5) * 0.2;
-
-            const len = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
-            if (len > 0) {
-                this.vx /= len;
-                this.vy /= len;
-            }
-
-            this.x += this.vx * this.speed;
-            this.y += this.vy * this.speed;
-
-            if (this.x < 0) this.x += particleCanvas.width;
-            if (this.x > particleCanvas.width) this.x -= particleCanvas.width;
-            if (this.y < 0) this.y += particleCanvas.height;
-            if (this.y > particleCanvas.height) this.y -= particleCanvas.height;
-        }
-
-        draw(ctx) {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
-            ctx.fillStyle = 'white';
-            ctx.fill();
-        }
-    }
-
-    const particles = [];
-    for (let i = 0; i < 13; i++) {
-        particles.push(new Particle(Math.random() * particleCanvas.width, Math.random() * particleCanvas.height));
-    }
-
-    // --- Render Loops ---
-    function renderVoronoi(time) {
-        // First draw to framebuffer
-        gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-        gl.viewport(0, 0, shaderCanvas.width, shaderCanvas.height);
-        gl.clearColor(0.0, 0.0, 0.0, 0.0);
-        gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.useProgram(program);
-        gl.uniform2f(uResolution, shaderCanvas.width, shaderCanvas.height);
-        gl.uniform1f(uTime, time * 0.001);
-        gl.drawArrays(gl.TRIANGLES, 0, 6);
-
-        // Then draw to screen (shaderCanvas)
-        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-        gl.viewport(0, 0, shaderCanvas.width, shaderCanvas.height);
-        gl.clearColor(0.0, 0.0, 0.0, 0.0);
-        gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.useProgram(program);
-        gl.uniform2f(uResolution, shaderCanvas.width, shaderCanvas.height);
-        gl.uniform1f(uTime, time * 0.001);
-        gl.drawArrays(gl.TRIANGLES, 0, 6);
-
-        requestAnimationFrame(renderVoronoi);
-    }
-
-    function renderParticles(time) {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-        ctx.fillRect(0, 0, particleCanvas.width, particleCanvas.height);
-
-        // Build Voronoi points procedurally in JS
-        const points = [];
-        const u_time = time * 0.0001;
-
-        const gridSize = 9.608; // Same zoom you used in fragment shader
-        const cols = Math.ceil(shaderCanvas.width / gridSize);
-        const rows = Math.ceil(shaderCanvas.height / gridSize);
-
-        for (let j = -1; j <= rows + 1; j++) {
-            for (let i = -1; i <= cols + 1; i++) {
-                const n = {x: i, y: j};
-                const h1 = hash(n);
-                const h2 = hash({x: n.x, y: n.y + 1.0});
-
-                const point = {
-                    x: (n.x + (0.5 + 0.5 * Math.sin(u_time + 6.2831 * h1))) * (shaderCanvas.width / cols),
-                    y: (n.y + (0.5 + 0.5 * Math.sin(u_time + 6.2831 * h2))) * (shaderCanvas.height / rows)
-                };
-
-                points.push(point);
-            }
-        }
-
-        // Particle update loop
-        particles.forEach(p => {
-            let closestPoint = null;
-            let minDist = Infinity;
-
-            for (let point of points) {
-                const dx = point.x - p.x;
-                const dy = point.y - p.y;
-                const distSq = dx * dx + dy * dy;
-
-                if (distSq < minDist) {
-                    minDist = distSq;
-                    closestPoint = point;
-                }
-            }
-
-            if (closestPoint) {
-                const angle = Math.atan2(closestPoint.y - p.y, closestPoint.x - p.x);
-                p.vx += Math.cos(angle) * 0.05;
-                p.vy += Math.sin(angle) * 0.05;
-            }
-
-            // Normalize velocity to keep it controlled
-            const len = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-            if (len > 0) {
-                p.vx /= len;
-                p.vy /= len;
-            }
-
-            p.x += p.vx * p.speed;
-            p.y += p.vy * p.speed;
-
-            if (p.x < 0) p.x += particleCanvas.width;
-            if (p.x > particleCanvas.width) p.x -= particleCanvas.width;
-            if (p.y < 0) p.y += particleCanvas.height;
-            if (p.y > particleCanvas.height) p.y -= particleCanvas.height;
-
-            p.draw(ctx);
-        });
-        requestAnimationFrame(loopParticles);
-    }
-    function loopParticles(time) {
-        renderParticles(time);
-    }
-    
-    // Start loops
-    requestAnimationFrame(renderVoronoi);
-    requestAnimationFrame(loopParticles);
-</script>
 </html>
